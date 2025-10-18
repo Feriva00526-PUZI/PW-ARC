@@ -1,259 +1,135 @@
-/* ---- Estilos generales ---- */
+/* ---- Estilos globales ---- */
+
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: "Segoe UI", Arial, sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
 }
 
 body {
-    background-color: #f4f5fb;
-    color: #333;
-    display: grid;
-    grid-template-rows: auto 1fr auto;
-    min-height: 100vh;
+  background-color: #f4f5fb;
+  color: #333;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
 }
 
+/* ---- Cabecera y pie ---- */
 header,
 footer {
-    background-color: #023E8A;
-    color: white;
-    text-align: center;
-    padding: 1rem 0;
+  background-color: #023E8A;
+  color: white;
+  text-align: center;
+  padding: 1rem 0;
 }
 
+/* ---- Main ---- */
 main {
-    padding: 20px;
+  padding: 30px;
+  background-image: url("/public/background-img.jpeg");
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
 }
 
-/* ====== organizer-style ====== */
-
-/* ---- Contenedor principal: dos columnas ---- */
-.organizers-box {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 30px;
-    height: 100%;
+/* ---- Caja generica (Para el cuerpo de las pestañas) ---- */
+.box {
+  background-color: rgba(255, 255, 255, 0.90);
+  border-radius: 10px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5);
+  padding: 20px;
 }
 
-/* ---- Caja de eventos ---- */
-.organizers-events-box {
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
-    padding: 20px;
-    display: grid;
-    grid-template-rows: auto 1fr auto;
-
+/* ---- Botones generales ---- */
+.button,
+button,
+input[type="submit"] {
+  background-color: #023E8A;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 15px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.organizers-events-box h2 {
-    color: #023E8A;
-    margin-bottom: 10px;
+.button:hover,
+button:hover,
+input[type="submit"]:hover {
+  background-color: #1f3461;
 }
 
-/* ---- Sección con scroll ---- */
-.organizers-events-info {
-    overflow-y: auto;
-    display: grid;
-    gap: 10px;
-    align-content: start;
-    padding-right: 10px;
-}
-
-/* ---- Tarjeta individual de evento ---- */
-.event-card {
-    background-color: #f0f2fa;
-    border-left: 5px solid #023E8A;
-    border-radius: 8px;
-    padding: 12px 12px;
-    display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
-    align-items: center;
-    gap: 10px;
-    transition:
-        background-color 0.3s ease,
-        box-shadow 0.3s ease,
-        transform 0.25s ease,
-        border-left-color 0.3s ease;
-}
-
-.event-card span {
-    font-size: 0.95rem;
-    color: #333;
-    cursor: default;
-}
-
-.event-card:hover {
-    background-color: #dbe3f7;
-    border-left-color: #1f3461;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    transform: translateY(-2px);
-
-}
-
-/* ---- Boton de agregar evento ---- */
-.organizers-events-box button,
-.event-send-button {
-    margin-top: 10px;
-    background-color: #023E8A;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    padding: 10px 15px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    justify-self: end;
-}
-
-.organizers-events-box button:hover {
-    background-color: #1f3461;
-}
-
-/* ---- Calendario o segunda columna ---- */
-.organizers-calendar {
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
-    padding: 20px;
-}
-
-/* ---- Scroll personalizado ---- */
-.organizers-events-info::-webkit-scrollbar {
-    width: 8px;
-}
-
-.organizers-events-info::-webkit-scrollbar-thumb {
-    background-color: #023E8A;
-    border-radius: 4px;
-}
-
-.organizers-events-info::-webkit-scrollbar-thumb:hover {
-    background-color: #1f3461;
-}
-
-/* Registrar eventos */
-
-.event-box {
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
-    padding: 20px;
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 30px;
-    align-items: start;
-}
-
-.event-box h1 {
-    grid-column: 1 / 4;
-    text-align: center;
-    color: #023E8A;
-    margin-bottom: 20px;
-}
-
-.event-calendar-box {
-    background-color: #f0f2fa;
-    border-radius: 10px;
-    min-height: 400px;
-    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.1);
-    display: grid;
-    place-items: center;
-    font-weight: 600;
-    color: #023E8A;
-}
-
-.event-img-box {
-    background-color: #f0f2fa;
-    border-radius: 10px;
-    min-height: 400px;
-    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.1);
-    display: grid;
-    place-items: center;
-    overflow: hidden;
-}
-
-.event-img-box img {
-    width: 100%;
-    height: 100%;
-    object-fit: fill;
-}
-
-/* Formulario para registrar eventos */
-
-form {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 15px;
+/* ---- Tipografía general ---- */
+h1, h2, h3 {
+  color: #023E8A;
+  font-weight: 600;
 }
 
 label {
-    font-weight: 600;
-    color: #023E8A;
-    margin-bottom: 4px;
-    display: block;
+  font-weight: 600;
+  color: #023E8A;
+  margin-bottom: 4px;
+  display: block;
 }
 
-form input[type="text"],
-form input[type="number"],
-form textarea {
-    width: 100%;
-    padding: 10px 12px;
-    border: 2px solid #cbd1e3;
-    border-radius: 8px;
-    font-size: 1rem;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+/* ---- Inputs y textarea ---- */
+input[type="text"],
+input[type="number"],
+textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 2px solid #cbd1e3;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-form input:focus,
-form textarea:focus {
-    border-color: #023E8A;
-    box-shadow: 0 0 6px rgba(41, 67, 128, 0.3);
-    outline: none;
+input:focus,
+textarea:focus {
+  border-color: #023E8A;
+  box-shadow: 0 0 6px rgba(41, 67, 128, 0.3);
+  outline: none;
 }
 
 textarea {
-    resize: none;
-    min-height: 120px;
+  resize: none;
+  min-height: 120px;
 }
 
-/* ============================= */
+/* ---- Tarjetas personalizadas ---- */
+.cards {
+  background-color: #caccd4;
+  border-left: 5px solid #023E8A;
+  border-radius: 8px;
+  padding: 12px;
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  align-items: center;
+  gap: 10px;
+  transition:
+    background-color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.25s ease,
+    border-left-color 0.3s ease;
+}
 
-/* ====== admin-style ====== */
+.cards span {
+  font-size: 0.95rem;
+  color: #333;
+}
 
-/* ============================= */
+.cards:hover {
+  background-color: #dbe3f7;
+  border-left-color: #1f3461;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
 
-/* ====== agencies-style ====== */
-
-/* ============================= */
-
-/* ====== user-style ====== */
-
-/* ============================= */
-
-
-
-
-/* ====== Sección para responsivo ====== */
-
+/* ---- Responsividad global ---- */
 @media (max-width: 768px) {
-    .organizers-box {
-        /* De organizers */
-        grid-template-columns: 1fr;
-    }
-
-    .event-box {
-        /* De organizers */
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
-
-    .event-box h1 {
-        /* De organizers */
-        grid-column: 1;
-    }
-
-
+  main {
+    padding: 20px;
+  }
 }
