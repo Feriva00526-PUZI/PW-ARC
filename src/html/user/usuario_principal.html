@@ -1,0 +1,366 @@
+<!-- ========================== -->
+<!-- //HTML -->
+<!-- ========================== -->
+<!-- //Hola carlos un saludo si ves esto -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARC - Paquetes de Viaje</title>
+
+<style>
+/* ========================== */
+/* //CSS */
+/* ========================== */
+/* //Hola carlos un saludo si ves esto */
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f0f0f0;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* ENCABEZADO SUPERIOR */
+header {
+  background-color: #003b82;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+}
+
+.header-top {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 1.8rem;
+  font-weight: 700;
+  font-style: italic;
+  transform: skewX(-10deg);
+}
+
+.usuario {
+  font-size: 1.5rem;
+}
+
+.nav {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 10px;
+  padding-bottom: 5px;
+}
+
+.nav button {
+  flex: 1;
+  background-color: transparent;
+  color: white;
+  border: none;
+  margin: 0 10px;
+  padding: 10px 0;
+  font-weight: 500;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+  font-family: 'Roboto', sans-serif;
+}
+
+.nav button::after {
+  content: '';
+  display: block;
+  height: 3px;
+  width: 0;
+  background: white;
+  transition: width 0.3s;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  border-radius: 2px;
+}
+
+.nav button:hover::after,
+.nav button.active::after {
+  width: 100%;
+}
+
+.nav button:hover {
+  color: #ffd700;
+}
+
+/* SECCION PRINCIPAL */
+main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.carousel-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 1080px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-container {
+  overflow: hidden;
+  flex: 1;
+}
+
+.carousel-track {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
+.card {
+  background-color: white;
+  border-radius: 10px;
+  width: 250px;
+  height: 350px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 10px;
+  margin: 0 10px;
+}
+
+.card p {
+  background-color: rgba(0,0,0,0.6);
+  color: white;
+  width: 100%;
+  text-align: center;
+  border-radius: 5px;
+  padding: 10px;
+  font-weight: bold;
+}
+
+/* FLECHAS */
+.arrow {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #003b82;
+  cursor: pointer;
+  user-select: none;
+  z-index: 10;
+  background-color: rgba(255,255,255,0.8);
+  border-radius: 50%;
+  padding: 10px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.arrow-left {
+  left: -80px;
+}
+
+.arrow-right {
+  right: -80px;
+}
+
+/* PIE DE PAGINA */
+footer {
+  background-color: #003b82;
+  color: white;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 20px;
+  text-align: left;
+}
+
+.contacto {
+  flex: 1;
+  min-width: 220px;
+}
+
+.cuenta {
+  flex: 1;
+  min-width: 220px;
+  text-align: center;
+}
+
+.cuenta button {
+  background-color: white;
+  color: #003b82;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* RESPONSIVIDAD */
+@media (max-width: 1080px) {
+  .carousel-wrapper {
+    max-width: 100%;
+  }
+  .arrow-left {
+    left: -60px;
+  }
+  .arrow-right {
+    right: -60px;
+  }
+}
+
+@media (max-width: 800px) {
+  header footer {
+    flex-direction: column;
+    align-items: center;
+  }
+  .nav {
+    justify-content: center;
+  }
+  .carousel-wrapper {
+    max-width: 90%;
+  }
+  .card {
+    width: 200px;
+    height: 300px;
+    margin: 0 5px;
+  }
+  .arrow-left {
+    left: -40px;
+  }
+  .arrow-right {
+    right: -40px;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <div class="logo">ARC</div>
+    <div class="usuario"></div>
+  </div>
+  <div class="nav">
+    <button>PAQUETES DE VIAJES</button>
+    <button>ACTIVIDADES</button>
+    <button>HISTORIAL</button>
+  </div>
+</header>
+
+<main>
+  <div class="carousel-wrapper">
+    <div class="arrow arrow-left">&#9664;</div>
+    <div class="carousel-container">
+      <div class="carousel-track" id="track">
+        <div class="card"><p>Karisma Hotels & Resorts</p></div>
+        <div class="card"><p>Hoteles Xcaret</p></div>
+        <div class="card"><p>Palace Resorts</p></div>
+        <div class="card"><p>Ixtapa-Zihuatanejo</p></div>
+        <div class="card"><p>Playa del Carmen</p></div>
+        <div class="card"><p>Cancun</p></div>
+        <div class="card"><p>Los Cabos</p></div>
+      </div>
+    </div>
+    <div class="arrow arrow-right">&#9654;</div>
+  </div>
+</main>
+
+<footer>
+  <div class="contacto">
+    <h3>NECESITAS AYUDA</h3>
+    <p>Telefono: (123) 456-7890</p>
+    <p>WhatsApp: (123) 456-7890</p>
+    <p>Correo: contacto@arc.com</p>
+  </div>
+
+  <div class="cuenta">
+    <p><strong>Ahorra hasta 10% en tu proximo viaje comprando con tu cuenta</strong></p>
+    <button>Iniciar sesion</button>
+    <button>Crear cuenta</button>
+  </div>
+</footer>
+
+<script>
+const track = document.getElementById('track');
+let cards = Array.from(track.children);
+cards.forEach(card => {
+  const clone = card.cloneNode(true);
+  track.appendChild(clone);
+});
+cards = Array.from(track.children);
+const cardWidth = cards[0].getBoundingClientRect().width + 20;
+let index = 0;
+const updateCarousel = () => {
+  track.style.transition = 'transform 0.5s ease-in-out';
+  track.style.transform = 'translateX(-' + index * cardWidth + 'px)';
+};
+document.querySelector('.arrow-left').addEventListener('click', () => {
+  index--;
+  if (index < 0) {
+    track.style.transition = 'none';
+    index = cards.length / 2 - 1;
+    track.style.transform = 'translateX(-' + index * cardWidth + 'px)';
+    setTimeout(() => {
+      index--;
+      track.style.transition = 'transform 0.5s ease-in-out';
+      updateCarousel();
+    }, 20);
+  } else {
+    updateCarousel();
+  }
+});
+document.querySelector('.arrow-right').addEventListener('click', () => {
+  index++;
+  updateCarousel();
+  if (index >= cards.length / 2) {
+    setTimeout(() => {
+      track.style.transition = 'none';
+      index = 0;
+      track.style.transform = 'translateX(0px)';
+      setTimeout(() => {
+        track.style.transition = 'transform 0.5s ease-in-out';
+      }, 20);
+    }, 500);
+  }
+});
+setInterval(() => {
+  index++;
+  updateCarousel();
+  if (index >= cards.length / 2) {
+    setTimeout(() => {
+      track.style.transition = 'none';
+      index = 0;
+      track.style.transform = 'translateX(0px)';
+      setTimeout(() => {
+        track.style.transition = 'transform 0.5s ease-in-out';
+      }, 20);
+    }, 500);
+  }
+}, 15000);
+updateCarousel();
+</script>
+
+</body>
+</html>
