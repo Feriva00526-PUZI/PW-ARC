@@ -9,13 +9,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ARC - Paquetes de Viaje</title>
 
+<!-- Fuente -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
 <style>
 /* ========================== */
 /* //CSS */
 /* ========================== */
 /* //Hola carlos un saludo si ves esto */
-
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
 * {
   box-sizing: border-box;
@@ -23,7 +24,7 @@
   padding: 0;
 }
 
-html body {
+html, body {
   height: 100%;
 }
 
@@ -35,7 +36,7 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
-/* ENCABEZADO SUPERIOR */
+/* ENCABEZADO */
 header {
   background-color: #003b82;
   color: white;
@@ -58,10 +59,49 @@ header {
   font-weight: 700;
   font-style: italic;
   transform: skewX(-10deg);
+  display: flex;
+  align-items: center;
+  gap: 10px;               /* separacion entre imagen y texto */
+  color: #fff;
 }
 
-.usuario {
-  font-size: 1.5rem;
+.logo img {
+  height: 40px;            /* altura en escritorio */
+  width: auto;
+  display: block;
+  border-radius: 4px;
+}
+
+/* boton/icono de usuario en esquina superior derecha */
+.user-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #fff;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+  cursor: pointer;
+  padding: 4px;
+}
+
+.user-icon img {
+  width: 24px;
+  height: 24px;
+  display: block;
+  border-radius: 50%;
+}
+
+/* si existe la imagen, ocultar el svg fallback */
+.user-icon img + svg { display: none; }
+
+@media (max-width: 900px) {
+  .logo { font-size: 1.4rem; gap: 8px; }
+  .logo img { height: 32px; }
+  .user-icon { width: 36px; height: 36px; }
+  .user-icon img { width: 20px; height: 20px; }
 }
 
 .nav {
@@ -146,18 +186,39 @@ main {
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  padding: 10px;
+  padding: 0; /* la imagen ocupa todo */
   margin: 0 10px;
+  overflow: hidden; /* importante para que la imagen respete bordes */
+  position: relative; /* necesario para el overlay */
+}
+
+.card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* recorta sin distorsionar(si se distorciona xd) */
+  display: block;
 }
 
 .card p {
-  background-color: rgba(0,0,0,0.6);
-  color: white;
-  width: 100%;
-  text-align: center;
-  border-radius: 5px;
-  padding: 10px;
-  font-weight: bold;
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);    /* centrado horizontal */
+  margin: 0;
+  width: 80%;
+  max-width: 80%;
+  padding: 10px 14px;
+  background-color: rgba(0,0,0,0.55);
+  color: #fff;
+  border-radius: 8px;
+  font-weight: 500;               /* peso mas "regular" */
+  font-style: italic;             /* cursiva ligera */
+  text-align: center;             /* no justificado, centrado */
+  line-height: 1.15;
+  font-size: 0.95rem;
+  z-index: 2;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+  display: block;
 }
 
 /* FLECHAS */
@@ -186,72 +247,147 @@ main {
 
 /* PIE DE PAGINA */
 footer {
-  background-color: #003b82;
-  color: white;
+  background: #003b82;
+  padding: 28px 20px;
+}
+
+.footer-inner {
+  max-width: 1180px;
+  margin: 0 auto;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  padding: 20px;
-  text-align: left;
+  align-items: center;
+  gap: 24px;
+  box-sizing: border-box;
 }
 
 .contacto {
-  flex: 1;
-  min-width: 220px;
+  color: #fff;
+  flex: 0 0 320px; /* columna izquierda fija */
+  padding: 6px 0;
+  box-sizing: border-box;
 }
 
-.cuenta {
+.contacto h3 {
+  font-size: 1.05rem;
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.contacto p {
+  margin: 4px 0;
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.footer-separator {
+  width: 2px;
+  height: 64px;
+  background: #fff;
+  border-radius: 2px;
+  flex: 0 0 2px;
+}
+
+/* columna derecha: titulo + input/card alineado a la derecha */
+.help-column {
   flex: 1;
-  min-width: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-end; /* mueve todo hacia la derecha */
+}
+
+.help-title {
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.05rem;
+  margin: 0 8px 0 0;
+  align-self: stretch;
   text-align: center;
 }
 
-.cuenta button {
-  background-color: white;
-  color: #003b82;
+/* input estilo tarjeta tipo "pill" con botones circulares a la derecha se lo robe a una pagina de internet */
+.help-input-wrapper {
+  width: 720px;              /* ancho de la tarjeta a la derecha; ajusta si es necesario */
+  max-width: calc(100% - 20px);
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.help-input {
+  width: 100%;
+  height: 56px;
+  border-radius: 28px;
+  padding: 0 88px 0 22px; /* espacio a la derecha para botones */
   border: none;
-  padding: 10px 20px;
-  margin: 5px;
-  border-radius: 5px;
+  outline: none;
+  font-size: 1rem;
+  background: #fff;
+  color: #003b82;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+  box-sizing: border-box;
+}
+
+.help-actions {
+  position: absolute;
+  right: 12px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.help-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: #003b82;
+  color: #fff;
   cursor: pointer;
-  font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+  font-weight: 700;
+  font-size: 1rem;
 }
 
-/* RESPONSIVIDAD */
-@media (max-width: 1080px) {
-  .carousel-wrapper {
-    max-width: 100%;
-  }
-  .arrow-left {
-    left: -60px;
-  }
-  .arrow-right {
-    right: -60px;
-  }
+.help-btn.clear {
+  background: rgba(0,0,0,0.12);
+  color: #003b82;
 }
 
-@media (max-width: 800px) {
-  header footer {
-    flex-direction: column;
-    align-items: center;
-  }
-  .nav {
-    justify-content: center;
-  }
-  .carousel-wrapper {
-    max-width: 90%;
-  }
-  .card {
-    width: 200px;
-    height: 300px;
-    margin: 0 5px;
-  }
-  .arrow-left {
-    left: -40px;
-  }
-  .arrow-right {
-    right: -40px;
-  }
+/* toast/notification (hiba a hacerlo que ocupara toda la pantalla pero me dio flojera xddd) */
+.help-toast {
+  position: fixed;
+  right: 20px;
+  bottom: 24px;
+  background: rgba(0,0,0,0.85);
+  color: #fff;
+  padding: 12px 16px;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 260ms ease, transform 260ms ease;
+  z-index: 9999;
+}
+.help-toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 900px) {
+  .footer-inner { padding: 0 12px; gap: 12px; }
+  .contacto { flex: none; }
+  .footer-separator { display: none; }
+  .help-column { align-items: stretch; }
+  .help-title { text-align: left; }
+  .help-input-wrapper { width: 100%; }
+  .help-input { height: 48px; border-radius: 12px; padding-right: 76px; }
+  .help-actions { right: 8px; }
+  .help-btn { width: 36px; height: 36px; font-size: 0.95rem; }
 }
 </style>
 </head>
@@ -259,9 +395,23 @@ footer {
 
 <header>
   <div class="header-top">
-    <div class="logo">ARC</div>
-    <div class="usuario"></div>
+    <div class="logo" aria-hidden="false">
+      <img id="logo-img"
+           data-src="../../media/images/logos/logo_ARC_(medio borroso xd).png"
+           alt="ARC logo">
+      <span>ARC</span>
+    </div>
+
+    <button class="user-icon" aria-label="Usuario" title="Perfil" type="button">
+      <img id="user-img"
+           data-src="../../media/images/logos/logo_usuario_(medio borroso tambien xd).png"
+           alt="Usuario">
+      <svg id="user-fallback" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false" style="display:none">
+        <path fill="#003b82" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+      </svg>
+    </button>
   </div>
+
   <div class="nav">
     <button>PAQUETES DE VIAJES</button>
     <button>ACTIVIDADES</button>
@@ -274,13 +424,7 @@ footer {
     <div class="arrow arrow-left">&#9664;</div>
     <div class="carousel-container">
       <div class="carousel-track" id="track">
-        <div class="card"><p>Karisma Hotels & Resorts</p></div>
-        <div class="card"><p>Hoteles Xcaret</p></div>
-        <div class="card"><p>Palace Resorts</p></div>
-        <div class="card"><p>Ixtapa-Zihuatanejo</p></div>
-        <div class="card"><p>Playa del Carmen</p></div>
-        <div class="card"><p>Cancun</p></div>
-        <div class="card"><p>Los Cabos</p></div>
+        <!-- Las tarjetas se generaran dinamicamente con JS (esta en la carpeta componentes, la neta no sabia si la debia poner ahi pero ahi la puse un saludo si alguien ve esto) -->
       </div>
     </div>
     <div class="arrow arrow-right">&#9654;</div>
@@ -288,79 +432,92 @@ footer {
 </main>
 
 <footer>
-  <div class="contacto">
-    <h3>NECESITAS AYUDA</h3>
-    <p>Telefono: (123) 456-7890</p>
-    <p>WhatsApp: (123) 456-7890</p>
-    <p>Correo: contacto@arc.com</p>
-  </div>
+  <div class="footer-inner">
+    <div class="contacto">
+      <h3>¿NECESITAS AYUDA?</h3>
+      <p>Telefono: (123) 456-7890</p>
+      <p>WhatsApp: (123) 456-7890</p>
+      <p>Correo: contacto@arc.com</p>
+    </div>
 
-  <div class="cuenta">
-    <p><strong>Ahorra hasta 10% en tu proximo viaje comprando con tu cuenta</strong></p>
-    <button>Iniciar sesion</button>
-    <button>Crear cuenta</button>
+    <div class="footer-separator" aria-hidden="true"></div>
+
+    <div class="help-column" aria-live="polite">
+      <div class="help-title">Dejanos un comentario sobre tu experiencia con nuestro servicio:</div>
+
+      <div class="help-input-wrapper" role="form" aria-label="Area de comentarios">
+        <input id="help-input" class="help-input" type="text" placeholder="Escribe tu comentario aqui..." aria-label="Campo de comentario">
+        <div class="help-actions">
+          <button id="help-clear" class="help-btn clear" title="Limpiar">X</button>
+          <button id="help-send" class="help-btn" title="Enviar">›</button>
+        </div>
+      </div>
+    </div>
   </div>
 </footer>
 
+<!-- pequenio script para limpiar y mostrar notificacion al "enviar" -->
 <script>
-const track = document.getElementById('track');
-let cards = Array.from(track.children);
-cards.forEach(card => {
-  const clone = card.cloneNode(true);
-  track.appendChild(clone);
-});
-cards = Array.from(track.children);
-const cardWidth = cards[0].getBoundingClientRect().width + 20;
-let index = 0;
-const updateCarousel = () => {
-  track.style.transition = 'transform 0.5s ease-in-out';
-  track.style.transform = 'translateX(-' + index * cardWidth + 'px)';
-};
-document.querySelector('.arrow-left').addEventListener('click', () => {
-  index--;
-  if (index < 0) {
-    track.style.transition = 'none';
-    index = cards.length / 2 - 1;
-    track.style.transform = 'translateX(-' + index * cardWidth + 'px)';
-    setTimeout(() => {
-      index--;
-      track.style.transition = 'transform 0.5s ease-in-out';
-      updateCarousel();
-    }, 20);
-  } else {
-    updateCarousel();
-  }
-});
-document.querySelector('.arrow-right').addEventListener('click', () => {
-  index++;
-  updateCarousel();
-  if (index >= cards.length / 2) {
-    setTimeout(() => {
-      track.style.transition = 'none';
-      index = 0;
-      track.style.transform = 'translateX(0px)';
+  (function(){
+    const input = document.getElementById('help-input');
+    const btnClear = document.getElementById('help-clear');
+    const btnSend = document.getElementById('help-send');
+
+    btnClear.addEventListener('click', () => {
+      input.value = '';
+      input.focus();
+    });
+
+    btnSend.addEventListener('click', () => {
+      // mostrar toast
+      const toast = document.createElement('div');
+      toast.className = 'help-toast';
+      toast.textContent = 'Gracias por tus comentarios, estamos siempre oyendo a nuestros clientes 😊';
+      document.body.appendChild(toast);
+
+      // forzar reflow para animar
+      requestAnimationFrame(() => toast.classList.add('show'));
+
+      // auto hide
       setTimeout(() => {
-        track.style.transition = 'transform 0.5s ease-in-out';
-      }, 20);
-    }, 500);
-  }
-});
-setInterval(() => {
-  index++;
-  updateCarousel();
-  if (index >= cards.length / 2) {
-    setTimeout(() => {
-      track.style.transition = 'none';
-      index = 0;
-      track.style.transform = 'translateX(0px)';
-      setTimeout(() => {
-        track.style.transition = 'transform 0.5s ease-in-out';
-      }, 20);
-    }, 500);
-  }
-}, 15000);
-updateCarousel();
+        toast.classList.remove('show');
+        setTimeout(() => document.body.removeChild(toast), 300);
+      }, 3800);
+
+      // opcional: limpiar input
+      input.value = '';
+    });
+  })();
+</script>
+
+<!-- Archivo JavaScript externo -->
+<script src="../../components/carrusel.js"></script>
+
+<script>
+  // asigna src con encodeURI y fallback si falla
+  (function(){
+    function setImg(id){
+      const img = document.getElementById(id);
+      if(!img) return;
+      const raw = img.getAttribute('data-src');
+      if(!raw) return;
+      const url = encodeURI(raw);
+      img.src = url;
+      img.addEventListener('error', () => {
+        img.style.display = 'none';
+        // si es user-img, muestra el svg fallback
+        if(id === 'user-img'){
+          const svg = document.getElementById('user-fallback');
+          if(svg) svg.style.display = 'block';
+        }
+        console.warn('Imagen no encontrada:', raw);
+      });
+    }
+    setImg('logo-img');
+    setImg('user-img');
+  })();
 </script>
 
 </body>
 </html>
+
