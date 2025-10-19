@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ARC - Pagina Princiapl</title>
   <link rel="stylesheet" href="./../../styles/style.css">
+  <link rel="stylesheet" href="./header_style.css">
 </head>
 
 <body>
@@ -164,12 +165,14 @@
   fetch("header.html")
     .then(response => response.text())
     .then(data => {
-      document.getElementById("header").innerHTML = data;
+      document.body.insertAdjacentHTML("afterbegin", data);
 
       const script = document.createElement("script");
       script.src = "header_script.js";
       document.body.appendChild(script);
 
+      const title_dinamic = document.getElementById("n_h2");
+      title_dinamic.innerText = "PAGINA PRINCIPAL";
     });
 </script>
 

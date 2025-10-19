@@ -58,6 +58,7 @@
     /*El Sticky funciona raro si hay poco contenido en la pagina, yo diria que lso desactiven de ser el caso, solo lo borran y usan los tamaños de little para que no se vea tan grande el header.*/
     /*Eso o quitarle lo del little, para que no se cambie de tamaño.*/
     position: sticky;
+    width: 100%;
     z-index: 1000;
     padding: 20px;
     top: 0;
@@ -222,6 +223,7 @@
 /*Barra de navegacion*/
 .underline_nav {
     position: sticky;
+    width: 100%;
     z-index: 999;
     display: flex;
     justify-content: right;

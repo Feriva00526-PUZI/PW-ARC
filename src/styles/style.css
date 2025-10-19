@@ -17,6 +17,7 @@ body {
   min-height: 100vh;
   */
   object-fit: fill;
+  background-attachment: fixed;
 }
 
 /* ---- Cabecera y pie ---- */
@@ -63,12 +64,6 @@ input[type="submit"]:hover {
 }
 
 /* ---- Tipografía general ---- */
-h1,
-h2,
-h3 {
-  color: #023E8A;
-  font-weight: 600;
-}
 
 label {
   font-weight: 600;
