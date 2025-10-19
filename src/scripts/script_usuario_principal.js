@@ -9,13 +9,58 @@ window.addEventListener("load", function () {
             script.src = "./../../scripts/header_script.js";
             document.body.appendChild(script);
 
-            const title_dinamic = document.getElementById("n_h2");
-            title_dinamic.innerText = "PAGINA PRINCIPAL";
+            /*HEADER DINAMICO */
+            /*Cambio de la imagen del header */
+            const s_header = document.getElementById("s_header");
+            s_header.style.backgroundImage = "url(./../../media/images/layout/img_background_header.jpg)";
 
+            /*Cambiar el titulo del header */
+            document.getElementById("n_h2").innerText = "PAGINA PRINC";
             document.getElementById("s_icon").setAttribute("src", "./../../media/images/icons/icon_arc.png");
-            document.getElementById("a1").setAttribute("src", "./../../media/images/icons/icon_home.png");
-            document.getElementById("a2").setAttribute("src", "./../../media/images/icons/icon_travel.png");
-            document.getElementById("a3").setAttribute("src", "./../../media/images/icons/icon_event.png");
-            document.getElementById("icon_user").setAttribute("src", "./../../media/images/icons/icon_user.png");
+            const bnav = document.getElementById("underline_nav");
+
+            /*Agregar los elementos al nav */
+            /*Primero*/
+            const a1 = document.createElement("a");
+            a1.id = "a1";
+            a1.href = "#";
+            const ai1 = document.createElement("img");
+            ai1.src = "./../../media/images/icons/icon_home.png";
+            ai1.classList.add("icon_nav");
+            a1.appendChild(ai1);
+            a1.append("Pagina Principal");
+            bnav.appendChild(a1);
+            /*Segundo*/
+            const a2 = document.createElement("a");
+            a2.id = "a2";
+            a2.href = "#";
+            const ai2 = document.createElement("img");
+            ai2.src = "./../../media/images/icons/icon_travel.png";
+            ai2.classList.add("icon_nav");
+            a2.appendChild(ai2);
+            a2.append("Lugares Populares");
+            bnav.appendChild(a2);
+            /*Tercero*/
+            const a3 = document.createElement("a");
+            a3.id = "a3";
+            a3.href = "#";
+            const ai3 = document.createElement("img");
+            ai3.src = "./../../media/images/icons/icon_event.png";
+            ai3.classList.add("icon_nav");
+            a3.appendChild(ai3);
+            a3.append("Eventos Recientes");
+            bnav.appendChild(a3);
+            /*Boton de registro o iniciar sesion*/
+            const btn_is_r = document.createElement("button");
+            btn_is_r.id = "btn_is_r";
+            const btn_a = document.createElement("a");
+            btn_a.href = "#";
+            btn_a.target = "_blank";
+            const icon_user = document.createElement("img");
+            icon_user.src = "./../../media/images/icons/icon_user.png";
+            icon_user.classList.add("icon_user");
+            btn_a.appendChild(icon_user);
+            btn_is_r.appendChild(btn_a);
+            bnav.appendChild(btn_is_r);
         });
 });
