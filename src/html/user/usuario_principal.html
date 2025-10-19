@@ -7,6 +7,7 @@
   <title>ARC - Pagina Princiapl</title>
   <link rel="stylesheet" href="./../../styles/header_style.css">
   <link rel="stylesheet" href="./../../styles/style_generico.css">
+  <script src="./../../scripts/script_usuario_principal.js"></script>
 </head>
 
 <body>
@@ -131,19 +132,5 @@
   </main>
 
 </body>
-<script>
-  fetch("./../../components/header.html")
-    .then(response => response.text())
-    .then(data => {
-      document.body.insertAdjacentHTML("afterbegin", data);
-
-      const script = document.createElement("script");
-      script.src = "./../../scripts/header_script.js";
-      document.body.appendChild(script);
-
-      const title_dinamic = document.getElementById("n_h2");
-      title_dinamic.innerText = "PAGINA PRINCIPAL";
-    });
-</script>
 
 </html>

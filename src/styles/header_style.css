@@ -128,21 +128,21 @@
 
     0%,
     20% {
-        transform: translateY(0%);
+        transform: translateY(-10%);
     }
 
     33%,
     53% {
-        transform: translateY(-100%);
+        transform: translateY(-110%);
     }
 
     66%,
     86% {
-        transform: translateY(-200%);
+        transform: translateY(-215%);
     }
 
     100% {
-        transform: translateY(0%);
+        transform: translateY(-10%);
     }
 }
 
