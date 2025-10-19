@@ -9,7 +9,7 @@
 
 body {
   background-color: #f4f5fb;
-  background-image: url("/public/background-img.jpeg");
+  background-image: url("./../media/images/layout/background-img.jpeg");
   color: #333;
   /*
   display: grid;

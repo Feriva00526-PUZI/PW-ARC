@@ -5,42 +5,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ARC - Pagina Princiapl</title>
-  <link rel="stylesheet" href="./../../styles/style_generico.css">
   <link rel="stylesheet" href="./../../styles/header_style.css">
+  <link rel="stylesheet" href="./../../styles/style_generico.css">
 </head>
 
 <body>
-  <div id="header"></div>
   <main class="box">
-    <!--<div class="carousel-wrapper">
-      <div class="arrow arrow-left">&#9664;</div>
-      <div class="carousel-container">
-        <div class="carousel-track" id="track">
-          <div class="card">
-            <p>Karisma Hotels & Resorts</p>
-          </div>
-          <div class="card">
-            <p>Hoteles Xcaret</p>
-          </div>
-          <div class="card">
-            <p>Palace Resorts</p>
-          </div>
-          <div class="card">
-            <p>Ixtapa-Zihuatanejo</p>
-          </div>
-          <div class="card">
-            <p>Playa del Carmen</p>
-          </div>
-          <div class="card">
-            <p>Cancun</p>
-          </div>
-          <div class="card">
-            <p>Los Cabos</p>
-          </div>
-        </div>
-      </div>
-      <div class="arrow arrow-right">&#9654;</div>
-    </div>-->
     <section>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nemo aliquam dolorem porro architecto quaerat,
       temporibus harum alias vero vitae corrupti quidem optio recusandae possimus, tenetur suscipit eaque aliquid
       impedit ipsa?
@@ -175,68 +145,5 @@
       title_dinamic.innerText = "PAGINA PRINCIPAL";
     });
 </script>
-
-<!--
-  <script>
-    const track = document.getElementById('track');
-    let cards = Array.from(track.children);
-
-    cards.forEach(card => {
-      const clone = card.cloneNode(true);
-      track.appendChild(clone);
-    });
-    cards = Array.from(track.children);
-    const cardWidth = cards[0].getBoundingClientRect().width + 20;
-    let index = 0;
-    const updateCarousel = () => {
-      track.style.transition = 'transform 0.5s ease-in-out';
-      track.style.transform = 'translateX(-' + index * cardWidth + 'px)';
-    };
-    document.querySelector('.arrow-left').addEventListener('click', () => {
-      index--;
-      if (index < 0) {
-        track.style.transition = 'none';
-        index = cards.length / 2 - 1;
-        track.style.transform = 'translateX(-' + index * cardWidth + 'px)';
-        setTimeout(() => {
-          index--;
-          track.style.transition = 'transform 0.5s ease-in-out';
-          updateCarousel();
-        }, 20);
-      } else {
-        updateCarousel();
-      }
-    });
-    document.querySelector('.arrow-right').addEventListener('click', () => {
-      index++;
-      updateCarousel();
-      if (index >= cards.length / 2) {
-        setTimeout(() => {
-          track.style.transition = 'none';
-          index = 0;
-          track.style.transform = 'translateX(0px)';
-          setTimeout(() => {
-            track.style.transition = 'transform 0.5s ease-in-out';
-          }, 20);
-        }, 500);
-      }
-    });
-    setInterval(() => {
-      index++;
-      updateCarousel();
-      if (index >= cards.length / 2) {
-        setTimeout(() => {
-          track.style.transition = 'none';
-          index = 0;
-          track.style.transform = 'translateX(0px)';
-          setTimeout(() => {
-            track.style.transition = 'transform 0.5s ease-in-out';
-          }, 20);
-        }, 500);
-      }
-    }, 15000);
-    updateCarousel();
-  </script>
--->
 
 </html>
