@@ -5,8 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ARC - Pagina Princiapl</title>
-  <link rel="stylesheet" href="./../../styles/style.css">
-  <link rel="stylesheet" href="./header_style.css">
+  <link rel="stylesheet" href="./../../styles/style_generico.css">
+  <link rel="stylesheet" href="./../../styles/header_style.css">
 </head>
 
 <body>
@@ -162,13 +162,13 @@
 
 </body>
 <script>
-  fetch("header.html")
+  fetch("./../../components/header.html")
     .then(response => response.text())
     .then(data => {
       document.body.insertAdjacentHTML("afterbegin", data);
 
       const script = document.createElement("script");
-      script.src = "header_script.js";
+      script.src = "./../../scripts/header_script.js";
       document.body.appendChild(script);
 
       const title_dinamic = document.getElementById("n_h2");

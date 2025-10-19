@@ -49,7 +49,7 @@
 /*Contenedor principal del Header, basicamente es el header*/
 .s_header {
     background-color: #001233;
-    background-image: url(./../../media/images/img_background_header.jpg);
+    background-image: url(./../media/images/layout/img_background_header.jpg);
     background-position: 50% 30%;
     background-repeat: no-repeat;
     background-size: cover;
