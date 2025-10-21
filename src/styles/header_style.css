@@ -1,0 +1,351 @@
+/*Selector universal para la aplicacion*/
+* {
+    font-family: Arial, Helvetica, sans-serif;
+    box-sizing: border-box;
+    font-weight: bold;
+    font-size: 16px;
+    padding: 0px;
+    margin: 0px;
+}
+
+/*
+.ss_nav {
+    background-color: var(--color-header);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 0;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+}
+
+.ss_nav ul {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+    margin: 0;
+    padding: 0;
+}
+
+.ss_nav a {
+    color: var(--color-text);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1.1rem;
+    transition: color 0.3s, border-bottom 0.3s;
+    border-bottom: 2px solid transparent;
+}
+
+.ss_nav a:hover {
+    color: var(--color-accent);
+    border-bottom: 2px solid var(--color-accent-hover);
+}
+*/
+
+
+/*Contenedor principal del Header, basicamente es el header*/
+.s_header {
+    background-color: #001233;
+    background-image: url(./../media/images/layout/img_background_header.jpg);
+    background-position: 50% 30%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    text-align: center;
+    color: white;
+    /*El Sticky funciona raro si hay poco contenido en la pagina, yo diria que lso desactiven de ser el caso, solo lo borran y usan los tamaños de little para que no se vea tan grande el header.*/
+    /*Eso o quitarle lo del little, para que no se cambie de tamaño.*/
+    position: sticky;
+    width: 100%;
+    z-index: 1000;
+    padding: 20px;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: height 0.5s ease, background-color 0.5s ease;
+    border-radius: 0px 0px 10px 10px;
+}
+
+/*Circulo blanco de fonod para el logo de ARC, contiene el logo (img)*/
+.s_icon_bg {
+    background-color: white;
+    vertical-align: middle;
+    display: inline-block;
+    border-radius: 50%;
+    overflow: hidden;
+    padding: 5px;
+    height: 100px;
+    width: 100px;
+    transition: height 0.5s ease, width 0.5s ease, padding 0.5s ease;
+}
+
+/*Es el img del logo*/
+.s_icon {
+    object-fit: contain;
+    height: 100%;
+    width: 100%;
+}
+
+/*H1 del logo que dice basicamente ARC*/
+.s_h1 {
+    display: inline-block;
+    letter-spacing: 10px;
+    margin-left: 20px;
+    font-size: 3rem;
+    vertical-align: middle;
+    transition: font-size 0.4s ease;
+    transition: font-size 0.5s ease, letter-spacing 0.5s ease, margin-left 0.5s ease;
+}
+
+/*Contenedor de las palabras deslizantes*/
+.h1_words {
+    display: inline-block;
+    position: relative;
+    height: 2.8rem;
+    overflow: hidden;
+    transition: height 1s ease;
+}
+
+/*Palabras deslizantes*/
+.h1_word {
+    display: block;
+    color: #00B4D8;
+    line-height: auto;
+    letter-spacing: 5px;
+    margin-left: 0px;
+    font-size: 3rem;
+    justify-content: left;
+    text-align: left;
+    animation: spinWords 6s infinite;
+    transition: font-size 0.5s ease, letter-spacing 0.5s ease, margin-left 0.5s ease, line-height 0.5s ease;
+}
+
+/* Animación de las palabras deslizantes*/
+@keyframes spinWords {
+
+    0%,
+    20% {
+        transform: translateY(-10%);
+    }
+
+    33%,
+    53% {
+        transform: translateY(-110%);
+    }
+
+    66%,
+    86% {
+        transform: translateY(-215%);
+    }
+
+    100% {
+        transform: translateY(-10%);
+    }
+}
+
+/*Slogan que se coloca abajo y leugo desaparece*/
+.s_slogan {
+    display: block;
+    margin: 10px auto 0 auto;
+    text-align: center;
+    font-size: 1rem;
+    letter-spacing: 5px;
+    margin-top: 10px;
+    opacity: 1;
+    transition: font-size 0.5s ease, margin-top 0.5s ease, padding-bottom 0.5s ease, opacity 0.5s ease;
+
+    /*Anijmation*/
+    width: 42ch;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 3px solid white;
+    animation: typingSlogan 3.5s steps(42), parpadeoLineText 1.5s ease-out infinite;
+}
+
+/*Typing animation*/
+@keyframes typingSlogan {
+    from {
+        width: 0ch;
+    }
+}
+
+/*Parpadeo de la linea de escritura*/
+@keyframes parpadeoLineText {
+    50% {
+        border-right-color: #001233;
+    }
+}
+
+/*Atributo que se usa en JavaScript, donde se lo colocaremos cuando cierto scroll se haya efectuado*/
+.little {
+    background-color: #03045E;
+    width: 100%;
+    z-index: 1000;
+    transition: all 0.3 ease;
+    padding: 20px;
+}
+
+/*Reduccion del tamaño del logo*/
+.little .s_icon_bg {
+    height: 50px;
+    width: 50px;
+}
+
+/*Reduccion del tamaño del titulo H1*/
+.little .s_h1 {
+    letter-spacing: 5px;
+    margin-left: 10px;
+    font-size: 1.5rem;
+}
+
+/*Reducir contenedor de palabras deslizantes*/
+.little .h1_words {
+    height: 1.2rem;
+}
+
+/*Reduccion de las palbras deslizantes*/
+.little .h1_word {
+    font-size: 1.5rem;
+    line-height: 1.4rem;
+    letter-spacing: 3px;
+    margin-left: 5px;
+}
+
+/*Desvanecimiento del slogan (transicion) y quitarlo del flujo del html (con display none)*/
+.little .s_slogan {
+    opacity: 0;
+    display: none;
+}
+
+/*Barra de navegacion*/
+.underline_nav {
+    position: sticky;
+    max-width: 100vw;
+    z-index: 999;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    padding: 10px 30px;
+    gap: 40px;
+    background-color: #023E8AE5;
+    background-color: #001233E5;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+    border-bottom: 3px solid #00B4D8;
+    border-left: 3px solid #00B4D8;
+    border-right: 3px solid #00B4D8;
+    transition: background-color 0.5s ease;
+    border-radius: 15px;
+    margin: 10px;
+    height: 60px;
+    transition: border-bottom 0.5s ease, border-right 0.5s ease, border-left 0.5s ease;
+}
+
+/*Cada elemento a o vinculo*/
+.underline_nav a {
+    position: relative;
+    color: #ADE8F4;
+    text-decoration: none;
+    font-size: 1rem;
+    border: none;
+    padding: 8px 0;
+    transition: .5s ease;
+    transition: color 0.5s ease-out;
+}
+
+/*Subrayado de cada vinculo*/
+.underline_nav a:hover {
+    color: white;
+}
+
+/*Definicion del subrayado*/
+.underline_nav a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 4px;
+    background-color: #48CAE4;
+    border-radius: 20px;
+    transition: width 0.3s ease-in-out;
+}
+
+/*Activacion del subrayado*/
+.underline_nav a:hover::after {
+    width: 100%;
+}
+
+/*Diseño del boton*/
+.underline_nav button {
+    background-color: #ADE8F4;
+    border: none;
+    color: #001233;
+    font-size: 0.7rem;
+    padding: 6px 15px;
+    border-radius: 20px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/*Boton con hover*/
+.underline_nav button:hover {
+    background-color: white;
+    color: white;
+    transform: scale(1.1);
+    transition: background-color 1s ease;
+}
+
+.underline_nav:has(a:hover, button:hover) {
+    /*border-bottom: 3px solid #34a0a4;*/
+    border-bottom: 3px solid #001233;
+    border-left: 3px solid #001233;
+    border-right: 3px solid #001233;
+}
+
+.icon_user {
+    width: 15px;
+    height: auto;
+}
+
+.icon_nav {
+    width: 30px;
+    height: auto;
+    background-color: white;
+    border-radius: 50%;
+    padding: 2px;
+    margin-right: 5px;
+}
+
+.underline_nav a {
+    display: flex;
+    align-items: center;
+}
+
+.underline_nav .n_h2 {
+    color: white;
+    font-size: 1rem;
+    margin: auto;
+}
+
+#btn_is_r a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 0;
+}
+
+
+/*Main Content*/
+main {
+    margin: 30px;
+    padding-top: 10px;
+    transition: padding-top 0.5s ease;
+}
+
+/*Sections del main*/
+section {
+    margin-bottom: 30px;
+}
