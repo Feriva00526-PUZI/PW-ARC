@@ -1,5 +1,6 @@
 
 window.addEventListener("load", function () {
+
     fetch("./../../components/header.html")
         .then(response => response.text())
         .then(data => {
@@ -62,5 +63,25 @@ window.addEventListener("load", function () {
             btn_a.appendChild(icon_user);
             btn_is_r.appendChild(btn_a);
             bnav.appendChild(btn_is_r);
+        });
+
+    /*Copiar y pegar eso para añadir el footer en la pagina que sea */
+    fetch("./../../components/footer.html")
+        .then(response => response.text())
+        .then(data => {
+            document.body.insertAdjacentHTML("beforeend", data);
+
+            /*Cambio del icono ARC (Solo para actualizar la ruta relativa) */
+            document.getElementById("f_icon").setAttribute("src", "./../../media/images/icons/icon_arc.png");
+
+            /*Cambio link del boton hacia la pagina About Us (Solo para actualizar la ruta relativa) */
+            document.querySelector(".f_link").href = "#";
+
+            /*Cambio de la imagen del footer derecho*/
+            const f_general = document.getElementById("f_general");
+            f_general.style.backgroundImage = "url(./../../media/images/layout/img_background_footer.jpeg)";
+            f_general.style.backgroundImage = "url(./../../media/images/layout/imgLayout20.jpg)";
+            /*Cambiar que parte de la imagen se ve, el primer 50 es horizontalmente(no cambiarlo) y el segundo es para la altura que se visualiza */
+            f_general.style.backgroundPosition = "50% 80%";
         });
 });
