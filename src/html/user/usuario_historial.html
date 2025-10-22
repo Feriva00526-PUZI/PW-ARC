@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARC - Historial</title>
+
+  <link rel="stylesheet" href="./../../styles/header_style.css">
+  <link rel="stylesheet" href="./../../styles/style_generico.css">
+
+  <!-- script que inyecta el header desde components/header.html -->
+  <script src="./../../scripts/script_usuario_historial.js"></script>
+</head>
+
+<body>
+  <main class="box">
+    <section>
+      <!-- Contenido base: espejo de usuario_principal para empezar -->
+      <h1>Historial de reservas</h1>
+      <p>
+        Aquí verás un resumen de tus reservaciones recientes. El header se carga dinámicamente
+        por script_usuario_historial.js (no incluyas markup de header aquí para evitar duplicados).
+      </p>
+    </section>
+
+    <!-- Contenedor vacío para la tabla, las filas se generan dinámicamente desde historial_table.js -->
+    <div id="hist-table-sample"></div>
+  </main>
+</body>
+
+</html>
