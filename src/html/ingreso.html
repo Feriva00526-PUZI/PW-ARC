@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARC - Ingreso</title>
+    <link rel="stylesheet" href="./../styles/style_generico.css">
+    <link rel="stylesheet" href="./../styles/ingreso_style.css">
+    <script src="./../scripts/ingreso_script.js"></script>
+</head>
+
+<body>
+    <div class="contenedor" id="contenedor">
+        <div class="contenedor_formulario contenedor_registro">
+            <form action="#">
+                <h1>Registrate</h1>
+                <input type="text" placeholder="Nombre / Nombre de la empresa">
+                <input type="text" placeholder="Apellido / Descripcion de la empresa">
+                <input type="email" placeholder="Correo">
+                <input type="tel" placeholder="Telefono">
+                <input type="text" placeholder="Usuario">
+                <input type="password" placeholder="Contraseña">
+                <button> Registrarse</button>
+            </form>
+        </div>
+        <div class="contenedor_formulario contenedor_login">
+            <form action="#">
+                <h1>Inicia Sesión</h1>
+                <input type="text" placeholder="Usuario">
+                <input type="password" placeholder="Contraseña">
+                <button>Acceder</button>
+            </form>
+        </div>
+        <div class="overlay-contenedor">
+            <div class="overlay">
+                <div class="overlay-panel overlay_izquierdo">
+                    <h1 class="pnl_h1_titulo">Llena el formulario de registro.</h1>
+                    <p>¿Ya tienes una cuenta?</p>
+                    <button tabindex="-1" class="btn_cambio" id="cambio_login">¡Inicia Sesión! &larr; </button>
+                </div>
+                <div class="overlay-panel overlay_derecho">
+                    <h1 class="pnl_h1_titulo">Accede a todo nuestro contenido.</h1>
+                    <p>¿Aun no tienes una cuenta?</p>
+                    <button tabindex="-1" class="btn_cambio" id="cambio_registro">¡Registrate! &rarr;</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
