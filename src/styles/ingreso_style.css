@@ -1,0 +1,229 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    height: 100vh;
+}
+
+h1 {
+    margin-bottom: 1rem;
+}
+
+h1.pnl_h1_titulo {
+    font-size: 2.5rem;
+    line-height: 2.5rem;
+    text-shadow: 0 0 20px rgba(16, 64, 74, 1);
+}
+
+p {
+    font-size: 1.5rem;
+    line-height: 1.5rem;
+    margin: 2rem 0 0.5rem;
+    text-shadow: 0 0 20px rgba(16, 64, 74, 1);
+}
+
+button {
+    /*position: relative;*/
+    border: 3px solid #023E8A;
+    font-weight: bolder;
+    margin: 10px;
+    padding: 10px 0px;
+    width: 250px;
+    letter-spacing: 1px;
+    transition: 0.3s ease-in-out;
+}
+
+button:hover {
+    letter-spacing: 3px;
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+button:focus {
+    outline: none;
+}
+
+button.btn_cambio {
+    background-color: rgba(225, 225, 225, 0.2);
+    border: 1px solid white;
+}
+
+form {
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 50px;
+    height: 100%;
+    text-align: center;
+}
+
+input[type="password"],
+input[type="tel"],
+input[type="email"] {
+    width: 100%;
+    padding: 10px 12px;
+    border: 2px solid #cbd1e3;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input {
+    margin: 8px 0;
+}
+
+input:focus {
+    border-color: #023E8A;
+    box-shadow: 0 0 6px rgba(41, 67, 128, 0.3);
+    outline: none;
+}
+
+.contenedor {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+    position: relative;
+    overflow: hidden;
+    width: 800px;
+    max-width: 100%;
+    min-height: 500px;
+}
+
+.contenedor_formulario {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    transition: all 0.6s ease-in-out;
+}
+
+.contenedor_login {
+    left: 0;
+    width: 50%;
+    z-index: 2;
+}
+
+.contenedor.panel_derecho_activo .contenedor_login {
+    transform: translateX(100%);
+}
+
+.contenedor_registro {
+    left: 0;
+    width: 50%;
+    opacity: 0;
+    z-index: 1;
+}
+
+.contenedor.panel_derecho_activo .contenedor_registro {
+    transform: translateX(100%);
+    opacity: 1;
+    z-index: 5;
+    animation: mostrar 0.6s;
+}
+
+@keyframes mostrar {
+
+    0%,
+    49.99% {
+        opacity: 0;
+        z-index: 1;
+    }
+
+    50%,
+    100% {
+        opacity: 1;
+        z-index: 5;
+    }
+}
+
+.overlay-contenedor {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    transition: transform 0.6s ease-in-out;
+    z-index: 100;
+}
+
+.contenedor.panel_derecho_activo .overlay-contenedor {
+    transform: translate(-100%);
+}
+
+.overlay {
+    /*
+    background-image: url(./../media/images/layout/imgLayout20.jpg);
+    background-image: url(./../media/images/layout/imgLayout17.jpg);
+    background-image: url(./../media/images/layout/imgLayout15.jpg);
+    background-image: url(./../media/images/layout/imgLayout5.jpg);
+    background-image: url(./../media/images/layout/imgLayout3.jpg);
+    background-image: url(./../media/images/layout/imgLayout19.jpg);
+    background-image: url(./../media/images/layout/imgLayout1.jpeg);
+    background-image: url(./../media/images/layout/imgLayout13.jpg);
+    background-image: url(./../media/images/layout/background-img.jpg);
+    */
+    background-image: url(./../media/images/layout/imgLayout11.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 0 0;
+    color: white;
+    position: relative;
+    left: -100%;
+    height: 100%;
+    width: 200%;
+    transform: translateX(0);
+    transition: transform 0.6s ease-in-out;
+}
+
+.overlay::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: linear-gradient(to top,
+            rgba(46, 94, 109, 0.4) 40%,
+            rgba(46, 94, 109, 0));
+}
+
+.contenedor.panel_derecho_activo .overlay {
+    transform: translateX(50%);
+}
+
+.overlay-panel {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 40px;
+    text-align: center;
+    top: 0;
+    height: 100%;
+    width: 50%;
+    transform: translateX(0);
+    transition: transform 0.6s ease-in-out;
+}
+
+.overlay_izquierdo {
+    transform: translateX(-20%);
+}
+
+.contenedor.panel_derecho_activo .overlay_izquierdo {
+    transform: translateX(0);
+}
+
+.overlay_derecho {
+    right: 0;
+    transform: translateX(0);
+}
+
+.contenedor.panel_derecho_activo .overlay_derecho {
+    transform: translateX(20%);
+}
