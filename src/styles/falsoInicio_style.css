@@ -1,0 +1,55 @@
+.dialog_select {
+    background-color: rgba(255, 255, 255, 0.7);
+    border: 0px solid rgba(255, 255, 255, 0.4);
+    transform: translate(-50%, -50%);
+    backdrop-filter: blur(2px);
+    border-radius: 10px;
+    position: fixed;
+    padding: 20px;
+    margin: 0;
+    left: 50%;
+    top: 50%;
+    text-align: center;
+}
+
+.dialog_h3 {
+    font-size: 1.5rem;
+}
+
+.dialog_options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+    margin-top: 20px;
+}
+
+.dialog_options button {
+    height: 120px;
+}
+
+.dialog_text_btn {
+    display: block;
+    margin-top: 0px;
+}
+
+.button_ls_close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.dialog_text_btn_close {
+    display: inline;
+    margin-left: 5px;
+}
+
+.img_ls,
+.img_ls_close {
+    width: 40px;
+    height: auto;
+    background-color: white;
+    border-radius: 50%;
+    padding: 2px;
+    margin-right: 5px;
+}
