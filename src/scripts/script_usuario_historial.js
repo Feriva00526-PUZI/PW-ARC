@@ -1,16 +1,19 @@
 window.addEventListener("load", function () {
+  // Cargar dinámicamente el header
   fetch("./../../components/header.html")
     .then(response => response.text())
     .then(data => {
       document.body.insertAdjacentHTML("afterbegin", data);
 
+      // Insertar script del header
       const scriptHeader = document.createElement("script");
       scriptHeader.src = "./../../scripts/header_script.js";
       document.body.appendChild(scriptHeader);
 
-      /* HEADER DINÁMICO */
+    
       const s_header = document.getElementById("s_header");
-      if (s_header) s_header.style.backgroundImage = "url(./../../media/images/layout/background-img-historial.jpeg)";
+      if (s_header)
+        s_header.style.backgroundImage = "url(./../../media/images/layout/background-img-historial.jpeg)";
 
       const n_h2 = document.getElementById("n_h2");
       if (n_h2) n_h2.innerText = "HISTORIAL USUARIO";
@@ -20,9 +23,6 @@ window.addEventListener("load", function () {
 
       const bnav = document.getElementById("underline_nav");
       if (bnav) {
-        // limpiar nav si ya tiene cosas (opcional)
-        // bnav.innerHTML = "";
-
         const makeNavItem = (id, img, text) => {
           const a = document.createElement("a");
           a.id = id;
@@ -36,8 +36,7 @@ window.addEventListener("load", function () {
         };
 
         bnav.appendChild(makeNavItem("a1", "./../../media/images/icons/icon_home.png", "Pagina Principal"));
-        bnav.appendChild(makeNavItem("a2", "./../../media/images/icons/icon_travel.png", "Lugares Populares"));
-        bnav.appendChild(makeNavItem("a3", "./../../media/images/icons/icon_event.png", "Eventos Recientes"));
+
 
         const btn_is_r = document.createElement("button");
         btn_is_r.id = "btn_is_r";
@@ -52,42 +51,80 @@ window.addEventListener("load", function () {
         bnav.appendChild(btn_is_r);
       }
 
-      /* ==== CARGA Y EJECUCIÓN DE LA TABLA DINÁMICA (archivo externo) ==== */
+      // Datos de ejemplo para el historial
 
       const historyData = [
-        {
-          id: 1,
-          destino: "Cusco, Perú",
-          status: "En espera",
-          fecha: "2025-11-10",
-          detalle: { costo: "$450", eventos: "Machu Picchu, City tour", aerolinea: "AeroAndes", hotel: "Inti Plaza" }
-        },
-        {
-          id: 2,
-          destino: "Cartagena, Colombia",
-          status: "Cancelado",
-          fecha: "2025-06-21",
-          detalle: { costo: "$320", eventos: "Tour Ciudad Amurallada", aerolinea: "ColoAir", hotel: "Bocagrande Inn" }
-        },
-        {
-          id: 3,
-          destino: "Bariloche, Argentina",
-          status: "Realizado",
-          fecha: "2024-12-05",
-          detalle: { costo: "$620", eventos: "Circuito chico, Catamarán", aerolinea: "PatagoniaFly", hotel: "Lakeside Resort" }
-        }
-      ];
+  {
+    id: 1,
+    destino: "Cusco, Perú",
+    status: "En espera",
+    fecha: "2025-11-10",
+    detalle: {
+      costo: "$450",
+      eventos: "Machu Picchu, City tour",
+      aerolinea: "AeroAndes",
+      hotel: "Inti Plaza"
+    }
+  },
+  {
+    id: 2,
+    destino: "Cartagena, Colombia",
+    status: "Cancelado",
+    fecha: "2025-06-21",
+    detalle: {
+      costo: "$320",
+      eventos: "Tour Ciudad Amurallada",
+      aerolinea: "ColoAir",
+      hotel: "Bocagrande Inn"
+    }
+  },
+  {
+    id: 3,
+    destino: "Bariloche, Argentina",
+    status: "Realizado",
+    fecha: "2024-12-05",
+    detalle: {
+      costo: "$620",
+      eventos: "Circuito chico, Catamarán",
+      aerolinea: "PatagoniaFly",
+      hotel: "Lakeside Resort"
+    }
+  },
+  {
+    id: 4,
+    destino: "Tokio, Japón",
+    status: "En espera",
+    fecha: "2026-01-15",
+    detalle: {
+      costo: "$980",
+      eventos: "Monte Fuji, Shibuya, Templo Senso-ji",
+      aerolinea: "Nippon Air",
+      hotel: "Sakura Tower"
+    }
+  },
+  {
+    id: 5,
+    destino: "París, Francia",
+    status: "Realizado",
+    fecha: "2024-07-12",
+    detalle: {
+      costo: "$850",
+      eventos: "Torre Eiffel, Museo del Louvre",
+      aerolinea: "AirFrance",
+      hotel: "Le Jardin Bleu"
+    }
+  }
+];
 
-      // Insertar el script que contiene la lógica de la tabla y llamarla cuando esté cargado
+
+      // Cargar script de tabla y ejecutarlo
       const scriptTable = document.createElement("script");
       scriptTable.src = "./../../scripts/historial_table.js";
       scriptTable.onload = function () {
         if (typeof window.initHistorialTable === "function") {
           window.initHistorialTable(historyData);
-        } else if (typeof window.renderHistorialTable === "function") {
-          window.renderHistorialTable(historyData);
         } else {
-          console.error("historial_table: no se encontró la función initHistorialTable o renderHistorialTable.");
+          console.error("Error: no se encontró initHistorialTable.");
         }
       };
       document.body.appendChild(scriptTable);
@@ -95,4 +132,9 @@ window.addEventListener("load", function () {
     .catch(err => {
       console.error("Error cargando header.html:", err);
     });
+
+  
+
 });
+
+

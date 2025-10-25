@@ -8,21 +8,31 @@
 
   <link rel="stylesheet" href="./../../styles/header_style.css">
   <link rel="stylesheet" href="./../../styles/style_generico.css">
+  <link rel="stylesheet" href="./../../styles/historial_table.css">
 
-  <!-- script que inyecta el header desde components/header.html -->
-  <script src="./../../scripts/script_usuario_historial.js"></script>
+  <script src="./../../scripts/script_usuario_historial.js" defer></script>
 </head>
 
 <body>
   <main class="box">
     <section>
-      <!-- Contenido base: espejo de usuario_principal para empezar -->
-      <h1>Historial de reservas</h1>
-     
+      <h1>HISTORIAL DE RESERVAS</h1>
     </section>
 
-    <!-- Contenedor vacío para la tabla, las filas se generan dinámicamente desde historial_table.js -->
-    <div id="hist-table-sample"></div>
+    <!-- Contenedor de la tabla -->
+    <div id="hist-table-sample">
+      <table class="hist-table">
+        <thead>
+          <tr>
+            <th>Destino</th>
+            <th>Estado</th>
+            <th>Fecha</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
   </main>
 </body>
 
