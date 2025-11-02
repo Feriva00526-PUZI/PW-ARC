@@ -1,0 +1,136 @@
+/* ---- Estilos globales ---- */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+body {
+  background-color: #f4f5fb;
+  background-image: url("./../media/images/layout/background-img.jpeg");
+  color: #333;
+  /*
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
+  */
+  object-fit: fill;
+  background-attachment: fixed;
+}
+
+/* ---- Cabecera y pie ---- */
+header,
+footer {
+  background-color: #023E8A;
+  color: white;
+  text-align: center;
+  padding: 1rem 0;
+}
+
+/* ---- Main ---- */
+main {
+  padding: 30px;
+  height: 100%;
+}
+
+/* ---- Caja generica (Para el cuerpo de las pestañas) ---- */
+.box {
+  background-color: rgba(255, 255, 255, 0.90);
+  border-radius: 10px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5);
+  padding: 20px;
+}
+
+/* ---- Botones generales ---- */
+.button,
+button,
+input[type="submit"] {
+  background-color: #023E8A;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 15px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover,
+button:hover,
+input[type="submit"]:hover {
+  background-color: #1f3461;
+}
+
+/* ---- Tipografía general ---- */
+
+label {
+  font-weight: 600;
+  color: #023E8A;
+  margin-bottom: 4px;
+  display: block;
+}
+
+/* ---- Inputs y textarea ---- */
+input[type="text"],
+input[type="number"],
+textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 2px solid #cbd1e3;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input:focus,
+textarea:focus {
+  border-color: #023E8A;
+  box-shadow: 0 0 6px rgba(41, 67, 128, 0.3);
+  outline: none;
+}
+
+textarea {
+  resize: none;
+  min-height: 120px;
+}
+
+/* ---- Tarjetas personalizadas ---- */
+.cards {
+  background-color: #caccd4;
+  border-left: 5px solid #023E8A;
+  border-radius: 8px;
+  padding: 12px;
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  align-items: center;
+  gap: 10px;
+  transition:
+    background-color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.25s ease,
+    border-left-color 0.3s ease;
+}
+
+.cards span {
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.cards:hover {
+  background-color: #dbe3f7;
+  border-left-color: #1f3461;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+
+
+
+/* ---- Responsividad global ---- */
+@media (max-width: 768px) {
+  main {
+    padding: 20px;
+  }
+}

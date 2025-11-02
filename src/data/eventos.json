@@ -1,0 +1,28 @@
+[
+  {
+    "id_evento": 1,
+    "nombre_evento": "Festival de Música",
+    "descripcion": "Una experiencia vibrante con artistas internacionales.",
+    "fecha_evento": "2025-10-25",
+    "hora_evento": "18:00",
+    "fecha_registro": "2025-09-15",
+    "precio_boleto": 500,
+    "imagen_url": "festival.jpg",
+    "id_lugar": 200,
+    "id_tipo_actividad": 2,
+    "id_organizadora": 1
+  },
+  {
+    "id_evento": 2,
+    "nombre_evento": "Feria Gastronómica",
+    "descripcion": "Degusta platillos típicos de todo el país.",
+    "fecha_evento": "2025-11-05",
+    "hora_evento": "12:00",
+    "fecha_registro": "2025-10-01",
+    "precio_boleto": 150,
+    "imagen_url": "feria.jpg",
+    "id_lugar": 201,
+    "id_tipo_actividad": 3,
+    "id_organizadora": 2
+  }
+]
