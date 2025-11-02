@@ -1,6 +1,6 @@
 .container{
             display: grid;
-            grid-template-columns: 0.2fr 0.5fr;
+            grid-template-columns: 0.3fr 0.5fr;
             grid-template-areas: "viajes        titulo"
                                  "buscador      ImgMapa"
                                  "buscador      paquete"
@@ -9,11 +9,11 @@
         }
         #viajes{
             grid-area: viajes;
-            border: 2px solid black;
+            /*border: 2px solid black;*/
         }
         #titulo{
             grid-area: titulo;
-            border: 2px solid black;
+            /*border: 2px solid black;*/
         }
         #ImgMapa{
             grid-area: ImgMapa;
@@ -25,11 +25,11 @@
         #img1{
             grid-area: img;
             width: 300px;
-            border: 2px solid black;
+            /*border: 2px solid black;*/
         }
         #mapa{
             grid-area: mapa;
-            border: 2px solid black;
+            /*border: 2px solid black;*/
         }
         #buscador{
             grid-area: buscador;
@@ -41,13 +41,13 @@
         }
         #buscar{
             grid-area: buscar;
-            border: 2px solid black;
+            /*border: 2px solid black;*/
         }
         #selecciones{
             grid-area: selecciones;
             overflow-y: auto;
             height: 315px;
-            border: 2px solid black;
+            /*border: 2px solid black;*/
         }
         #paquete{
             grid-area: paquete;
@@ -57,20 +57,20 @@
         }
         #paq1{
             grid-area: paq1;
-            border: 2px solid black;
+            /*border: 2px solid black;*/
             height: 100px;
         }
         #paq2{
             grid-area: paq2;
-            border: 2px solid black;
+            /*border: 2px solid black;*/
             height: 100px;
         }
         #paq3{
             grid-area: paq3;
-            border: 2px solid black;
+            /*border: 2px solid black;*/
             height: 100px;
         }
         #comentar{
             grid-area: comentar;
-            border: 2px solid black;
+            /*border: 2px solid black;*/
         }
