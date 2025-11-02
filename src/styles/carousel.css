@@ -173,8 +173,6 @@ body {
   box-shadow: none;
 }
 
-
-
 /* ==== Responsive ==== */
 @media (max-width: 1024px) {
   .card {

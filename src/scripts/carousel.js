@@ -40,7 +40,7 @@ export async function crearCarrusel({
 
         return `
             <div class="card">
-                <img src="${rutaImagen}" alt="${nombre}">
+                <img src="${rutaImagen}" alt="${nombre}" onerror="this.onerror=null; this.src='../../media/images/error.jpg'; ">
                 <h3 ${estiloNombre}>${nombre}</h3>
                 <p>${descripcion}</p>
             </div>
