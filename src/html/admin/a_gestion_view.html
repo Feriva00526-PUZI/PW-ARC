@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARC - Gestor de lugares</title>
+    <link rel="stylesheet" href="./../../styles/header_style.css">
+    <link rel="stylesheet" href="./../../styles/footer_style.css">
+    <link rel="stylesheet" href="./../../styles/style_generico.css">
+    <link rel="stylesheet" href="./../../styles/a_gestion_view.css">
+    <script src="./../../scripts/a_gestion_view.js"></script>
+</head>
+
+<body>
+    <main class="box event-box">
+        <form>
+            <h2>Lugar</h2>
+            <div class="event-img-box">
+                <img src="./../../media/images/layout/imgLayout4.jpg" alt="Imagen del lugar seleccionado">
+            </div>
+            <div>
+                <label for="event-name-input">Nombre del evento</label>
+                <input type="text" id="event-name-input" placeholder="Ejemplo: Feria universitaria">
+            </div>
+
+            <div>
+                <label for="event-location-input">Ubicación</label>
+                <input type="text" id="event-location-input" placeholder="Ejemplo: Auditorio principal">
+            </div>
+
+            <div>
+                <label for="event-time-input">Horario</label>
+                <input type="text" id="event-time-input" placeholder="Ejemplo: 10:00 AM - 3:00 PM">
+            </div>
+
+            <div>
+                <label for="event-description-input">Descripción</label>
+                <textarea id="event-description-input" placeholder="Describe brevemente el evento..."></textarea>
+            </div>
+
+            <div>
+                <label for="event-price-input">Costo de entrada (opcional)</label>
+                <input type="number" id="event-price-input" placeholder="Ejemplo: 50">
+            </div>
+
+            <input type="submit" value="Registrar evento" class="event-send-button button">
+        </form>
+    </main>
+
+</body>
+
+</html>
