@@ -1,0 +1,148 @@
+/*Footer general*/
+.f_footer {
+    border-radius: 10px 10px 0px 0px;
+    justify-content: space-between;
+    background-color: #001233;
+    align-items: stretch;
+    text-align: center;
+    color: white;
+    z-index: 1000;
+    padding: 10px;
+    display: flex;
+    top: 0;
+
+}
+
+/*Panel derecho*/
+.f_general {
+    background-image: url(./../multimedia/images/img_background_footer.jpeg);
+    background-position: 50% 30%;
+    background-repeat: no-repeat;
+    justify-content: center;
+    background-size: cover;
+    border-radius: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    min-width: 70%;
+    padding: 10px;
+    display: flex;
+}
+
+/*Panel izquierdo*/
+.f_aboutus {
+    border-right: 5px solid white;
+    padding: 10px 20px 10px 10px;
+    background-color: #023E8A;
+    justify-content: center;
+    text-align: justify;
+    border-radius: 10px;
+    padding-right: 20px;
+    line-height: 1.5rem;
+    margin-right: 10px;
+    max-width: 40%;
+    height: auto;
+}
+
+/*Titulo aboutus panel*/
+.f_h3 {
+    border-bottom: solid 3px white;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 1.5rem;
+    color: white;
+}
+
+/*link-boton*/
+.f_link {
+    transition: background-color 0.5s ease, transform 0.5s ease;
+    background-color: #ADE8F4;
+    display: inline-block;
+    text-decoration: none;
+    border-radius: 20px;
+    width: fit-content;
+    margin-top: 1.5rem;
+    font-weight: bold;
+    padding: 6px 15px;
+    font-size: 1rem;
+    color: black;
+}
+
+/*link-boton-hover*/
+.f_link:hover {
+    background-color: white;
+    transform: scale(1.1);
+}
+
+/*Circulo blanco de fonod para el logo de ARC, contiene el logo (img)*/
+.f_icon_bg {
+    background-color: white;
+    vertical-align: middle;
+    display: inline-block;
+    border-radius: 50%;
+    overflow: hidden;
+    height: 100px;
+    width: 100px;
+    padding: 5px;
+}
+
+/*Es el img del logo*/
+.f_icon {
+    object-fit: contain;
+    height: 100%;
+    width: 100%;
+}
+
+/*H1 del logo que dice basicamente ARC*/
+.f_h1 {
+    vertical-align: middle;
+    display: inline-block;
+    letter-spacing: 10px;
+    margin-left: 20px;
+    font-size: 3rem;
+}
+
+/*Contenedor de las palabras deslizantes*/
+.fh1_words {
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    height: 2.8rem;
+}
+
+/*Palabras deslizantes*/
+.fh1_word {
+    animation: f_spinWords 6s infinite;
+    justify-content: left;
+    letter-spacing: 5px;
+    line-height: auto;
+    color: #00B4D8;
+    text-align: left;
+    margin-left: 0px;
+    font-size: 3rem;
+    display: block;
+}
+
+/* Animación de las palabras deslizantes*/
+@keyframes f_spinWords {
+
+    0%,
+    20% {
+        transform: translateY(-12%);
+    }
+
+    33%,
+    53% {
+        transform: translateY(-110%);
+    }
+
+    66%,
+    86% {
+        transform: translateY(-215%);
+    }
+
+    100% {
+        transform: translateY(-10%);
+    }
+}
