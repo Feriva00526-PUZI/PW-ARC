@@ -1,3 +1,13 @@
+const lugares = [
+    { id_lugar: 1, nombre_lugar: "Museo Histórico", descripcion: "", direccion: "Calle 1", ciudad: "Chihuahua", zona: "centro", imagen_url: "./../../media/images/layout/imgLayout5.jpg", id_admin: 101 },
+    { id_lugar: 2, nombre_lugar: "Plaza Mayor", descripcion: "", direccion: "Av. Central", ciudad: "Chihuahua", zona: "centro", imagen_url: "./../../media/images/layout/imgLayout5.jpg", id_admin: 102 },
+    { id_lugar: 3, nombre_lugar: "Parque Central", descripcion: "", direccion: "Calle Reforma", ciudad: "Chihuahua", zona: "Centro", imagen_url: "./../../media/images/layout/imgLayout5.jpg", id_admin: 103 },
+    { id_lugar: 4, nombre_lugar: "Catedral", descripcion: "", direccion: "Plaza Catedral", ciudad: "Chihuahua", zona: "centro", imagen_url: "./../../media/images/layout/imgLayout5.jpg", id_admin: 104 },
+    { id_lugar: 5, nombre_lugar: "Biblioteca Central", descripcion: "", direccion: "Calle Cultura", ciudad: "Chihuahua", zona: "centro", imagen_url: "./../../media/images/layout/imgLayout5.jpg", id_admin: 105 },
+    { id_lugar: 6, nombre_lugar: "Mirador del Sur", descripcion: "", direccion: "Calle Sur 1", ciudad: "Chihuahua", zona: "sur", imagen_url: "./../../media/images/layout/imgLayout5.jpg", id_admin: 106 },
+    { id_lugar: 7, nombre_lugar: "Parque del Sur", descripcion: "", direccion: "Av. Sur", ciudad: "Chihuahua", zona: "sur", imagen_url: "./../../media/images/layout/imgLayout5.jpg", id_admin: 107 },
+    { id_lugar: 8, nombre_lugar: "ultimo?", descripcion: "", direccion: "Calle Deporte", ciudad: "Chihuahua", zona: "sur", imagen_url: "./../../media/images/layout/imgLayout5.jpg", id_admin: 108 },
+];
 
 window.addEventListener("load", function () {
 
@@ -72,4 +82,52 @@ window.addEventListener("load", function () {
             /*Cambiar que parte de la imagen se ve, el primer 50 es horizontalmente(no cambiarlo) y el segundo es para la altura que se visualiza */
             f_general.style.backgroundPosition = "50% 80%";
         });
+
+    /* Creaccion dinamica de las cards */
+    const contenedor_lugares = document.getElementById("contenedor_lugares");
+    const zonas = {};
+
+
+    lugares.forEach(lugar => {
+        let contenedorZona;
+
+        if (!zonas[lugar.zona]) {
+            const box_zone = document.createElement("div");
+            box_zone.classList.add("box-zone");
+            box_zone.id = `zona-${lugar.zona}`;
+
+            const div_zona = document.createElement("div");
+            div_zona.classList.add("div-zone");
+            const h2 = document.createElement("h2");
+            h2.innerText = lugar.zona;
+            div_zona.appendChild(h2);
+
+            const div_card = document.createElement("div");
+            div_card.classList.add("div-card");
+            div_card.id = `cards-${lugar.zona}`;
+
+            box_zone.appendChild(div_zona);
+            box_zone.appendChild(div_card);
+            contenedor_lugares.appendChild(box_zone);
+
+            zonas[lugar.zona] = div_card;
+        }
+
+        contenedorZona = zonas[lugar.zona];
+
+        const card_individual = `
+    <div class="cards">
+        <div class="div-info-card">
+            <h2>${lugar.nombre_lugar}</h2>
+            <span class="info-card-ciudad">${lugar.ciudad}</span>
+            <span class="info-card-direccion">${lugar.direccion}</span>
+            <button>Revisar Lugar</button>
+        </div>
+        <div class="div-image-card">
+            <img class="image-card" src="${lugar.imagen_url}" alt="Imagen del lugar">
+        </div>
+    </div>`;
+
+        contenedorZona.insertAdjacentHTML("beforeend", card_individual);
+    });
 });

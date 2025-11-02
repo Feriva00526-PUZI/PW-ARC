@@ -25,7 +25,7 @@ window.addEventListener("load", function () {
             /*Primero*/
             const a1 = document.createElement("a");
             a1.id = "a1";
-            a1.href = "#";
+            a1.href = "./a_gestion_view.html";
             const ai1 = document.createElement("img");
             ai1.src = "./../../media/images/icons/iconAnav1.png";
             ai1.classList.add("icon_nav");
@@ -35,7 +35,7 @@ window.addEventListener("load", function () {
             /*Segundo*/
             const a2 = document.createElement("a");
             a2.id = "a2";
-            a2.href = "#";
+            a2.href = "./a_info_agency.html";
             const ai2 = document.createElement("img");
             ai2.src = "./../../media/images/icons/iconAnav2.png";
             ai2.classList.add("icon_nav");
@@ -45,7 +45,7 @@ window.addEventListener("load", function () {
             /*Tercero*/
             const a3 = document.createElement("a");
             a3.id = "a3";
-            a3.href = "#";
+            a3.href = "./a_info_events.html";
             const ai3 = document.createElement("img");
             ai3.src = "./../../media/images/icons/iconAnav3.png";
             ai3.classList.add("icon_nav");
