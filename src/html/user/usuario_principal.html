@@ -15,12 +15,11 @@
 <body>
   <main class="box">
     <section>
-      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae aspernatur cumque facilis adipisci tempora animi, ratione doloribus dolore facere quis in perferendis deleniti voluptate rerum voluptatem, consectetur ad distinctio. Nostrum.</p>
       <div id="carrusel-paquetes"></div>
       <div id="carrusel-eventos"></div>
       <button id="btnAutoLogin">Entar organiza</button>
     </section>
-    
+
   </main>
 </body>
 
@@ -41,23 +40,23 @@
       containerSelector: "#carrusel-eventos",
       dataFile: "eventos.json",
       type: "evento",
-      title: "Paquetes destacados"
+      title: "Eventos destacados"
     });
 
   });
 </script>
 <script>
-    document.getElementById("btnAutoLogin").addEventListener("click", async function() {
-     
-      const response = await fetch("../../data/organizers.json");
-      const organizadoras = await response.json();
+  document.getElementById("btnAutoLogin").addEventListener("click", async function () {
 
-      const primera = organizadoras[0];
+    const response = await fetch("../../data/organizers.json");
+    const organizadoras = await response.json();
 
-      sessionStorage.setItem("organizadoraActiva", JSON.stringify(primera));
+    const primera = organizadoras[0];
 
-      window.location.href = "../organizers/activities_dashboard.html";
-    });
-  </script>
+    sessionStorage.setItem("organizadoraActiva", JSON.stringify(primera));
+
+    window.location.href = "../organizers/activities_dashboard.html";
+  });
+</script>
 
 </html>
