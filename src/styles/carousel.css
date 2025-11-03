@@ -1,11 +1,5 @@
 /* ==== ESTILOS CARRUSEL MODERNOS ==== */
-body {
-  font-family: "Segoe UI", "Poppins", sans-serif;
-  background: linear-gradient(135deg, #f6f7fb 0%, #e3eaf7 100%);
-  color: #2d3436;
-  margin: 0;
-  padding: 20px;
-}
+
 
 .carrusel {
   max-width: 1200px;
@@ -184,6 +178,7 @@ body {
   .card {
     height: 250px;
   }
+
   .carrusel-btn {
     width: 45px;
     height: 45px;
@@ -195,6 +190,7 @@ body {
   .card {
     height: 220px;
   }
+
   .carrusel-btn {
     width: 40px;
     height: 40px;

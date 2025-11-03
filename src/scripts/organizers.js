@@ -3,7 +3,7 @@ window.addEventListener("load", async function () {
     // Organizadora activa de sessionStorage
     const organizadora = JSON.parse(sessionStorage.getItem("organizadoraActiva"));
     if (!organizadora) {
-        window.location.href = "./login.html";
+        window.location.href = "./index.html";
         return;
     }
 

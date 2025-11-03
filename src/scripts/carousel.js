@@ -12,7 +12,8 @@ export async function crearCarrusel({
     }
 
     // --- Cargar datos ---
-    let baseDataPath = window.location.pathname.includes("/html/") ? "../../data/" : "./data/";
+    //let baseDataPath = window.location.pathname.includes("/html/") ? "./../data/" : "./data/";
+    let baseDataPath = "./src/data/";
     const res = await fetch(`${baseDataPath}${dataFile}`);
     if (!res.ok) throw new Error(`Error cargando JSON: ${dataFile}`);
     let data = await res.json();
@@ -25,11 +26,11 @@ export async function crearCarrusel({
         let rutaImagen, nombre, descripcion;
 
         if (type === "paquete") {
-            rutaImagen = `../../media/images/lugares/${getRandomImage(imagenes)}`;
+            rutaImagen = `./src/media/images/lugares/${getRandomImage(imagenes)}`;
             nombre = item.nombre_paquete;
             descripcion = item.descripcion_paquete;
         } else {
-            rutaImagen = `../../media/images/events/${getRandomImage(imagenes)}`;
+            rutaImagen = `./src/media/images/events/${getRandomImage(imagenes)}`;
             nombre = item.nombre_evento;
             descripcion = item.descripcion;
         }

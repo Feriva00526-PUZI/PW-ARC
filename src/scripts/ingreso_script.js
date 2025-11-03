@@ -15,8 +15,10 @@ window.addEventListener("load", function () {
     });
     boton_acceder.addEventListener("click", function (e) {
         const tipo_usuario = sessionStorage.getItem("tipo_usuario");
-        const usuario = document.getElementById("i_usuario").value;
-        const contra = document.getElementById("i_password").value;
+        const i_usuario = document.getElementById("i_usuario");
+        const i_password = document.getElementById("i_password");
+        const usuario = i_usuario.value;
+        const contra = i_password.value;
         if (tipo_usuario == 1) {
             metodosBusqueda.buscarUsuarios(usuario, contra).then(validacion => {
                 if (validacion) {
@@ -29,6 +31,8 @@ window.addEventListener("load", function () {
             metodosBusqueda.buscarAdmins(usuario, contra).then(validacion => {
                 if (validacion) {
                     console.log("todo bien");
+                    sessionStorage.setItem("admin_logeado", usuario);
+                    window.location.href = "./admin/a_gestion_view.html";
                 } else {
                     datos_incorrectos.showModal();
                 }
@@ -52,8 +56,7 @@ window.addEventListener("load", function () {
         }
 
         e.preventDefault();
-        const i_usuario = document.getElementById("i_usuario");
-        const i_password = document.getElementById("i_password");
+
 
         /*
         if (i_usuario.value == "admin" && i_password.value == "admin") {
