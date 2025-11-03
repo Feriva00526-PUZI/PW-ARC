@@ -1,0 +1,32 @@
+[
+  {
+    "id_lugar": 1,
+    "nombre_lugar": "Auditorio Central",
+    "descripcion": "Espacio cerrado con capacidad para 5000 personas",
+    "direccion": "Av. Reforma #100, Ciudad",
+    "ciudad": "Ciudad de México",
+    "zona": "Centro",
+    "imagen_url": "lugar1.jpg",
+    "id_admin": 1
+  },
+  {
+    "id_lugar": 2,
+    "nombre_lugar": "Parque del Lago",
+    "descripcion": "Área abierta para eventos al aire libre",
+    "direccion": "Carretera Nacional Km 12, Ciudad",
+    "ciudad": "Guadalajara",
+    "zona": "Sur",
+    "imagen_url": "lugar2.jpg",
+    "id_admin": 2
+  },
+  {
+    "id_lugar": 3,
+    "nombre_lugar": "Centro Cultural del Sol",
+    "descripcion": "Instalación moderna para eventos artísticos y ferias",
+    "direccion": "Calle Sol #45, Col. Aurora",
+    "ciudad": "Monterrey",
+    "zona": "Norte",
+    "imagen_url": "lugar3.jpg",
+    "id_admin": 3
+  }
+]

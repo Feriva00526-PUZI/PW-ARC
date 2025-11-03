@@ -1,0 +1,38 @@
+[
+  {
+    "id_agencia": 1,
+    "descripcion": "Agencia especializada en viajes culturales",
+    "nombre_agencia": "Viajes Cultura",
+    "fecha_registro": "2023-01-15",
+    "direccion": "Calle 1 #123, Ciudad",
+    "imagen_url": "agencia1.jpg",
+    "user": "viajecultura",
+    "password": "vc123",
+    "telefono": "5551002003",
+    "correo": "contacto@viajescultura.com"
+  },
+  {
+    "id_agencia": 2,
+    "descripcion": "Agencia de turismo aventura",
+    "nombre_agencia": "Aventura Total",
+    "fecha_registro": "2022-06-10",
+    "direccion": "Avenida 5 #45, Ciudad",
+    "imagen_url": "agencia2.jpg",
+    "user": "aventuratotal",
+    "password": "at456",
+    "telefono": "5552003004",
+    "correo": "info@aventuratotal.com"
+  },
+  {
+    "id_agencia": 3,
+    "descripcion": "Agencia de viajes de lujo",
+    "nombre_agencia": "Lujo Tours",
+    "fecha_registro": "2023-03-20",
+    "direccion": "Boulevard 9 #78, Ciudad",
+    "imagen_url": "agencia3.jpg",
+    "user": "lujotours",
+    "password": "lt789",
+    "telefono": "5553004005",
+    "correo": "ventas@lujotours.com"
+  }
+]
