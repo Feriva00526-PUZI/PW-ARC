@@ -1,7 +1,7 @@
 [
   {
     "id_cliente": 1,
-    "usuario": "cliente1",
+    "user": "cliente1",
     "password": "cli123",
     "nombre": "Ana",
     "ap1": "Gomez",
@@ -10,7 +10,7 @@
   },
   {
     "id_cliente": 2,
-    "usuario": "cliente2",
+    "user": "cliente2",
     "password": "cli456",
     "nombre": "Jorge",
     "ap1": "Martinez",
@@ -19,7 +19,7 @@
   },
   {
     "id_cliente": 3,
-    "usuario": "cliente3",
+    "user": "cliente3",
     "password": "cli789",
     "nombre": "Sofia",
     "ap1": "Lopez",
