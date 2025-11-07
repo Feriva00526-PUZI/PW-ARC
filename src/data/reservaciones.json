@@ -1,0 +1,20 @@
+[
+  {
+    "id_reservacion": 1,
+    "id_evento": 1,
+    "id_cliente": 1,
+    "estado": "Confirmada"
+  },
+  {
+    "id_reservacion": 2,
+    "id_evento": 2,
+    "id_cliente": 2,
+    "estado": "Pendiente"
+  },
+  {
+    "id_reservacion": 3,
+    "id_evento": 3,
+    "id_cliente": 3,
+    "estado": "Cancelada"
+  }
+]
