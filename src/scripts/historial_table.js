@@ -1,98 +1,92 @@
 /*
-  historial_table.js 
-  Genera las filas de la tabla #hist-table-sample tbody dinámicamente
+  historial_table.js (versión simple)
+  Crea las filas de la tabla y maneja los botones de Cancelar y Descripción.
 */
-(function () {
-  function getStatusClass(status) {
-    const s = status?.toLowerCase() || "";
-    if (s.includes("espera")) return "status-en-espera badge";
-    if (s.includes("cancel")) return "status-cancelado badge";
-    return "status-realizado badge";
-  }
 
-  function initHistorialTable(data = []) {
-    const tbody = document.querySelector("#hist-table-sample tbody");
-    if (!tbody) return console.error("No se encontró #hist-table-sample tbody.");
+function getStatusClass(status) {
+  const s = (status || "").toLowerCase();
+  if (s.includes("program") || s.includes("espera")) return "status-en-espera badge";
+  if (s.includes("curso")) return "status-en-curso badge";
+  if (s.includes("cancel")) return "status-cancelado badge";
+  if (s.includes("final") || s.includes("realiz")) return "status-realizado badge";
+  return "status-realizado badge";
+}
 
-    tbody.innerHTML = "";
+function initHistorialTable(datos) {
+  const tbody = document.querySelector("#hist-table-sample tbody");
+  if (!tbody) return;
 
-    data.forEach(item => {
-      const tr = document.createElement("tr");
+  tbody.innerHTML = ""; // limpia la tabla
 
-      // --- DESTINO ---
-      const tdDestino = document.createElement("td");
-      tdDestino.textContent = item.destino;
-      tr.appendChild(tdDestino);
+  datos.forEach((item) => {
+    const fila = document.createElement("tr");
 
-      // --- ESTADO ---
-      const tdStatus = document.createElement("td");
-      const span = document.createElement("span");
-      span.textContent = item.status;
+    //Destino
+    const tdDestino = document.createElement("td");
+    tdDestino.textContent = item.destino || "-";
+    fila.appendChild(tdDestino);
+
+    //Estado
+    const tdEstado = document.createElement("td");
+    const span = document.createElement("span");
+    span.textContent = item.status || "-";
+    span.className = getStatusClass(item.status);
+    tdEstado.appendChild(span);
+    fila.appendChild(tdEstado);
+
+    //Fecha
+    const tdFecha = document.createElement("td");
+    tdFecha.textContent = item.fecha || "-";
+    fila.appendChild(tdFecha);
+
+    // Acciones
+    const tdAcciones = document.createElement("td");
+
+    const btnCancelar = document.createElement("button");
+    btnCancelar.className = "hist-btn hist-btn-cancel";
+    btnCancelar.textContent = "Cancelar";
+
+    const btnDescripcion = document.createElement("button");
+    btnDescripcion.className = "hist-btn hist-btn-desc";
+    btnDescripcion.textContent = "Descripción";
+
+    // Si el viaje ya está cancelado o finalizado, no se puede cancelar
+    const estado = (item.status || "").toLowerCase();
+    if (estado.includes("cancel") || estado.includes("final") || estado.includes("realiz")) {
+      btnCancelar.disabled = true;
+      btnCancelar.classList.add("disabled-btn");
+    }
+
+    //Eventos de los botones
+    // Evento Cancelar
+    btnCancelar.addEventListener("click", () => {
+      item.status = "Cancelado";
+      span.textContent = "Cancelado";
       span.className = getStatusClass(item.status);
-      tdStatus.appendChild(span);
-      tr.appendChild(tdStatus);
-
-      // --- FECHA ---
-      const tdFecha = document.createElement("td");
-      tdFecha.textContent = item.fecha;
-      tr.appendChild(tdFecha);
-
-      // --- ACCIONES ---
-      const tdAcc = document.createElement("td");
-      tdAcc.style.textAlign = "left"; 
-
-      // Crear botones
-      const btnCancel = document.createElement("button");
-      btnCancel.className = "hist-btn hist-btn-cancel";
-      btnCancel.textContent = "Cancelar";
-
-      const btnDesc = document.createElement("button");
-      btnDesc.className = "hist-btn hist-btn-desc";
-      btnDesc.textContent = "Descripción";
-
-      const estado = item.status.toLowerCase();
-
-      // Si el viaje ya está cancelado o realizado se deshabilita solo el boton cancelar
-      if (estado.includes("cancel") || estado.includes("realizado")) {
-        btnCancel.disabled = true;
-        btnCancel.classList.add("disabled-btn");
-      }
-
-      // Evento boton "Cancelar"
-      btnCancel.addEventListener("click", () => {
-        if (btnCancel.disabled) return;
-
-        item.status = "Cancelado";
-        span.textContent = "Cancelado";
-        span.className = getStatusClass(item.status);
-
-        // Deshabilitar el boton de cancelar
-        btnCancel.disabled = true;
-        btnCancel.classList.add("disabled-btn");
-      });
-
-      // Evento boton "Descripcion"
-      btnDesc.addEventListener("click", () => {
-        const d = item.detalle || {};
-        alert(
-          `Destino: ${item.destino}\n` +
-          `Costo: ${d.costo || "-"}\n` +
-          `Eventos: ${d.eventos || "-"}\n` +
-          `Aerolínea: ${d.aerolinea || "-"}\n` +
-          `Hotel: ${d.hotel || "-"}\n` +
-          `Estado: ${item.status}\n` +
-          `Fecha: ${item.fecha}`
-        );
-      });
-
-      // Agregar botones a la celda de acciones
-      tdAcc.appendChild(btnCancel);
-      tdAcc.appendChild(btnDesc);
-
-      tr.appendChild(tdAcc);
-      tbody.appendChild(tr);
+      btnCancelar.disabled = true;
+      btnCancelar.classList.add("disabled-btn");
+      alert(`El viaje a ${item.destino} fue cancelado.`);
     });
-  }
 
-  window.initHistorialTable = initHistorialTable;
-})();
+    // Evento Descripción 
+    btnDescripcion.addEventListener("click", () => {
+      const detalle = item.detalle || {};
+      alert(
+        `Lugar: ${detalle.lugarNombre || "-"}\n` +
+        `Estado: ${item.status || "-"}\n` +
+        `Fecha: ${item.fecha || "-"}\n` +
+        `Agencia: ${detalle.agenciaNombre || "-"}\n` +
+        `Evento: ${detalle.eventoNombre || "-"}`
+      );
+    });
+
+    tdAcciones.appendChild(btnCancelar);
+    tdAcciones.appendChild(btnDescripcion);
+    fila.appendChild(tdAcciones);
+
+    tbody.appendChild(fila);
+  });
+}
+
+// Deja la funcion disponible globalmente
+window.initHistorialTable = initHistorialTable;

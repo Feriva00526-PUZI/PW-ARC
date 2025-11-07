@@ -51,89 +51,81 @@ window.addEventListener("load", function () {
         bnav.appendChild(btn_is_r);
       }
 
-      // Datos de ejemplo para el historial
+      // Cargar el historial
 
-      const historyData = [
-  {
-    id: 1,
-    destino: "Cusco, Perú",
-    status: "En espera",
-    fecha: "2025-11-10",
-    detalle: {
-      costo: "$450",
-      eventos: "Machu Picchu, City tour",
-      aerolinea: "AeroAndes",
-      hotel: "Inti Plaza"
-    }
-  },
-  {
-    id: 2,
-    destino: "Cartagena, Colombia",
-    status: "Cancelado",
-    fecha: "2025-06-21",
-    detalle: {
-      costo: "$320",
-      eventos: "Tour Ciudad Amurallada",
-      aerolinea: "ColoAir",
-      hotel: "Bocagrande Inn"
-    }
-  },
-  {
-    id: 3,
-    destino: "Bariloche, Argentina",
-    status: "Realizado",
-    fecha: "2024-12-05",
-    detalle: {
-      costo: "$620",
-      eventos: "Circuito chico, Catamarán",
-      aerolinea: "PatagoniaFly",
-      hotel: "Lakeside Resort"
-    }
-  },
-  {
-    id: 4,
-    destino: "Tokio, Japón",
-    status: "En espera",
-    fecha: "2026-01-15",
-    detalle: {
-      costo: "$980",
-      eventos: "Monte Fuji, Shibuya, Templo Senso-ji",
-      aerolinea: "Nippon Air",
-      hotel: "Sakura Tower"
-    }
-  },
-  {
-    id: 5,
-    destino: "París, Francia",
-    status: "Realizado",
-    fecha: "2024-07-12",
-    detalle: {
-      costo: "$850",
-      eventos: "Torre Eiffel, Museo del Louvre",
-      aerolinea: "AirFrance",
-      hotel: "Le Jardin Bleu"
-    }
-  }
-];
+     Promise.all([
+        fetch("./../../data/viajes.json").then(r => r.json()),
+        fetch("./../../data/lugares.json").then(r => r.json()),
+        fetch("./../../data/agencias.json").then(r => r.json()),
+        fetch("./../../data/eventos.json").then(r => r.json())
+      ])
+        .then(([viajes, lugares, agencias, eventos]) => {
+          // la informacion
+          const historyData = viajes.map(v => {
+            const lugar = lugares.find(l => l.id_lugar === v.id_paquete) || {};
+            const agencia = agencias.find(a => a.id_agencia === v.id_cliente) || {};
+            const evento = eventos.find(e => e.id_evento === v.id_paquete) || {};
 
+         
+            const nombreLugar = lugar.nombre_lugar || `Paquete ${v.id_paquete}`;
+            const ciudad = lugar.ciudad ? ` (${lugar.ciudad})` : "";
+            const destinoFinal = `${nombreLugar}${ciudad}`;
 
-      // Cargar script de tabla y ejecutarlo
-      const scriptTable = document.createElement("script");
-      scriptTable.src = "./../../scripts/historial_table.js";
-      scriptTable.onload = function () {
-        if (typeof window.initHistorialTable === "function") {
-          window.initHistorialTable(historyData);
-        } else {
-          console.error("Error: no se encontró initHistorialTable.");
-        }
-      };
-      document.body.appendChild(scriptTable);
+            return {
+              destino: destinoFinal,
+              status: v.estado || "Desconocido",
+              fecha: `${v.fecha_viaje || ""} ${v.hora_viaje || ""}`.trim(),
+              detalle: {
+                lugarNombre: lugar.nombre_lugar || "-",
+                lugarDescripcion: lugar.descripcion || "-",
+                lugarDireccion: lugar.direccion || "-",
+                agenciaNombre: agencia.nombre_agencia || "-",
+                eventoNombre: evento.nombre_evento || "-"
+              }
+            };
+          });
+
+          // Cargar script de tabla y ejecutarlo
+          const scriptTable = document.createElement("script");
+          scriptTable.src = "./../../scripts/historial_table.js";
+          scriptTable.onload = function () {
+            if (typeof window.initHistorialTable === "function") {
+              window.initHistorialTable(historyData);
+            } else {
+              // Manejo de error si la función no esta disponible
+              console.error("Error: no se encontró initHistorialTable.");
+            }
+          };
+          document.body.appendChild(scriptTable);
+        })
+        .catch(err => {
+          console.error("Error cargando los JSON del historial:", err);
+        });
+        // Fin carga historial
     })
     .catch(err => {
       console.error("Error cargando header.html:", err);
     });
+    
+   /*Copiar y pegar eso para añadir el footer en la pagina que sea */
+    fetch("./../../components/footer.html")
+        .then(response => response.text())
+        .then(data => {
+            document.body.insertAdjacentHTML("beforeend", data);
 
-  
+            /*Cambio del icono ARC (Solo para actualizar la ruta relativa) */
+            document.getElementById("f_icon").setAttribute("src", "./../../media/images/icons/icon_arc.png");
+
+            /*Cambio link del boton hacia la pagina About Us (Solo para actualizar la ruta relativa) */
+            document.querySelector(".f_link").href = "#";
+
+            /*Cambio de la imagen del footer derecho*/
+            const f_general = document.getElementById("f_general");
+            f_general.style.backgroundImage = "url(./../../media/images/layout/img_background_footer.jpeg)";
+            f_general.style.backgroundImage = "url(./../../media/images/layout/imgLayout20.jpg)";
+            /*Cambiar que parte de la imagen se ve, el primer 50 es horizontalmente(no cambiarlo) y el segundo es para la altura que se visualiza */
+            f_general.style.backgroundPosition = "50% 80%";
+        });
 
 });
 
