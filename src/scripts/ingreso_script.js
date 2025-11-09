@@ -1,6 +1,9 @@
 import * as metodosBusqueda from "./validLogin.js";
 window.addEventListener("load", function () {
     sessionStorage.removeItem("admin_logeado");
+    sessionStorage.removeItem("usuario_logeado");
+    sessionStorage.removeItem("agencia_logeado");
+    sessionStorage.removeItem("organizador_logeado");
     document.querySelector("body").style.backgroundImage = "none";
     const datos_incorrectos = document.getElementById("datos_incorrectos");
     const boton_registro = document.getElementById("cambio_registro");
@@ -23,7 +26,8 @@ window.addEventListener("load", function () {
         if (tipo_usuario == 1) {
             metodosBusqueda.buscarUsuarios(usuario, contra).then(validacion => {
                 if (validacion) {
-                    console.log("todo bien");
+                    alert("si");
+                    sessionStorage.setItem("usuario_logeado", usuario);
                 } else {
                     datos_incorrectos.showModal();
                 }
@@ -31,7 +35,6 @@ window.addEventListener("load", function () {
         } else if (tipo_usuario == 2) {
             metodosBusqueda.buscarAdmins(usuario, contra).then(validacion => {
                 if (validacion) {
-                    console.log("todo bien");
                     sessionStorage.setItem("admin_logeado", usuario);
                     window.location.href = "./admin/a_gestion_view.html";
                 } else {
@@ -41,7 +44,8 @@ window.addEventListener("load", function () {
         } else if (tipo_usuario == 3) {
             metodosBusqueda.buscarOrganizadores(usuario, contra).then(validacion => {
                 if (validacion) {
-                    console.log("todo bien");
+                    alert("si");
+                    sessionStorage.setItem("organizador_logeado", usuario);
                 } else {
                     datos_incorrectos.showModal();
                 }
@@ -49,7 +53,8 @@ window.addEventListener("load", function () {
         } else if (tipo_usuario == 4) {
             metodosBusqueda.buscarAgencias(usuario, contra).then(validacion => {
                 if (validacion) {
-                    console.log("todo bien");
+                    alert("si");
+                    sessionStorage.setItem("agencia_logeado", usuario);
                 } else {
                     datos_incorrectos.showModal();
                 }

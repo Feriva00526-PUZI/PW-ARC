@@ -5,16 +5,18 @@ let agencias;
 
 export function buscarUsuarios(usuario, contra) {
     console.log("Busque en usuarios");
-    return fetch("./../data/clientes.json").then(response => response.json()).then(data => {
-        usuarios = data;
+    const credenciales = {
+        user: usuario,
+        password: contra
+    };
+    return fetch("../data/logic/usuarioLogic.php", { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(credenciales) }).then(response => response.json()).then(data => {
         let validacion = false;
-        usuarios.forEach((usuarioEle) => {
-            if (usuarioEle.user === usuario && usuarioEle.password === contra) {
-                console.log("validado");
-                validacion = true;
-            }
-        });
+        if (data.correcto) {
+            console.log("validado");
+            validacion = true;
+        }
         return validacion;
+
     });
 }
 
@@ -47,30 +49,34 @@ export function buscarAdmins(usuario, contra) {
 };
 export function buscarOrganizadores(usuario, contra) {
     console.log("Busque en organizadores");
-    return fetch("./../data/organizers.json").then(response => response.json()).then(data => {
-        organizadores = data;
+    const credenciales = {
+        user: usuario,
+        password: contra
+    };
+    return fetch("../data/logic/organizadorLogic.php", { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(credenciales) }).then(response => response.json()).then(data => {
         let validacion = false;
-        organizadores.forEach((agencia) => {
-            if (agencia.user === usuario && agencia.password === contra) {
-                console.log("validado");
-                validacion = true;
-            }
-        });
+        if (data.correcto) {
+            console.log("validado");
+            validacion = true;
+        }
         return validacion;
+
     });
 }
 
 export function buscarAgencias(usuario, contra) {
     console.log("Busque en agencias");
-    return fetch("./../data/agencias.json").then(response => response.json()).then(data => {
-        agencias = data;
+    const credenciales = {
+        user: usuario,
+        password: contra
+    };
+    return fetch("../data/logic/agenciaLogic.php", { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(credenciales) }).then(response => response.json()).then(data => {
         let validacion = false;
-        agencias.forEach((agencia) => {
-            if (agencia.user === usuario && agencia.password === contra) {
-                console.log("validado");
-                validacion = true;
-            }
-        });
+        if (data.correcto) {
+            console.log("validado");
+            validacion = true;
+        }
         return validacion;
+
     });
 };
