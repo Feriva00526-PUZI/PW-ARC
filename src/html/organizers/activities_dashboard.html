@@ -8,38 +8,122 @@
 
   <link rel="stylesheet" href="./../../styles/style_generico.css">
   <link rel="stylesheet" href="./../../styles/organizers.css">
-  <script src="../../scripts/organizers.js"></script>
+  <link rel="stylesheet" href="../../styles/header_style.css">
+  <link rel="stylesheet" href="../../styles/footer_style.css">
+  <link rel="stylesheet" href="../../components/calendar/calendar.css">
+
+  <script src="../../scripts/dao/daoEventos.js" type="module"></script>
+  <script src="../../scripts/organizers.js" type="module"></script>
+  <script src="../../components/calendar/calendar.js" type="module"></script>
 </head>
 
 <body>
-  <header>
-    <h2 id="tituloAgencia">Panel de organización</h2>
-  </header>
-
   <main>
+    <div class="banner">
+      <div class="banner-content">
+        <h1 class="slogan">Cada evento es una oportunidad para crear recuerdos inolvidables. "Haz realidad los sueños
+          de alguien, un evento a la vez"</h1>
+        <div id="numeroEventos" class="numero-eventos"></div>
+      </div>
+    </div>
     <div class="organizers-box box">
 
+      <!-- === Columna izquierda === -->
       <div class="organizers-info">
-        <img id="imgAgencia" style="width: 150px; border-radius: 10px;">
-        <h3 id="nombreAgencia"></h3>
-        <p id="descripcionAgencia"></p>
-
-        <p><strong>Dirección:</strong> <span id="direccion"></span></p>
-        <p><strong>Teléfono:</strong> <span id="telefono"></span></p>
-        <p><strong>Correo:</strong> <span id="correo"></span></p>
+        <img id="imgAgencia" alt="Organizadora">
+        <p id="mensajeBienvenida" class="mensaje-bienvenida">
+          Bienvenida organizadora, aquí puedes gestionar tus eventos, modificarlos o cancelarlos.
+          <br><br>
+          Si tienes problemas contacta a nuestro equipo de <strong>soporte técnico</strong>.
+        </p>
       </div>
 
+      <!-- === Columna derecha === -->
       <div class="organizers-events-box">
-        <h2>Eventos</h2>
-        <div id="eventosBox" class="organizers-events-info"></div>
-        <button class="button">Agregar evento</button>
+        <h2>Eventos Asociados</h2>
+
+        <!-- Barra de filtros -->
+        <div class="filters">
+          <input type="text" id="buscarNombre" placeholder="Buscar por nombre...">
+          <input type="text" id="buscarLugar" placeholder="Buscar por lugar...">
+          <label>Desde: <input type="date" id="fechaInicio"></label>
+          <label>Hasta: <input type="date" id="fechaFin"></label>
+          <button id="btnOrdenar">Ordenar por fecha ↑↓</button>
+        </div>
+
+        <!-- Tabla de eventos -->
+        <table id="tablaEventos" class="tabla-eventos">
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Nombre</th>
+              <th>Lugar</th>
+              <th>Precio</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="eventosBody"></tbody>
+        </table>
+
+        <button class="button" id="btnAgregar">Agregar evento</button>
       </div>
-
-      <div class="organizers-calendar">
-        <input type="month" id="calendar" readonly>
-      </div>
-
-
     </div>
   </main>
+
+  <!-- Modal del calendario -->
+  <div class="calendar-modal" id="calendar-modal">
+    <div class="calendar-modal__overlay"></div>
+    <div class="calendar-modal__content">
+      <button class="calendar-modal__close">×</button>
+      <br><br>
+      <section class="calendar">
+        <section class="calendar__header">
+          <div class="header__container">
+            <button type="button" class="calendar__button calendar__button--previous">Anterior</button>
+            <h3 class="container__heading" id="calendar-date">Mes</h3>
+            <button type="button" class="calendar__button calendar__button--next">Siguiente</button>
+          </div>
+        </section>
+
+        <section class="calendar__weekdays">
+          <div>
+            <h4>Lun</h4>
+          </div>
+          <div>
+            <h4>Mar</h4>
+          </div>
+          <div>
+            <h4>Mié</h4>
+          </div>
+          <div>
+            <h4>Jue</h4>
+          </div>
+          <div>
+            <h4>Vie</h4>
+          </div>
+          <div>
+            <h4>Sáb</h4>
+          </div>
+          <div>
+            <h4>Dom</h4>
+          </div>
+        </section>
+
+        <ol class="calendar__days"></ol>
+      </section>
+    </div>
+  </div>
+
+  <!-- Modal info día -->
+  <div class="day-info-modal" id="day-info-modal">
+    <div class="day-info-overlay"></div>
+    <div class="day-info-content">
+      <button class="day-info-close">×</button>
+      <h2 id="day-info-title">Día</h2>
+      <p id="day-info-description">Descripción del evento</p>
+    </div>
+  </div>
+
 </body>
+
+</html>
