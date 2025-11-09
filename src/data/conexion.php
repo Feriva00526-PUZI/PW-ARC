@@ -30,11 +30,13 @@ class Conexion{
             return null;
         }
     }
-     public function __destruct() {
-		$this->conexion = NULL;
-	}
+    
+    public function __destruct() {
+        $this->conexion = NULL;
+    }
+    
     public function getConexion() {
-    	return $this->conexion;
+        return $this->conexion;
     }
 }
 ?>
