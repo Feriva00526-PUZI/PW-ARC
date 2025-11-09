@@ -5,6 +5,13 @@ window.addEventListener("load", function () {
         window.location.href = "./../../../index.html";
         return;
     }
+    const id_lugar = sessionStorage.getItem('id_lugar_selected');
+    const lugar_json = sessionStorage.getItem('lugar_objeto');
+    if (!id_lugar || !lugar_json) {
+        window.location.href = "./a_gestion_view.html";
+        return;
+    }
+    const lugar = JSON.parse(lugar_json);
     fetch("./../../components/header.html")
         .then(response => response.text())
         .then(data => {
@@ -56,6 +63,17 @@ window.addEventListener("load", function () {
             a3.appendChild(ai3);
             a3.append("Estadisticas de los Eventos");
             bnav.appendChild(a3);
+
+
+            document.getElementById("txt_nombre_lugar").value = lugar.nombre_lugar;
+            document.getElementById("txt_direccion_lugar").value = lugar.direccion;
+            document.getElementById("txt_zona_lugar").value = lugar.zona;
+            document.getElementById("txt_ciudad_lugar").value = lugar.ciudad;
+            document.getElementById("txt_descripcion_lugar").value = lugar.descripcion;
+            document.querySelector(".imagen_lugar").src = lugar.imagen_url || './../../media/images/layout/imgLayout4.jpg';
+            document.querySelector(".modulo_h2").innerText = `Gestionando: ${lugar.nombre_lugar}`;
+            sessionStorage.removeItem('id_lugar_selected');
+            sessionStorage.removeItem('lugar_objeto');
         });
 
     /*Copiar y pegar eso para añadir el footer en la pagina que sea */
@@ -76,4 +94,5 @@ window.addEventListener("load", function () {
             /*Cambiar que parte de la imagen se ve, el primer 50 es horizontalmente(no cambiarlo) y el segundo es para la altura que se visualiza */
             f_general.style.backgroundPosition = "50% 80%";
         });
+
 });

@@ -1,16 +1,3 @@
-/*
-const lugares = [
-    { id_lugar: 1, nombre_lugar: "Museo Histórico", descripcion: "", direccion: "Calle 1", ciudad: "Chihuahua", zona: "centro", imagen_url: "./../../media/images/layout/imgLayout5.jpg", id_admin: 101 },
-    { id_lugar: 2, nombre_lugar: "Plaza Mayor", descripcion: "", direccion: "Av. Central", ciudad: "Chihuahua", zona: "centro", imagen_url: "./../../media/images/layout/imgLayout5.jpg", id_admin: 102 },
-    { id_lugar: 3, nombre_lugar: "Parque Central", descripcion: "", direccion: "Calle Reforma", ciudad: "Chihuahua", zona: "Centro", imagen_url: "./../../media/images/layout/imgLayout5.jpg", id_admin: 103 },
-    { id_lugar: 4, nombre_lugar: "Catedral", descripcion: "", direccion: "Plaza Catedral", ciudad: "Chihuahua", zona: "centro", imagen_url: "./../../media/images/layout/imgLayout5.jpg", id_admin: 104 },
-    { id_lugar: 5, nombre_lugar: "Biblioteca Central", descripcion: "", direccion: "Calle Cultura", ciudad: "Chihuahua", zona: "centro", imagen_url: "./../../media/images/layout/imgLayout5.jpg", id_admin: 105 },
-    { id_lugar: 6, nombre_lugar: "Mirador del Sur", descripcion: "", direccion: "Calle Sur 1", ciudad: "Chihuahua", zona: "sur", imagen_url: "./../../media/images/layout/imgLayout5.jpg", id_admin: 106 },
-    { id_lugar: 7, nombre_lugar: "Parque del Sur", descripcion: "", direccion: "Av. Sur", ciudad: "Chihuahua", zona: "sur", imagen_url: "./../../media/images/layout/imgLayout5.jpg", id_admin: 107 },
-    { id_lugar: 8, nombre_lugar: "ultimo?", descripcion: "", direccion: "Calle Deporte", ciudad: "Chihuahua", zona: "sur", imagen_url: "./../../media/images/layout/imgLayout5.jpg", id_admin: 108 },
-];
-*/
-
 window.addEventListener("load", function () {
     const administradorSession = sessionStorage.getItem("admin_logeado");
     if (administradorSession == null) {
@@ -124,13 +111,15 @@ window.addEventListener("load", function () {
 
                 contenedorZona = zonas[lugar.zona];
 
+                // En a_gestion_view.js, dentro del bucle lugares.forEach(lugar => { ... })
+
                 const card_individual = `
     <div class="cards">
         <div class="div-info-card">
             <h2>${lugar.nombre_lugar}</h2>
             <span class="info-card-ciudad">${lugar.ciudad}</span>
             <span class="info-card-direccion">${lugar.direccion}</span>
-            <button>Revisar Lugar</button>
+            <button class="btn-revisar" id="br-${lugar.id_lugar}">Revisar Lugar</button>
         </div>
         <div class="div-image-card">
             <img class="image-card" src="${lugar.imagen_url}" alt="Imagen del lugar">
@@ -139,10 +128,26 @@ window.addEventListener("load", function () {
 
                 contenedorZona.insertAdjacentHTML("beforeend", card_individual);
             });
+            document.querySelectorAll('.btn-revisar').forEach(button => {
+                button.addEventListener('click', function (e) {
+
+                    const fullId = e.target.id;
+                    const id_lugar_selected = fullId.split('-').pop();
+
+                    const lugar_objeto = lugares.find(lugar => lugar.id_lugar == id_lugar_selected);
+
+                    sessionStorage.setItem('id_lugar_selected', id_lugar_selected);
+                    sessionStorage.setItem('lugar_objeto', JSON.stringify(lugar_objeto));
+
+                    window.location.href = "./a_gestion_moves.html";
+                });
+            });
         } else {
             console.log("Hubo error en el if de correcto y lugares en a_gestion_viewJS");
         }
     }).catch(error => {
         alert("Error de conexión al servidor. No se pudieron obtener los lugares.");
     });
+
+
 });
