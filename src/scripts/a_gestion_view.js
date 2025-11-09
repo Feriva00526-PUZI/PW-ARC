@@ -1,3 +1,4 @@
+/*
 const lugares = [
     { id_lugar: 1, nombre_lugar: "Museo Histórico", descripcion: "", direccion: "Calle 1", ciudad: "Chihuahua", zona: "centro", imagen_url: "./../../media/images/layout/imgLayout5.jpg", id_admin: 101 },
     { id_lugar: 2, nombre_lugar: "Plaza Mayor", descripcion: "", direccion: "Av. Central", ciudad: "Chihuahua", zona: "centro", imagen_url: "./../../media/images/layout/imgLayout5.jpg", id_admin: 102 },
@@ -8,6 +9,7 @@ const lugares = [
     { id_lugar: 7, nombre_lugar: "Parque del Sur", descripcion: "", direccion: "Av. Sur", ciudad: "Chihuahua", zona: "sur", imagen_url: "./../../media/images/layout/imgLayout5.jpg", id_admin: 107 },
     { id_lugar: 8, nombre_lugar: "ultimo?", descripcion: "", direccion: "Calle Deporte", ciudad: "Chihuahua", zona: "sur", imagen_url: "./../../media/images/layout/imgLayout5.jpg", id_admin: 108 },
 ];
+*/
 
 window.addEventListener("load", function () {
     const administradorSession = sessionStorage.getItem("admin_logeado");
@@ -88,38 +90,41 @@ window.addEventListener("load", function () {
         });
 
     /* Creaccion dinamica de las cards */
-    const contenedor_lugares = document.getElementById("contenedor_lugares");
-    const zonas = {};
 
+    fetch("./../../data/logic/lugarLogic.php").then(response => response.json()).then(data => {
+        if (data.correcto && data.lugares) {
+            const lugares = data.lugares;
+            const contenedor_lugares = document.getElementById("contenedor_lugares");
+            const zonas = {};
 
-    lugares.forEach(lugar => {
-        let contenedorZona;
+            lugares.forEach(lugar => {
+                let contenedorZona;
 
-        if (!zonas[lugar.zona]) {
-            const box_zone = document.createElement("div");
-            box_zone.classList.add("box-zone");
-            box_zone.id = `zona-${lugar.zona}`;
+                if (!zonas[lugar.zona]) {
+                    const box_zone = document.createElement("div");
+                    box_zone.classList.add("box-zone");
+                    box_zone.id = `zona-${lugar.zona}`;
 
-            const div_zona = document.createElement("div");
-            div_zona.classList.add("div-zone");
-            const h2 = document.createElement("h2");
-            h2.innerText = lugar.zona;
-            div_zona.appendChild(h2);
+                    const div_zona = document.createElement("div");
+                    div_zona.classList.add("div-zone");
+                    const h2 = document.createElement("h2");
+                    h2.innerText = lugar.zona;
+                    div_zona.appendChild(h2);
 
-            const div_card = document.createElement("div");
-            div_card.classList.add("div-card");
-            div_card.id = `cards-${lugar.zona}`;
+                    const div_card = document.createElement("div");
+                    div_card.classList.add("div-card");
+                    div_card.id = `cards-${lugar.zona}`;
 
-            box_zone.appendChild(div_zona);
-            box_zone.appendChild(div_card);
-            contenedor_lugares.appendChild(box_zone);
+                    box_zone.appendChild(div_zona);
+                    box_zone.appendChild(div_card);
+                    contenedor_lugares.appendChild(box_zone);
 
-            zonas[lugar.zona] = div_card;
-        }
+                    zonas[lugar.zona] = div_card;
+                }
 
-        contenedorZona = zonas[lugar.zona];
+                contenedorZona = zonas[lugar.zona];
 
-        const card_individual = `
+                const card_individual = `
     <div class="cards">
         <div class="div-info-card">
             <h2>${lugar.nombre_lugar}</h2>
@@ -132,6 +137,12 @@ window.addEventListener("load", function () {
         </div>
     </div>`;
 
-        contenedorZona.insertAdjacentHTML("beforeend", card_individual);
+                contenedorZona.insertAdjacentHTML("beforeend", card_individual);
+            });
+        } else {
+            console.log("Hubo error en el if de correcto y lugares en a_gestion_viewJS");
+        }
+    }).catch(error => {
+        alert("Error de conexión al servidor. No se pudieron obtener los lugares.");
     });
 });

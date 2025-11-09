@@ -317,6 +317,38 @@ INSERT INTO `viajes` VALUES
 (13,2,24,'completado','2025-09-02','11:00:00'),(14,3,3,'completado','2025-07-25','08:15:00'),(15,3,23,'pendiente','2026-03-10','09:30:00'),
 (16,3,17,'completado','2025-09-29','06:00:00'),(17,5,1,'pendiente','2026-01-20','07:15:00'),(18,10,4,'completado','2025-11-01','11:00:00');
 
+UPDATE `arcpw2`.`lugares` SET `nombre_lugar` = 'Parque Barrancas del Cobre', `zona` = 'Sierra Madre Occidental', `imagen_url` = 'limg2.jpg' WHERE (`id_lugar` = '2');
+UPDATE `arcpw2`.`lugares` SET `zona` = 'Centro Historico', `imagen_url` = 'limg1.jpg' WHERE (`id_lugar` = '1');
+UPDATE `arcpw2`.`lugares` SET `zona` = 'Sierra Madre Occidental', `imagen_url` = 'limg3.jpg' WHERE (`id_lugar` = '3');
+UPDATE `arcpw2`.`lugares` SET `zona` = 'Sierra Madre Occidental', `imagen_url` = 'limg4.jpg' WHERE (`id_lugar` = '4');
+UPDATE `arcpw2`.`lugares` SET `zona` = 'Sierra Madre Occidental', `imagen_url` = 'limg5.jpg' WHERE (`id_lugar` = '5');
+UPDATE `arcpw2`.`lugares` SET `zona` = 'Capital Norte', `imagen_url` = 'limg6.jpg' WHERE (`id_lugar` = '6');
+UPDATE `arcpw2`.`lugares` SET `zona` = 'Sierra Madre Occidental', `imagen_url` = 'limg7.jpg' WHERE (`id_lugar` = '7');
+UPDATE `arcpw2`.`lugares` SET `zona` = 'Centro Historico', `imagen_url` = 'limg8.jpg' WHERE (`id_lugar` = '8');
+UPDATE `arcpw2`.`lugares` SET `zona` = 'Centro Historico', `imagen_url` = 'limg9.jpg' WHERE (`id_lugar` = '9');
+UPDATE `arcpw2`.`lugares` SET `nombre_lugar` = 'Parque Metropolitano Presa el Rejon', `zona` = 'Capital Sur', `imagen_url` = 'limg10.jpg' WHERE (`id_lugar` = '10');
+UPDATE `arcpw2`.`lugares` SET `zona` = 'Sierra Madre Occidental', `imagen_url` = 'limg11.jpg' WHERE (`id_lugar` = '11');
+UPDATE `arcpw2`.`lugares` SET `nombre_lugar` = 'Museo de la Revolución', `zona` = 'Centro Historico', `imagen_url` = 'limg12.jpg' WHERE (`id_lugar` = '12');
+UPDATE `arcpw2`.`lugares` SET `zona` = 'Capital Sur', `imagen_url` = 'limg13.jpg' WHERE (`id_lugar` = '13');
+UPDATE `arcpw2`.`lugares` SET `zona` = 'Centro Historico', `imagen_url` = 'limg14.jpg' WHERE (`id_lugar` = '14');
+UPDATE `arcpw2`.`lugares` SET `nombre_lugar` = 'Museo de la Revolución en la Frontera', `zona` = 'Juarez Norte', `imagen_url` = 'limg15.jpg' WHERE (`id_lugar` = '15');
+UPDATE `arcpw2`.`lugares` SET `zona` = 'Centro Historico', `imagen_url` = 'limg16.jpg' WHERE (`id_lugar` = '16');
+UPDATE `arcpw2`.`lugares` SET `zona` = 'Carretera Aldama', `imagen_url` = 'limg17.jpg' WHERE (`id_lugar` = '17');
+UPDATE `arcpw2`.`lugares` SET `zona` = 'Carretera Aldama', `imagen_url` = 'limg18.jpg' WHERE (`id_lugar` = '18');
+UPDATE `arcpw2`.`lugares` SET `zona` = 'Centro Historico', `imagen_url` = 'limg19.jpg' WHERE (`id_lugar` = '19');
+UPDATE `arcpw2`.`lugares` SET `zona` = 'Capital Noreste', `imagen_url` = 'limg20.jpg' WHERE (`id_lugar` = '20');
+UPDATE `arcpw2`.`lugares` SET `zona` = 'Casas Grandes', `imagen_url` = 'limg21.jpg' WHERE (`id_lugar` = '21');
+UPDATE `arcpw2`.`lugares` SET `zona` = 'Juarez Sur', `imagen_url` = 'limg22.jpg' WHERE (`id_lugar` = '22');
+UPDATE `arcpw2`.`lugares` SET `zona` = 'Sierra Madre Occidental', `imagen_url` = 'limg23.jpg' WHERE (`id_lugar` = '23');
+UPDATE `arcpw2`.`lugares` SET `zona` = 'Sierra Madre Occidental', `imagen_url` = 'limg24.jpg' WHERE (`id_lugar` = '24');
+UPDATE `arcpw2`.`lugares` SET `zona` = 'Sierra Madre Occidental', `imagen_url` = 'limg25.jpg' WHERE (`id_lugar` = '25');
+UPDATE `arcpw2`.`lugares` SET `zona` = 'Sierra Madre Occidental', `imagen_url` = 'limg26.jpg' WHERE (`id_lugar` = '26');
+UPDATE `arcpw2`.`lugares` SET `zona` = 'Sierra Madre Occidental', `imagen_url` = 'limg27.jpg' WHERE (`id_lugar` = '27');
+UPDATE `arcpw2`.`lugares` SET `nombre_lugar` = 'Angel de la Independencia', `zona` = 'Centro Historico', `imagen_url` = 'limg28.jpg' WHERE (`id_lugar` = '28');
+UPDATE `arcpw2`.`lugares` SET `zona` = 'Sierra Madre Occidental', `imagen_url` = 'limg29.jpg' WHERE (`id_lugar` = '29');
+UPDATE `arcpw2`.`lugares` SET `zona` = 'Ojinaga', `imagen_url` = 'limg30.jpg' WHERE (`id_lugar` = '30');
+
+
 -- Reactivar la verificación de claves foráneas y restricciones
 SET FOREIGN_KEY_CHECKS = 1;
 SET UNIQUE_CHECKS = 1;
