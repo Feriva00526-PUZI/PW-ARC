@@ -10,7 +10,11 @@ const lugares = [
 ];
 
 window.addEventListener("load", function () {
-
+    const administradorSession = sessionStorage.getItem("admin_logeado");
+    if (administradorSession == null) {
+        window.location.href = "./../../../index.html";
+        return;
+    }
     fetch("./../../components/header.html")
         .then(response => response.text())
         .then(data => {
