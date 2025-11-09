@@ -1,0 +1,330 @@
+-- Creación y selección de la base de datos
+CREATE DATABASE IF NOT EXISTS `arcpw2` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+USE `arcpw2`;
+
+-- Deshabilitar la verificación de claves foráneas y restricciones para una importación rápida
+SET FOREIGN_KEY_CHECKS = 0;
+SET UNIQUE_CHECKS = 0;
+SET SQL_MODE = 'NO_AUTO_VALUE_ON_ZERO';
+
+-- -----------------------------------------------------
+-- Esquema de Tablas
+-- -----------------------------------------------------
+
+-- Tabla `administradores`
+DROP TABLE IF EXISTS `administradores`;
+CREATE TABLE `administradores` (
+  `id_admin` int NOT NULL AUTO_INCREMENT,
+  `user` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `nombre` varchar(255) NOT NULL,
+  `ap1` varchar(255) NOT NULL,
+  `telefono` varchar(255) NOT NULL,
+  `correo` varchar(255) NOT NULL,
+  PRIMARY KEY (`id_admin`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Tabla `agencias`
+DROP TABLE IF EXISTS `agencias`;
+CREATE TABLE `agencias` (
+  `id_agencia` int NOT NULL AUTO_INCREMENT,
+  `descripcion` text NOT NULL,
+  `nombre_agencia` varchar(255) NOT NULL,
+  `fecha_registro` date NOT NULL,
+  `direccion` varchar(255) NOT NULL,
+  `imagen_url` varchar(255) NOT NULL,
+  `user` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `telefono` varchar(10) NOT NULL,
+  `correo` varchar(255) NOT NULL,
+  PRIMARY KEY (`id_agencia`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Tabla `clientes`
+DROP TABLE IF EXISTS `clientes`;
+CREATE TABLE `clientes` (
+  `id_cliente` int NOT NULL AUTO_INCREMENT,
+  `user` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `nombre` varchar(255) NOT NULL,
+  `ap1` varchar(255) NOT NULL,
+  `correo` varchar(255) NOT NULL,
+  `telefono` varchar(10) NOT NULL,
+  PRIMARY KEY (`id_cliente`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Tabla `lugares`
+DROP TABLE IF EXISTS `lugares`;
+CREATE TABLE `lugares` (
+  `id_lugar` int NOT NULL AUTO_INCREMENT,
+  `nombre_lugar` varchar(255) NOT NULL,
+  `descripcion` text NOT NULL,
+  `direccion` varchar(255) NOT NULL,
+  `ciudad` varchar(255) NOT NULL,
+  `zona` varchar(255) NOT NULL,
+  `imagen_url` varchar(255) NOT NULL,
+  `id_admin` int NOT NULL,
+  PRIMARY KEY (`id_lugar`),
+  KEY `id_admin` (`id_admin`),
+  CONSTRAINT `lugares_ibfk_1` FOREIGN KEY (`id_admin`) REFERENCES `administradores` (`id_admin`)
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Tabla `organizadoras`
+DROP TABLE IF EXISTS `organizadoras`;
+CREATE TABLE `organizadoras` (
+  `id_organizadora` int NOT NULL AUTO_INCREMENT,
+  `user` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `descripcion_agencia` text NOT NULL,
+  `nombre_agencia` varchar(255) NOT NULL,
+  `fecha_registro` date NOT NULL,
+  `direccion` varchar(255) NOT NULL,
+  `imagen_url` varchar(255) NOT NULL,
+  `telefono` varchar(10) NOT NULL,
+  `correo` varchar(255) NOT NULL,
+  PRIMARY KEY (`id_organizadora`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Tabla `tipoactividad`
+DROP TABLE IF EXISTS `tipoactividad`;
+CREATE TABLE `tipoactividad` (
+  `id_tipo_actividad` int NOT NULL AUTO_INCREMENT,
+  `nombre_tipo_actividad` varchar(100) NOT NULL,
+  `descripcion` text NOT NULL,
+  PRIMARY KEY (`id_tipo_actividad`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Tabla `eventos`
+DROP TABLE IF EXISTS `eventos`;
+CREATE TABLE `eventos` (
+  `id_evento` int NOT NULL AUTO_INCREMENT,
+  `nombre_evento` varchar(255) NOT NULL,
+  `descripcion` text NOT NULL,
+  `fecha_evento` date NOT NULL,
+  `hora_evento` time NOT NULL,
+  `fecha_registro` date NOT NULL,
+  `precio_boleto` decimal(10,2) NOT NULL,
+  `imagen_url` varchar(255) NOT NULL,
+  `id_lugar` int NOT NULL,
+  `id_tipo_actividad` int NOT NULL,
+  `id_organizadora` int NOT NULL,
+  PRIMARY KEY (`id_evento`),
+  KEY `id_lugar` (`id_lugar`),
+  KEY `id_tipo_actividad` (`id_tipo_actividad`),
+  KEY `id_organizadora` (`id_organizadora`),
+  CONSTRAINT `eventos_ibfk_1` FOREIGN KEY (`id_lugar`) REFERENCES `lugares` (`id_lugar`),
+  CONSTRAINT `eventos_ibfk_2` FOREIGN KEY (`id_tipo_actividad`) REFERENCES `tipoactividad` (`id_tipo_actividad`),
+  CONSTRAINT `eventos_ibfk_3` FOREIGN KEY (`id_organizadora`) REFERENCES `organizadoras` (`id_organizadora`)
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Tabla `paquetes`
+DROP TABLE IF EXISTS `paquetes`;
+CREATE TABLE `paquetes` (
+  `id_paquete` int NOT NULL AUTO_INCREMENT,
+  `id_agencia` int NOT NULL,
+  `id_lugar` int NOT NULL,
+  `precio` decimal(10,2) NOT NULL,
+  `nombre_paquete` varchar(255) NOT NULL,
+  `descripcion_paquete` text NOT NULL,
+  `imagen_url` varchar(255) NOT NULL,
+  PRIMARY KEY (`id_paquete`),
+  KEY `id_agencia` (`id_agencia`),
+  KEY `id_lugar` (`id_lugar`),
+  CONSTRAINT `paquetes_ibfk_1` FOREIGN KEY (`id_agencia`) REFERENCES `agencias` (`id_agencia`),
+  CONSTRAINT `paquetes_ibfk_2` FOREIGN KEY (`id_lugar`) REFERENCES `lugares` (`id_lugar`)
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Tabla `reservaciones`
+DROP TABLE IF EXISTS `reservaciones`;
+CREATE TABLE `reservaciones` (
+  `id_reservacion` int NOT NULL AUTO_INCREMENT,
+  `id_evento` int NOT NULL,
+  `id_cliente` int NOT NULL,
+  `estado` varchar(255) NOT NULL,
+  PRIMARY KEY (`id_reservacion`),
+  KEY `id_evento` (`id_evento`),
+  KEY `id_cliente` (`id_cliente`),
+  CONSTRAINT `reservaciones_ibfk_1` FOREIGN KEY (`id_evento`) REFERENCES `eventos` (`id_evento`),
+  CONSTRAINT `reservaciones_ibfk_2` FOREIGN KEY (`id_cliente`) REFERENCES `clientes` (`id_cliente`)
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Tabla `viajes`
+DROP TABLE IF EXISTS `viajes`;
+CREATE TABLE `viajes` (
+  `id_viaje` int NOT NULL AUTO_INCREMENT,
+  `id_cliente` int NOT NULL,
+  `id_paquete` int NOT NULL,
+  `estado` varchar(255) NOT NULL,
+  `fecha_viaje` date NOT NULL,
+  `hora_viaje` time NOT NULL,
+  PRIMARY KEY (`id_viaje`),
+  KEY `id_cliente` (`id_cliente`),
+  KEY `id_paquete` (`id_paquete`),
+  CONSTRAINT `viajes_ibfk_1` FOREIGN KEY (`id_cliente`) REFERENCES `clientes` (`id_cliente`),
+  CONSTRAINT `viajes_ibfk_2` FOREIGN KEY (`id_paquete`) REFERENCES `paquetes` (`id_paquete`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- -----------------------------------------------------
+-- Datos (INSERTs)
+-- -----------------------------------------------------
+
+-- Datos para `administradores`
+INSERT INTO `administradores` VALUES 
+(1,'CarlosAdmin','pass123','Carlos','Villalobos','6141234567','carlos.vg@gmail.com'),
+(2,'EdwinAdmin','pass456','Edwin','Morales','6149876543','edwin.mg@gmail.com'),
+(3,'FerAdmin','pass789','Fernado','Delgado','6145556677','fer.dj@gmail.com'),
+(4,'KenAdmin','pass555','Ken','Meza','6145556677','ken.my@gmail.com');
+
+-- Datos para `agencias`
+INSERT INTO `agencias` VALUES 
+(1,'Especializada en viajes grupales y experiencias personalizadas','Mega Viajes','2025-01-15','Av. Universidad 1234, Chihuahua, Chih.','mega_viajes.png','megaviajes','megaviajes123','6141234567','contacto@megaviajes.com'),
+(2,'Agencia enfocada en turismo y paquetes culturales','Platinum Travels','2025-02-10','Av. Fco. Villa 4907, Plaza Arboledas Local 217, Chihuahua, Chih.','platinum_travels.png','platinum','platinum456','6142345678','info@platinumtravels.com'),
+(3,'Ofrece paquetes de viaje y asesoría personalizada para turistas','Al Viajar','2025-03-05','Av. Francisco Villa 4904-5, Arboledas, Chihuahua, Chih.','al_viajar.png','alviajar','alviajar789','6143456789','contacto@alviajar.com');
+
+-- Datos para `clientes`
+INSERT INTO `clientes` VALUES 
+(1,'cliente1','cli123','Miguel','Ramirez','miguel.r@correo.com','6141000001'),
+(2,'cliente2','cli234','Sofia','Lopez','sofia.l@correo.com','6141000002'),
+(3,'cliente3','cli345','Diego','Hernandez','diego.h@correo.com','6141000003'),
+(4,'cliente4','cli456','Valeria','Martinez','valeria.m@correo.com','6141000004'),
+(5,'cliente5','cli567','Ricardo','Gomez','ricardo.g@correo.com','6141000005'),
+(6,'cliente6','cli678','Camila','Torres','camila.t@correo.com','6141000006'),
+(7,'cliente7','cli789','Fernando','Sanchez','fernando.s@correo.com','6141000007'),
+(8,'cliente8','cli890','Daniela','Diaz','daniela.d@correo.com','6141000008'),
+(9,'cliente9','cli901','Jorge','Vazquez','jorge.v@correo.com','6141000009'),
+(10,'cliente10','cli012','Paola','Ortiz','paola.o@correo.com','6141000010');
+
+-- Datos para `lugares`
+INSERT INTO `lugares` VALUES 
+(1,'Museo Casa Chihuahua','Museo de historia y arte en el centro histórico de Chihuahua.','Av. Venustiano Carranza 1202, Centro','Chihuahua','Centro','limg1.png',1),
+(2,'Parque Barrancas del Carmen','Parque urbano con áreas verdes, juegos y vistas panorámicas de la ciudad.','Av. Tecnológico s/n, Fraccionamiento Campestre','Chihuahua','Norte','limg2.png',2),
+(3,'Cascada Basaseachic','Segunda cascada más alta de México, ubicada en la Sierra Tarahumara.','Parque Nacional Basaseachic, Chihuahua','Chihuahua','Sierra','limg3.png',3),
+(4,'Teleférico de Creel','Paseo panorámico en teleférico con vistas espectaculares del valle.','Av. Juárez 105, Creel','Creel','Sierra','limg4.png',4),
+(5,'Barrancas del Cobre','Sistema de cañones más grande que el Gran Cañón, ideal para senderismo y aventura.','Carretera Chihuahua - Creel km 120','Chihuahua','Sierra','limg5.png',1),
+(6,'Grutas Nombre de Dios','Complejo de cuevas y formaciones geológicas con tours guiados.','Nombre de Dios, Chihuahua','Chihuahua','Sur','limg6.png',2),
+(7,'Parque Nacional Cumbres de Majalca','Área natural protegida con montañas y bosques para ecoturismo.','Cumbres de Majalca, Chihuahua','Chihuahua','Sierra','limg7.png',3),
+(8,'Museo Semilla','Museo interactivo de ciencia y tecnología para toda la familia.','Av. Tecnológico 1234, Chihuahua','Chihuahua','Norte','limg8.png',4),
+(9,'Plaza Mayor Chihuahua','Centro comercial y cultural con tiendas, restaurantes y eventos.','Av. 16 de Septiembre 1910, Centro','Chihuahua','Centro','limg9.png',1),
+(10,'Parque Metropolitano','Parque urbano con lago artificial, áreas deportivas y recreativas.','Av. Tecnológico s/n, Chihuahua','Chihuahua','Sur','limg10.png',2),
+(11,'Teleférico Parque Aventura','Paseo panorámico para observar la ciudad y disfrutar de aventura ligera.','Parque Aventura, Chihuahua','Chihuahua','Norte','limg11.png',3),
+(12,'Zona del Museo de la Revolución','Área dedicada a la historia de la Revolución Mexicana en Chihuahua.','Av. Independencia 101, Centro','Chihuahua','Centro','limg12.png',4),
+(13,'Mirador Cerro Grande','Mirador con vista panorámica de la ciudad ideal para fotografía y caminatas.','Cerro Grande, Chihuahua','Chihuahua','Norte','limg13.png',1),
+(14,'Parque El Palomar','Parque recreativo con áreas verdes y juegos infantiles.','Av. Tecnológico 2300, Chihuahua','Chihuahua','Sur','limg14.png',2),
+(15,'Museo de la Revolución en Ciudad Juárez','Museo histórico sobre la Revolución Mexicana y la vida en la frontera.','Av. 16 de Septiembre 2001, Ciudad Juárez','Ciudad Juárez','Centro','limg15.png',3),
+(16,'Catedral de Chihuahua','Principal catedral del estado, ejemplo de arquitectura barroca y neoclásica.','Av. Venustiano Carranza 1200, Centro','Chihuahua','Centro','limg16.png',1),
+(17,'Zoológico de Aldama','Parque zoológico con especies locales y de otros continentes, ideal para familias.','Carretera a Aldama km 2, Aldama','Chihuahua','Norte','limg17.png',2),
+(18,'Campo de Girasoles','Campo abierto con girasoles para turismo fotográfico y recreativo.','Carretera a Aldama s/n, Chihuahua','Chihuahua','Norte','limg18.png',3),
+(19,'Plaza Mariachi','Espacio cultural con música en vivo y gastronomía tradicional.','Av. de las Americas 120, Chihuahua','Chihuahua','Centro','limg19.png',4),
+(20,'Cerro Coronel','Mirador natural con vistas panorámicas de la ciudad y senderismo ligero.','Cerro Coronel, Chihuahua','Chihuahua','Sur','limg20.png',1),
+(21,'Zona Arqueológica de Paquimé','Sitio arqueológico prehispánico declarado Patrimonio de la Humanidad por la UNESCO.','Casas Grandes, Chihuahua','Casas Grandes','Noroeste','limg21.png',1),
+(22,'Desierto de Samalayuca','Extensas dunas de arena ideales para tours de aventura y fotografía.','Carretera Panamericana km 75','Samalayuca','Norte','limg22.png',2),
+(23,'Cascadas de Cusárare','Cascadas naturales con zonas para picnic y senderismo.','Cusárare, Chihuahua','Cusárare','Sierra','limg23.png',3),
+(24,'Barrancas de Sinforosa','Zona de cañones para senderismo, camping y turismo de aventura.','Carretera Creel-San Juanito','Sierra Tarahumara','Sierra','limg24.png',4),
+(25,'Estación Divisadero Chepe','Estación del tren Chepe en la Barranca del Cobre con miradores panorámicos.','Divisadero, Chihuahua','Divisadero','Sierra','limg25.png',1),
+(26,'Valle de los Monjes','Formaciones rocosas únicas y senderos para excursiones y fotografía.','Carretera Creel-Chihuahua km 45','Sierra Tarahumara','Sierra','limg26.png',2),
+(27,'Cuarenta Casas','Sitio arqueológico prehispánico construido en cuevas y acantilados de la Sierra Tarahumara.','Carretera Creel-Chihuahua km 30','Creel','Sierra','limg27.png',3),
+(28,'Casa de Adobe en Matachí','Experiencia cultural visitando antiguas casas y tradiciones del norte de México.','Matachí, Chihuahua','Matachí','Noroeste','limg28.png',4),
+(29,'Río Papigochi','Río con zonas para campamento, pesca deportiva y observación de flora y fauna.','Carretera a Papigochi km 10','Papigochi','Sierra','limg29.png',1),
+(30,'Cañón del Pegüis','Cañón natural con rutas de senderismo, miradores y actividades de aventura.','Carretera Creel-Cañón del Pegüis','Creel','Sierra','limg30.png',2);
+
+-- Datos para `organizadoras`
+INSERT INTO `organizadoras` VALUES 
+(1,'govChihEvents','gov2025','Dependencia pública del estado encargada de la organización de eventos oficiales y culturales en Chihuahua.','Gobierno del Estado de Chihuahua – Secretaría de Turismo','2025-04-01','Av. Universidad 3000, Chihuahua, Chih.','gov_chih_turismo.png','6141110000','eventos@chihuahua.gob.mx'),
+(2,'increscendo','inci2025','Empresa de organización y logística de eventos masivos y corporativos, con más de 18 años de experiencia en Chihuahua.','Increscendo Eventos','2024-08-15','Fresno 503, Col. Granjas, Chihuahua, Chih.','increscendo.png','6141420809','info@increscendoeventos.com'),
+(3,'xpoOrganizacion','xpo2025','Empresa especializada en montaje, logística y renta de stands para exposiciones, convenciones y eventos en Chihuahua.','XPO Organización','2024-09-20','J. J. Escudero 3305, Col. Santo Niño, Chihuahua, Chih.','xpo_organizacion.png','6144146483','contacto@xpo-organizacion.com');
+
+-- Datos para `tipoactividad`
+INSERT INTO `tipoactividad` VALUES 
+(1,'Cultural','Visitas a museos, sitios históricos, recorridos culturales por ciudades y pueblos del estado de Chihuahua.'),
+(2,'Aventura','Actividades al aire libre que ofrecen adrenalina, como rappel, senderismo, ciclismo de montaña o kayak en la Sierra Tarahumara.'),
+(3,'Recreativo','Actividades aptas para toda la familia, parques, zoológicos, excursiones y entretenimiento para niños y adultos.'),
+(4,'Gastronomico','Tours y experiencias de comida típica chihuahuense, mercados locales y festivales gastronómicos.'),
+(5,'Naturaleza','Exploración de entornos naturales, observación de flora y fauna, camping y ecotours en la región de Chihuahua.');
+
+-- Datos para `paquetes`
+INSERT INTO `paquetes` VALUES 
+(1,1,1,2000.00,'Paquimé Económico','Recorrido básico con transporte y guía local.','pimg1.png'),
+(2,1,1,2800.00,'Paquimé Estándar','Incluye transporte, entradas y guía certificado.','pimg2.png'),
+(3,2,1,2500.00,'Paquimé Cultural','Tour con guía experto y experiencias culturales.','pimg3.png'),
+(4,1,27,2200.00,'Cuarenta Casas Económico','Recorrido básico con guía local.','pimg4.png'),
+(5,1,27,3000.00,'Cuarenta Casas Premium','Tour VIP con transporte y picnic.','pimg5.png'),
+(6,2,22,1600.00,'Samalayuca Aventura','Recorrido con actividades extremas y guía experto.','pimg6.png'),
+(7,2,22,2300.00,'Samalayuca Cultural','Incluye transporte, guía y explicación de historia natural.','pimg7.png'),
+(8,1,22,3000.00,'Samalayuca Deluxe','Tour completo con transporte VIP y guía.','pimg8.png'),
+(9,1,2,1200.00,'Catedral Tour Básico','Recorrido guiado dentro de la catedral.','pimg9.png'),
+(10,1,3,1800.00,'Zoológico Familiar','Incluye transporte y actividades educativas.','pimg10.png'),
+(11,3,3,2000.00,'Zoológico Deluxe','Experiencia VIP con guía y picnic.','pimg11.png'),
+(12,2,4,1200.00,'Plaza Mariachi VIP','Incluye guía y entrada a evento especial.','pimg12.png'),
+(13,2,5,1500.00,'Cerro Coronel Aventura','Senderismo y vista panorámica.','pimg13.png'),
+(14,3,5,1700.00,'Cerro Coronel Deluxe','Incluye transporte, guía y picnic.','pimg14.png'),
+(15,1,5,1300.00,'Cerro Coronel Económico','Recorrido básico con guía local.','pimg15.png'),
+(16,1,6,3500.00,'Chepe Económico','Viaje por tren panorámico, incluye guía.','pimg16.png'),
+(17,3,6,4500.00,'Chepe Premium','Experiencia completa con transporte VIP y hospedaje.','pimg17.png'),
+(18,1,7,4500.00,'Paquimé y Samalayuca Económico','Recorrido combinado con guía local.','pimg18.png'),
+(19,2,7,5200.00,'Paquimé y Samalayuca Premium','Tour con transporte VIP y guía experto.','pimg19.png'),
+(20,3,7,5500.00,'Paquimé y Samalayuca Deluxe','Experiencia completa con guía y comida incluida.','pimg20.png'),
+(21,1,8,5000.00,'Desierto y Cuarenta Casas Deluxe','Tour completo con transporte y guía experto.','pimg21.png'),
+(22,1,8,5500.00,'Desierto y Cuarenta Casas Premium','Tour con guía y transporte VIP.','pimg22.png'),
+(23,3,8,5500.00,'Desierto y Cuarenta Casas VIP','Experiencia premium con transporte privado y comidas incluidas.','pimg23.png'),
+(24,2,8,5200.00,'Desierto y Cuarenta Casas Estándar','Incluye transporte y guía certificado.','pimg24.png');
+
+-- Datos para `eventos`
+INSERT INTO `eventos` VALUES 
+(1,'Exposición Arte Contemporáneo','Exposición temporal de arte contemporáneo en Chihuahua.','2025-11-15','18:00:00','2025-11-01',150.00,'eimg1.png',1,1,1),
+(2,'Taller Historia Local','Taller interactivo sobre la historia de Chihuahua.','2025-11-20','10:00:00','2025-11-02',120.00,'eimg2.png',1,1,2),
+(3,'Noche de Jazz','Concierto de jazz en el museo.','2025-11-22','20:00:00','2025-11-03',180.00,'eimg3.png',1,3,3),
+(4,'Caminata Guiada','Senderismo con guía experto.','2025-11-18','08:00:00','2025-11-03',100.00,'eimg4.png',2,2,1),
+(5,'Picnic Familiar','Actividades recreativas y picnic.','2025-11-19','11:00:00','2025-11-04',80.00,'eimg5.png',2,3,2),
+(6,'Observación de Aves','Tour guiado de observación de aves locales.','2025-11-20','09:00:00','2025-11-05',120.00,'eimg6.png',2,5,3),
+(7,'Senderismo Cascada','Recorrido guiado hasta la cascada.','2025-11-22','08:30:00','2025-11-06',150.00,'eimg7.png',3,2,1),
+(8,'Tour Fotográfico','Recorrido fotográfico guiado.','2025-11-23','09:00:00','2025-11-07',200.00,'eimg8.png',3,5,2),
+(9,'Campamento Nocturno','Acampada con fogata y actividades nocturnas.','2025-11-24','19:00:00','2025-11-08',180.00,'eimg9.png',3,3,3),
+(10,'Tour Panorámico Creel','Recorrido en teleférico y paseo por el valle.','2025-11-25','14:00:00','2025-11-09',200.00,'eimg10.png',4,5,1),
+(11,'Taller de Fotografía','Aprende fotografía de paisajes con guía experto.','2025-11-26','10:00:00','2025-11-10',150.00,'eimg11.png',4,5,2),
+(12,'Exploración Barrancas','Senderismo y vistas panorámicas con guía.','2025-11-28','08:30:00','2025-11-11',250.00,'eimg12.png',5,2,1),
+(13,'Tour Fotográfico','Recorrido fotográfico guiado.','2025-11-29','09:00:00','2025-11-12',200.00,'eimg13.png',5,5,2),
+(14,'Aventura Extrema','Actividades de aventura y tirolesa.','2025-11-30','10:00:00','2025-11-13',300.00,'eimg14.png',5,2,3),
+(15,'Exploración Grutas','Recorrido guiado por las cuevas y formaciones geológicas.','2025-12-01','09:30:00','2025-11-14',130.00,'eimg15.png',6,5,1),
+(16,'Tour Aventura','Recorrido guiado con actividades de aventura en cuevas.','2025-12-02','10:00:00','2025-11-15',160.00,'eimg16.png',6,2,2),
+(17,'Ecotour Majalca','Recorrido natural con guía y actividades recreativas.','2025-12-03','08:00:00','2025-11-16',170.00,'eimg17.png',7,5,1),
+(18,'Picnic y Juegos','Actividades recreativas para familias.','2025-12-04','11:00:00','2025-11-17',90.00,'eimg18.png',7,3,2),
+(19,'Taller Científico Infantil','Actividades interactivas de ciencia para niños.','2025-12-05','10:00:00','2025-11-18',90.00,'eimg19.png',8,3,1),
+(20,'Experimento Químico','Demostraciones de química divertida.','2025-12-06','12:00:00','2025-11-19',100.00,'eimg20.png',8,3,2),
+(21,'Festival Gastronómico','Evento de comida típica y música en vivo.','2025-12-07','12:00:00','2025-11-20',180.00,'eimg21.png',9,4,2),
+(22,'Concierto al Aire Libre','Evento musical para toda la familia.','2025-12-08','19:00:00','2025-11-21',200.00,'eimg22.png',9,3,3),
+(23,'Carrera Familiar','Evento deportivo con actividades recreativas.','2025-12-09','09:00:00','2025-11-22',50.00,'eimg23.png',10,3,3),
+(24,'Yoga al Amanecer','Clase de yoga al aire libre.','2025-12-10','07:00:00','2025-11-23',60.00,'eimg24.png',10,3,1),
+(25,'Picnic Musical','Música en vivo con picnic para familias.','2025-12-11','12:00:00','2025-11-24',90.00,'eimg25.png',10,3,2),
+(26,'Senderismo Cerro Coronel','Recorrido guiado de senderismo con vistas panorámicas.','2025-12-12','08:30:00','2025-11-25',120.00,'eimg26.png',11,2,1),
+(27,'Tour Fotográfico','Captura la mejor vista del Cerro Coronel.','2025-12-13','09:00:00','2025-11-26',150.00,'eimg27.png',11,5,2),
+(28,'Tour Arqueológico Paquimé','Recorrido guiado por el sitio arqueológico.','2025-12-14','09:00:00','2025-11-27',200.00,'eimg28.png',12,1,2),
+(29,'Taller de Historia','Taller educativo sobre la cultura Paquimé.','2025-12-15','11:00:00','2025-11-28',180.00,'eimg29.png',12,1,3);
+
+-- Datos para `reservaciones` (ACTUALIZADO: 30 registros)
+INSERT INTO `reservaciones` VALUES 
+(1,1,1,'completado'),(2,3,1,'completado'),(3,5,1,'completado'),(4,12,1,'completado'),(5,15,1,'pendiente'),(6,22,1,'pendiente'),
+(7,26,1,'pendiente'),(8,28,1,'cancelado'),(9,2,1,'completado'),(10,7,1,'completado'),(11,21,1,'pendiente'),(12,24,1,'cancelado'),
+(13,2,2,'completado'),(14,4,2,'completado'),(15,10,2,'completado'),(16,16,2,'completado'),(17,19,2,'pendiente'),(18,29,2,'pendiente'),
+(19,2,2,'cancelado'),(20,1,2,'pendiente'),(21,20,2,'completado'),(22,17,2,'completado'),(23,7,3,'completado'),(24,9,3,'completado'),
+(25,14,3,'completado'),(26,23,3,'pendiente'),(27,27,3,'pendiente'),(28,13,4,'completado'),(29,25,8,'pendiente'),(30,11,6,'completado');
+
+-- Datos para `viajes` (ACTUALIZADO: 18 registros)
+INSERT INTO `viajes` VALUES 
+(1,1,1,'completado','2025-09-10','07:00:00'),(2,1,17,'completado','2025-10-05','06:30:00'),(3,1,8,'pendiente','2026-01-15','08:00:00'),
+(4,1,16,'cancelado','2025-05-20','06:00:00'),(5,1,18,'completado','2025-08-01','08:45:00'),(6,1,22,'pendiente','2026-03-20','09:00:00'),
+(7,1,6,'completado','2025-07-11','09:30:00'),(8,1,3,'cancelado','2025-06-05','10:00:00'),(9,2,2,'completado','2025-08-20','07:30:00'),
+(10,2,7,'completado','2025-10-25','09:00:00'),(11,2,19,'pendiente','2026-02-01','07:45:00'),(12,2,12,'cancelado','2025-06-15','12:00:00'),
+(13,2,24,'completado','2025-09-02','11:00:00'),(14,3,3,'completado','2025-07-25','08:15:00'),(15,3,23,'pendiente','2026-03-10','09:30:00'),
+(16,3,17,'completado','2025-09-29','06:00:00'),(17,5,1,'pendiente','2026-01-20','07:15:00'),(18,10,4,'completado','2025-11-01','11:00:00');
+
+-- Reactivar la verificación de claves foráneas y restricciones
+SET FOREIGN_KEY_CHECKS = 1;
+SET UNIQUE_CHECKS = 1;
+
+DROP USER IF EXISTS 'GeneralARCPW2'@'%';
+
+CREATE USER 'GeneralARCPW2'@'%' IDENTIFIED BY 'ARCPW2General';
+
+GRANT DELETE, EXECUTE, INSERT, SELECT, SHOW VIEW, UPDATE ON `arcpw2`.* TO 'GeneralARCPW2'@'%';
+
+FLUSH PRIVILEGES;
