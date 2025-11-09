@@ -20,7 +20,19 @@ export function buscarUsuarios(usuario, contra) {
 
 export function buscarAdmins(usuario, contra) {
     console.log("Busque en administradores");
-    return fetch("./../data/admins.json").then(response => response.json()).then(data => {
+    const credenciales = {
+        user: usuario,
+        password: contra
+    };
+    return fetch("../data/logic/adminLogic.php", { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(credenciales) }).then(response => response.json()).then(data => {
+        let validacion = false;
+        if (data.correcto) {
+            console.log("validado")
+            validacion = true;
+        }
+        return validacion;
+
+        /*
         admins = data;
         let validacion = false;
         admins.forEach((admin) => {
@@ -30,6 +42,7 @@ export function buscarAdmins(usuario, contra) {
             }
         });
         return validacion;
+        */
     });
 };
 export function buscarOrganizadores(usuario, contra) {

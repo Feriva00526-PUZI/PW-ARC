@@ -1,5 +1,4 @@
 <?php
-
 class Conexion{
     private $conexion;
     private $configuracion = [
@@ -26,7 +25,7 @@ class Conexion{
             return $this->conexion;
             
         } catch (PDOException $e){ 
-            echo "Error de Conexión a la BD: " . $e->getMessage();
+            error_log("Error en la conexion de la base de datos: " . $e->getMessage());
             return null;
         }
     }
@@ -36,7 +35,10 @@ class Conexion{
     }
     
     public function getConexion() {
-        return $this->conexion;
+    if ($this->conexion === NULL) {
+        $this->conexion = $this->conectar();
     }
+    return $this->conexion;
 }
-?>
+
+}

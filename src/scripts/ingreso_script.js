@@ -1,5 +1,6 @@
-import * as metodosBusqueda from "./conexion.js";
+import * as metodosBusqueda from "./validLogin.js";
 window.addEventListener("load", function () {
+    sessionStorage.removeItem("admin_logeado");
     document.querySelector("body").style.backgroundImage = "none";
     const datos_incorrectos = document.getElementById("datos_incorrectos");
     const boton_registro = document.getElementById("cambio_registro");
