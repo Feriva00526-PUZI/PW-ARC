@@ -25,7 +25,7 @@
             <label for="file_new_img" class="label_new_img">
                 <div class="file_content_box">
                     <span id="file_name_display">Selecciona la imagen para el nuevo lugar</span>
-                    <input type="file" class="file_new_img" id="file_new_img" name="foto" accept="image/*" required>
+                    <input type="file" class="file_new_img" id="file_new_img" name="imagen" accept="image/*" required>
                 </div>
             </label>
 
@@ -63,6 +63,16 @@
             </button>
 
         </form>
+        <dialog class="dialog_select" id="errorDialog">
+            <h3 class="dialog_h3" id="errorTitulo">Ha ocurrido un error.</h3>
+            <p id="errorMensaje" style="color: #333; margin-top: 15px; font-size: 0.9em;">
+            </p>
+            <br>
+            <button class="button_ls_close" id="close_errorDialog">
+                <img class="img_ls_close" src="./../../media/images/icons/iconLS5.png">
+                <p class="dialog_text_btn_close">Aceptar</p>
+            </button>
+        </dialog>
     </main>
 
 </body>

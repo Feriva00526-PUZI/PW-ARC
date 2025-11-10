@@ -1,9 +1,26 @@
-
 window.addEventListener("load", function () {
     const administradorSession = sessionStorage.getItem("admin_logeado");
     if (administradorSession == null) {
         window.location.href = "./../../../index.html";
         return;
+    }
+    const administradorObj = JSON.parse(administradorSession);
+    const idAdmin = administradorObj.id_admin;
+    const errorDialog = document.getElementById('errorDialog');
+    const errorTitulo = document.getElementById('errorTitulo');
+    const errorMensaje = document.getElementById('errorMensaje');
+    const closeErrorButton = document.getElementById('close_errorDialog');
+
+    function mostrarError(titulo, mensaje) {
+        errorTitulo.textContent = titulo;
+        errorMensaje.textContent = mensaje;
+        errorDialog.showModal();
+    }
+
+    if (closeErrorButton) {
+        closeErrorButton.addEventListener('click', function () {
+            errorDialog.close();
+        });
     }
 
     fetch("./../../components/header.html")
@@ -96,17 +113,17 @@ window.addEventListener("load", function () {
             preview_imagen.src = './../../media/images/lugares/default.jpg';
         }
     });
-
     form_crear_lugar.addEventListener('submit', function (e) {
         e.preventDefault();
-        const form_crear_lugar = new FormData(form_crear_lugar);
+        const formData = new FormData(form_crear_lugar);
+        formData.append('id_admin', idAdmin);
         fetch("./../../data/logic/lugarLogic.php", {
             method: 'POST',
-            body: form_crear_lugar
+            body: formData
         })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Error de red al intentar crear el lugar.');
+                    throw new Error('Error en la respuesta de la peticion.');
                 }
                 return response.json();
             })
@@ -114,12 +131,11 @@ window.addEventListener("load", function () {
                 if (data.correcto === true) {
                     window.location.href = "./a_gestion_view.html";
                 } else {
-                    alert(`Error al crear el lugar: ${data.mensaje || 'Error desconocido'}`);
+                    mostrarError("Error al Crear Lugar", data.mensaje || 'Error desconocido del servidor.');
                 }
             })
             .catch(error => {
-                console.error('Error en la transacción:', error);
-                alert("Hubo un error de conexión o servidor.");
+                mostrarError("Error de Conexión", `No se pudo conectar al servidor: ${error.message}`);
             });
     });
 

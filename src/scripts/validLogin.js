@@ -13,9 +13,9 @@ export function buscarUsuarios(usuario, contra) {
         let validacion = false;
         if (data.correcto) {
             console.log("validado");
-            validacion = true;
+            return data.usuario;
         }
-        return validacion;
+        return false;
 
     });
 }
@@ -30,9 +30,9 @@ export function buscarAdmins(usuario, contra) {
         let validacion = false;
         if (data.correcto) {
             console.log("validado")
-            validacion = true;
+            return data.admin;
         }
-        return validacion;
+        return false;
 
         /*
         admins = data;
@@ -57,9 +57,9 @@ export function buscarOrganizadores(usuario, contra) {
         let validacion = false;
         if (data.correcto) {
             console.log("validado");
-            validacion = true;
+            return data.organizador;
         }
-        return validacion;
+        return false;
 
     });
 }
@@ -74,9 +74,9 @@ export function buscarAgencias(usuario, contra) {
         let validacion = false;
         if (data.correcto) {
             console.log("validado");
-            validacion = true;
+            return data.agencia;
         }
-        return validacion;
+        return false;
 
     });
 };

@@ -27,7 +27,7 @@ window.addEventListener("load", function () {
             metodosBusqueda.buscarUsuarios(usuario, contra).then(validacion => {
                 if (validacion) {
                     alert("si");
-                    sessionStorage.setItem("usuario_logeado", usuario);
+                    sessionStorage.setItem("usuario_logeado", JSON.stringify(validacion));
                 } else {
                     datos_incorrectos.showModal();
                 }
@@ -35,7 +35,7 @@ window.addEventListener("load", function () {
         } else if (tipo_usuario == 2) {
             metodosBusqueda.buscarAdmins(usuario, contra).then(validacion => {
                 if (validacion) {
-                    sessionStorage.setItem("admin_logeado", usuario);
+                    sessionStorage.setItem("admin_logeado", JSON.stringify(validacion));
                     window.location.href = "./admin/a_gestion_view.html";
                 } else {
                     datos_incorrectos.showModal();
@@ -45,7 +45,7 @@ window.addEventListener("load", function () {
             metodosBusqueda.buscarOrganizadores(usuario, contra).then(validacion => {
                 if (validacion) {
                     alert("si");
-                    sessionStorage.setItem("organizador_logeado", usuario);
+                    sessionStorage.setItem("organizador_logeado", JSON.stringify(validacion));
                 } else {
                     datos_incorrectos.showModal();
                 }
@@ -54,7 +54,7 @@ window.addEventListener("load", function () {
             metodosBusqueda.buscarAgencias(usuario, contra).then(validacion => {
                 if (validacion) {
                     alert("si");
-                    sessionStorage.setItem("agencia_logeado", usuario);
+                    sessionStorage.setItem("agencia_logeado", JSON.stringify(validacion));
                 } else {
                     datos_incorrectos.showModal();
                 }
