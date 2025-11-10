@@ -149,5 +149,8 @@ window.addEventListener("load", function () {
         alert("Error de conexión al servidor. No se pudieron obtener los lugares.");
     });
 
-
+    const btn_crear_lugar = document.getElementById("btn_crear_lugar");
+    btn_crear_lugar.addEventListener("click", () => {
+        window.location.href = "./a_crear_lugar.html";
+    });
 });

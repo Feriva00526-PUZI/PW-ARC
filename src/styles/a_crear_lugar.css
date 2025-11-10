@@ -11,7 +11,7 @@
         "imagen         descripcion     mapa"
         "imagen         zona            ciudad"
         "direccion      direccion       direccion"
-        "file           eliminar        modificar"
+        "file           crear           crear"
     ;
     gap: 30px;
     align-items: stretch;
@@ -87,13 +87,8 @@
     grid-area: ciudad;
 }
 
-
-.boton_eliminar_lugar {
-    grid-area: eliminar;
-}
-
-.boton_modificar_lugar {
-    grid-area: modificar;
+.boton_crear_lugar {
+    grid-area: crear;
 }
 
 .txt_descripcion_lugar {
