@@ -116,5 +116,47 @@ window.addEventListener("load", function () {
             f_general.style.backgroundPosition = "50% 80%";
         });
 
+    const boton_eliminar_lugar = document.getElementById("boton_eliminar_lugar");
+    const id_lugarAct = lugar.id_lugar;
+    const confirm_delete = document.getElementById("confirm_delete");
+    const button_proceder = document.getElementById("button_proceder");
+    const button_revert = document.getElementById("button_revert");
+    const error_in_delete = document.getElementById("error_in_delete");
+    const button_error_revert = document.getElementById("button_error_revert");
 
+    boton_eliminar_lugar.addEventListener("click", (e) => {
+        e.preventDefault();
+        confirm_delete.showModal();
+    });
+    button_proceder.addEventListener("click", () => {
+        confirm_delete.close();
+        fetch("./lugarLogic.php", {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ id_lugar: id_lugarAct })
+        }).then(response => {
+            if (!response.ok) {
+                return response.json().catch(() => {
+                    throw new Error('Error en la respuesta de la solicitud.');
+                });
+            }
+            return response.json();
+        }).then(data => {
+            if (data.correcto) {
+                window.location.href = "./a_gestion_view.html";
+            } else {
+                error_in_delete.showModal();
+            }
+        }).catch(error => {
+            error_in_delete.showModal();
+        });
+    });
+    button_revert.addEventListener("click", () => {
+        confirm_delete.close();
+    });
+    button_error_revert.addEventListener("click", () => {
+        error_in_delete.close();
+    });
 });
