@@ -26,7 +26,7 @@ window.addEventListener("load", function () {
         if (tipo_usuario == 1) {
             metodosBusqueda.buscarUsuarios(usuario, contra).then(validacion => {
                 if (validacion) {
-                    alert("si");
+                    console.log("si  b");
                     sessionStorage.setItem("usuario_logeado", JSON.stringify(validacion));
                 } else {
                     datos_incorrectos.showModal();
@@ -44,8 +44,10 @@ window.addEventListener("load", function () {
         } else if (tipo_usuario == 3) {
             metodosBusqueda.buscarOrganizadores(usuario, contra).then(validacion => {
                 if (validacion) {
-                    alert("si");
+                                        console.log("si  sdfds");
+
                     sessionStorage.setItem("organizador_logeado", JSON.stringify(validacion));
+                    window.location.href = "./organizers/organizer.html"
                 } else {
                     datos_incorrectos.showModal();
                 }
@@ -53,7 +55,7 @@ window.addEventListener("load", function () {
         } else if (tipo_usuario == 4) {
             metodosBusqueda.buscarAgencias(usuario, contra).then(validacion => {
                 if (validacion) {
-                    alert("si");
+                    alert("si  a");
                     sessionStorage.setItem("agencia_logeado", JSON.stringify(validacion));
                 } else {
                     datos_incorrectos.showModal();
