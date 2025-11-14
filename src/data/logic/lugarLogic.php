@@ -35,7 +35,7 @@
             $id_admin = $_POST["id_admin"];
             $imagen = $_FILES["imagen"];
 
-            if (empty($nombre) || empty($descripcion) || empty($direccion) || empty($ciudad) || empty($zona) || empty($id_admin) || empty($imagen)) {
+            if (empty($nombre) || empty($descripcion) || empty($direccion) || empty($ciudad) || empty($zona) || empty($id_admin) || !isset($_FILES["imagen"])) {
                 $error = "Datos incompletos";
                 $respuesta = array("correcto" => false, "mensaje" => $error);
                 echo json_encode($respuesta);
@@ -64,7 +64,7 @@
                 $nombre_img_db = 'lim' . $id_lugar . '.' . $extension;
                 $ruta_almacenamiento_fisica = $RUTA_FISICA_GUARDADO . $nombre_img_db;
 
-                if(@move_uploaded_file($imagen["tmp_name"], $ruta_almacenamiento_fisica)){
+                if(move_uploaded_file($imagen["tmp_name"], $ruta_almacenamiento_fisica)){
                     if($lugarDAO->updateImagen($id_lugar, $nombre_img_db)){
                         $respuesta = array("correcto" => true, "mensaje" => "Lugar creado exitosamente.");
                         echo json_encode($respuesta);
@@ -73,7 +73,7 @@
                                 @unlink($ruta_almacenamiento_fisica);
                         }
                         $lugarDAO->eliminarLugarPorId($id_lugar);
-                        $respuesta = array("correcto" => false, "mensaje" => "Error: No se pudo actualiza rla imagen en la base de datos");
+                        $respuesta = array("correcto" => false, "mensaje" => "Error: No se pudo actualizar la imagen en la base de datos");
                         echo json_encode($respuesta);
                     }
             } else {
