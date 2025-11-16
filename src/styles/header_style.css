@@ -46,6 +46,8 @@
 */
 
 
+
+
 /*Contenedor principal del Header, basicamente es el header*/
 .s_header {
     background-color: #001233;
@@ -349,3 +351,4 @@ main {
 section {
     margin-bottom: 30px;
 }
+

@@ -1,112 +1,207 @@
-/* ====== organizers.css ====== */
-
-/* ---- Contenedor principal ---- */
+/* === Layout principal === */
 .organizers-box {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 30px;
-  height: 100%;
-}
-
-/* ---- Caja de eventos ---- */
-.organizers-events-box {
-  @apply box;
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-}
-
-.organizers-events-box h2 {
-  margin-bottom: 10px;
-}
-
-/* ---- Lista scrollable ---- */
-.organizers-events-info {
-  overflow-y: auto;
-  display: grid;
-  gap: 10px;
-  align-content: start;
-  padding-right: 10px;
-}
-
-/* ---- Scroll personalizado ---- */
-.organizers-events-info::-webkit-scrollbar {
-  width: 8px;
-}
-
-.organizers-events-info::-webkit-scrollbar-thumb {
-  background-color: #023E8A;
-  border-radius: 4px;
-}
-
-.organizers-events-info::-webkit-scrollbar-thumb:hover {
-  background-color: #1f3461;
-}
-
-/* ---- Calendario ---- */
-.organizers-calendar {
-  @apply box;
-}
-
-/* ---- Sección registrar evento ---- */
-.event-box {
-  @apply box;
-  display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 1fr 2fr; /* Columna izquierda (info) y derecha (tabla) */
   gap: 30px;
   align-items: start;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
 }
 
-.event-box h1 {
-  grid-column: 1 / 4;
+/* Columna izquierda (imagen y descripción) */
+.organizers-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
-  margin-bottom: 20px;
 }
 
-.event-calendar-box,
-.event-img-box {
-  background-color: #f0f2fa;
+.organizers-info img {
+  width: 100%;
+  height: auto;
   border-radius: 10px;
-  min-height: 400px;
-  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.1);
-  display: grid;
-  place-items: center;
-  font-weight: 600;
-  color: #023E8A;
+  margin-bottom: 15px;
 }
 
-.event-img-box {
-  overflow: hidden;
+.mensaje-bienvenida {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #333;
+  max-width: 300px;
 }
 
-.event-img-box img {
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 15px;
+  align-items: center;
+}
+
+.filters input, .filters button {
+  padding: 6px 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.tabla-eventos {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 15px;
+}
+
+.tabla-eventos th, .tabla-eventos td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.tabla-eventos th {
+  background-color: #023E8A;
+  color: white;
+}
+
+.btn-modificar {
+  background-color: #0077b6;
+  color: white;
+  border: none;
+  padding: 5px 8px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-cancelar {
+  background-color: #d62828;
+  color: white;
+  border: none;
+  padding: 5px 8px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-modificar:hover, .btn-cancelar:hover {
+  opacity: 0.85;
+}
+
+@media (max-width: 900px) {
+  .organizers-box {
+    grid-template-columns: 1fr; /* Una sola columna */
+  }
+
+  .organizers-info {
+    margin-bottom: 20px;
+  }
+
+  .filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filters input,
+  .filters button {
+    width: 100%;
+  }
+
+  /* --- Ajustes para tabla y texto en móvil --- */
+  .tabla-eventos {
+    font-size: 0.9rem;
+  }
+
+  .tabla-eventos th,
+  .tabla-eventos td {
+    padding: 6px;
+  }
+
+  .btn-modificar,
+  .btn-cancelar {
+    padding: 4px 6px;
+    font-size: 0.85rem;
+  }
+
+  .mensaje-bienvenida {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 600px) {
+  /* Más compacta en pantallas muy pequeñas */
+  .tabla-eventos {
+    font-size: 0.8rem;
+  }
+
+  .btn-modificar,
+  .btn-cancelar {
+    padding: 3px 5px;
+    font-size: 0.8rem;
+  }
+}
+
+/* === Estilo del banner === */
+.banner {
+  position: relative;
+  background-image: url('../media/images/background-events-organizers.jpg'); /* Imagen de fondo */
+  background-size: cover;
+  background-position: center;
+  text-align: center;
+  color: white;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  height: 400px; /* Aumenta la altura del banner */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Sombra para dar profundidad */
+}
+
+.banner-content {
   width: 100%;
   height: 100%;
-  object-fit: fill;
+  background-color: rgba(0, 0, 0, 0.6); 
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
+  align-items: center;
+  padding: 0 20px; 
 }
 
-/* ---- Formularios ---- */
-form {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 15px;
+.slogan {
+  font-size: 2.5rem; 
+  font-weight: bold;
+  margin-bottom: 20px;
+  animation: fadeIn 6s ease-out 1; 
+  line-height: 1.4; 
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); 
+  max-width: 80%;
+  word-wrap: break-word; 
 }
 
-.event-send-button {
-  justify-self: end;
+/* Animación para el eslogan */
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(30px); }
+  50% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-30px); }
 }
 
-/* ---- Responsividad ---- */
+/* Estilo para el número de eventos */
+.numero-eventos {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-top: 20px;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6); 
+}
+
 @media (max-width: 768px) {
-  .organizers-box {
-    grid-template-columns: 1fr;
+  .slogan {
+    font-size: 2rem; 
   }
 
-  .event-box {
-    grid-template-columns: 1fr;
-    gap: 20px;
+  .numero-eventos {
+    font-size: 1.5rem;
   }
+}
 
-  .event-box h1 {
-    grid-column: 1;
+@media (max-width: 480px) {
+  .slogan {
+    font-size: 1.6rem; 
+    max-width: 90%; 
   }
 }

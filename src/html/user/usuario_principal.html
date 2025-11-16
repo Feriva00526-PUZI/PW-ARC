@@ -9,54 +9,18 @@
   <link rel="stylesheet" href="./../../styles/footer_style.css">
   <link rel="stylesheet" href="./../../styles/style_generico.css">
   <link rel="stylesheet" href="./../../styles/carousel.css">
-  <script src="./../../scripts/script_usuario_principal.js"></script>
+  <script src="./../../scripts/script_usuario_principal.js" type="module"></script>
 </head>
 
 <body>
   <main class="box">
     <section>
       <div id="carrusel-paquetes"></div>
-      <div id="carrusel-eventos"></div>
-      <button id="btnAutoLogin">Entar organiza</button>
     </section>
 
   </main>
 </body>
 
-<script type="module">
-  import { crearCarrusel } from "./../../scripts/carousel.js";
 
-  window.addEventListener("load", function () {
-    // Carrusel de paquetes
-    crearCarrusel({
-      containerSelector: "#carrusel-paquetes",
-      dataFile: "paquetes.json",
-      type: "paquete",
-      title: "Paquetes destacados"
-    });
-
-    // Carrusel de eventos
-    crearCarrusel({
-      containerSelector: "#carrusel-eventos",
-      dataFile: "eventos.json",
-      type: "evento",
-      title: "Eventos destacados"
-    });
-
-  });
-</script>
-<script>
-  document.getElementById("btnAutoLogin").addEventListener("click", async function () {
-
-    const response = await fetch("../../data/organizers.json");
-    const organizadoras = await response.json();
-
-    const primera = organizadoras[0];
-
-    sessionStorage.setItem("organizadoraActiva", JSON.stringify(primera));
-
-    window.location.href = "../organizers/activities_dashboard.html";
-  });
-</script>
 
 </html>

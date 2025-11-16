@@ -20,7 +20,7 @@ class lugarDAO{
 
             $lugar = $stmt->fetchALL(PDO::FETCH_ASSOC);
             return $lugar;
-        }catch (PDOException $e){
+        } catch (PDOException $e){
             throw new Exception("Error al realizar la consulta en la base de datos: " . $e->getMessage());
         }
 
@@ -44,7 +44,7 @@ class lugarDAO{
             
             return $this->conexion->lastInsertId();
             
-        }catch(PDOException $e){
+        } catch(PDOException $e){
             throw new Exception("Error en la creacion del lugar en la base de datos: " . $e->getMessage());
         }
     }
@@ -56,7 +56,7 @@ class lugarDAO{
             $stmt->bindParam(':imagen_nombre', $imagen_nombre);
             $stmt->bindParam(':id', $id);
             return $stmt->execute();
-        }catch(PDOException $e){
+        } catch(PDOException $e){
             throw new Exception("Error al actualizar la imagen del lugar en la base de datos: " . $e->getMessage());
         }
     }
@@ -67,9 +67,23 @@ class lugarDAO{
             $stmt = $this->conexion->prepare($sql);
             $stmt->bindParam(':id', $id);
             return $stmt->execute();
-        }catch(PDOException $e){
+        } catch(PDOException $e){
             return false;
         }
     }
+
+    public function getLugarPorID($idLugar){
+        try{
+            $sql = "SELECT * FROM lugares WHERE id_lugar = :id";
+            $stmt = $this->conexion->prepare($sql);
+            $stmt->bindParam(":id", $idLugar, PDO::PARAM_INT);
+            $stmt->execute();
+
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch(PDOException $e){
+            throw new Exception("Error al obtener lugar: " . $e->getMessage());
+        }
+    }
+
 }
 ?>
