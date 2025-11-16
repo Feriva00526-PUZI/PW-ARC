@@ -1,67 +1,254 @@
-window.addEventListener("load", async function () {
+// import { obtenerEventosPorOrganizadora, obtenerNumeroEventosEsteMes } from "./dao/daoEventos.js";
 
-    // Organizadora activa de sessionStorage
-    const organizadora = JSON.parse(sessionStorage.getItem("organizadoraActiva"));
+window.addEventListener("load", function () {
+
+    let organizadora = JSON.parse(sessionStorage.getItem("organizador_logeado"));
+    console.log(organizadora)
+
+    const idOrg = organizadora.id_organizadora;
+
     if (!organizadora) {
-        window.location.href = "./index.html";
+        // Si no hay sesión, redirigir
+        window.location.href = "../../../index.html";
         return;
+    } else {
+        organizadora = fetch(`../../data/Logic/organizerController.php?accion=organizador&id_organizadora=${idOrg}`)
+            .then(res => res.json())
+            .then(json => {
+                if (json.correcto) {
+                    document.getElementById("numeroEventos")
+                        .innerText = `Numero de eventos este mes: ${json.total}`;
+                } else {
+                    console.error(json.mensaje);
+                }
+            });
     }
 
-    // Información de la organizadora
+    // Configuracion inicial
     document.title = organizadora.nombre_agencia;
-    document.getElementById("tituloAgencia").textContent = organizadora.nombre_agencia;
-    document.getElementById("nombreAgencia").textContent = organizadora.nombre_agencia;
-    document.getElementById("descripcionAgencia").textContent = organizadora.descripcion_agencia;
-    document.getElementById("direccion").textContent = organizadora.direccion;
-    document.getElementById("telefono").textContent = organizadora.telefono;
-    document.getElementById("correo").textContent = organizadora.correo;
     document.getElementById("imgAgencia").src =
         `../../media/images/organizers/${organizadora.image_url}`;
 
-    try {
-        // Cargar eventos
-        const response = await fetch("../../data/eventos.json");
-        const eventos = await response.json();
-        const misEventos = eventos
-            .filter(e => e.id_organizadora === organizadora.id_organizadora)
-            .sort((a, b) => new Date(a.fecha_evento) - new Date(b.fecha_evento)); // orden cronológico
 
-        const eventosBox = document.getElementById("eventosBox");
-        const calendar = document.getElementById("calendar");
-
-        // Mostrar evento más cercano (al día de hoy)
-        const hoy = new Date();
-        const eventoCercano = misEventos.find(ev => new Date(ev.fecha_evento) >= hoy);
-        if (eventoCercano) {
-            calendar.value = eventoCercano.fecha_evento;
-        }
-
-        // Crear tarjetas de eventos
-        misEventos.forEach(ev => {
-            const card = document.createElement("div");
-            card.className = "cards";
-            card.innerHTML = `
-        <span>${ev.fecha_evento}</span>
-        <span>${ev.nombre_evento}</span>
-        <span>$${ev.precio_boleto}</span>
-      `;
-
-            // Guardar fecha original para revertir
-            const fechaOriginal = calendar.value;
-
-            // Mostrar fecha en el calendario al hacer hover
-            card.addEventListener("mouseenter", () => {
-                calendar.value = ev.fecha_evento;
-            });
-
-            // Volver a la fecha original cuando se quita el hover
-            card.addEventListener("mouseleave", () => {
-                calendar.value = fechaOriginal;
-            });
-
-            eventosBox.appendChild(card);
+    // Obtener número eventos mes
+    fetch(`../../data/Logic/organizerController.php?accion=numeroEventosMes&id_organizadora=${idOrg}`)
+        .then(res => res.json())
+        .then(json => {
+            if (json.correcto) {
+                document.getElementById("numeroEventos")
+                    .innerText = `Numero de eventos este mes: ${json.total}`;
+            } else {
+                console.error(json.mensaje);
+            }
         });
-    } catch (err) {
-        console.error("Error al cargar los eventos:", err);
+
+    // Cargar eventos
+    let eventos = [];
+    //src\data\DAO\organizadorDAO.php
+    //src\scripts\organizers.js
+    fetch(`../../data/Logic/organizerController.php?accion=eventos&id_organizadora=${idOrg}`)
+        .then(res => res.json())
+        .then(json => {
+            if (json.correcto) {
+                eventos = json.data;
+                window.eventosCalendario = eventos;
+                filtrarEventos();
+            } else {
+                console.error(json.mensaje);
+            }
+        });
+
+    // Variables
+    let asc = true;
+
+    const tbody = document.getElementById("eventosBody");
+    const buscarNombre = document.getElementById("buscarNombre");
+    const buscarLugar = document.getElementById("buscarLugar");
+    const fechaInicio = document.getElementById("fechaInicio");
+    const fechaFin = document.getElementById("fechaFin");
+    const btnOrdenar = document.getElementById("btnOrdenar");
+
+    function renderTabla(lista) {
+        tbody.innerHTML = "";
+        lista.forEach(ev => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td>${ev.fecha_evento}</td>
+                <td>${ev.nombre_evento}</td>
+                <td>${ev.lugar || "N/A"}</td>
+                <td>$${ev.precio_boleto}</td>
+                <td>
+                    <button class="btn-modificar" data-id="${ev.id_evento}">Modificar</button>
+                    <button class="btn-cancelar" data-id="${ev.id_evento}">Cancelar</button>
+                    <button class="btn-calendario" data-id="${ev.id_evento}">📅</button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    // Filtrar 
+    function filtrarEventos() {
+        let filtrados = [...eventos];
+
+        const nombre = buscarNombre.value.toLowerCase();
+        const lugar = buscarLugar.value.toLowerCase();
+        const inicio = fechaInicio.value ? new Date(fechaInicio.value) : null;
+        const fin = fechaFin.value ? new Date(fechaFin.value) : null;
+
+        filtrados = filtrados.filter(e => {
+            const fechaEv = new Date(e.fecha_evento);
+            const matchNombre = e.nombre_evento.toLowerCase().includes(nombre);
+            const matchLugar = (e.lugar || "").toLowerCase().includes(lugar);
+            const matchFecha =
+                (!inicio || fechaEv >= inicio) &&
+                (!fin || fechaEv <= fin);
+
+            return matchNombre && matchLugar && matchFecha;
+        });
+
+        // Ordenar por fecha
+        filtrados.sort((a, b) =>
+            asc
+                ? new Date(a.fecha_evento) - new Date(b.fecha_evento)
+                : new Date(b.fecha_evento) - new Date(a.fecha_evento)
+        );
+
+        renderTabla(filtrados);
+    }
+
+    // Eventos input
+    [buscarNombre, buscarLugar, fechaInicio, fechaFin].forEach(input => {
+        input.addEventListener("input", filtrarEventos);
+    });
+
+    // Ordenar
+    btnOrdenar.addEventListener("click", () => {
+        asc = !asc;
+        filtrarEventos();
+    });
+
+    // Botones de la tabla
+    tbody.addEventListener("click", (e) => {
+
+        if (e.target.classList.contains("btn-cancelar")) {
+            const id = e.target.dataset.id;
+
+            if (confirm("¿Seguro que deseas cancelar este evento?")) {
+                eventos = eventos.filter(ev => ev.id_evento != id);
+                filtrarEventos();
+            }
+
+        } else if (e.target.classList.contains("btn-modificar")) {
+
+            alert(`Función para modificar evento ID: ${e.target.dataset.id}`);
+
+        } else if (e.target.classList.contains("btn-calendario")) {
+
+            const evento = eventos.find(ev => ev.id_evento == e.target.dataset.id);
+            if (evento) {
+                const fecha = new Date(evento.fecha_evento);
+                window.dispatchEvent(new CustomEvent("abrirCalendario", {
+                    detail: { month: fecha.getMonth(), year: fecha.getFullYear() }
+                }));
+            }
+        }
+    });
+
+    // Crear el footer y el header
+    footer_header();
+
+    function footer_header() {
+
+        fetch("./../../../src/components/header.html")
+            .then(response => response.text())
+            .then(data => {
+                document.body.insertAdjacentHTML("afterbegin", data);
+
+                const script = document.createElement("script");
+                script.src = "./../../../src/scripts/header_script.js";
+                document.body.appendChild(script);
+
+                /*HEADER DINAMICO */
+                /*Cambio de la imagen del header */
+                const s_header = document.getElementById("s_header");
+                s_header.style.backgroundImage = "url(./../../../src/media/images/layout/img_background_header.jpg)";
+
+                /*Cambiar el titulo del header */
+                document.getElementById("n_h2").innerText = "PAGINA PRINCIPAL";
+                document.getElementById("s_icon").setAttribute("src", "./../../../src/media/images/icons/icon_arc.png");
+                const bnav = document.getElementById("underline_nav");
+
+                /*Agregar los elementos al nav */
+
+                /*Primero*/
+                const a1 = document.createElement("a");
+                a1.id = "a1";
+                a1.href = "#";
+                const ai1 = document.createElement("img");
+                ai1.src = "./../../../src/media/images/icons/icon_home.png";
+                ai1.classList.add("icon_nav");
+                a1.appendChild(ai1);
+                a1.append("Pagina Principal");
+                bnav.appendChild(a1);
+
+                /*Segundo*/
+                const a2 = document.createElement("a");
+                a2.id = "a2";
+                a2.href = "#";
+                const ai2 = document.createElement("img");
+                ai2.src = "./../../../src/media/images/icons/icon_travel.png";
+                ai2.classList.add("icon_nav");
+                a2.appendChild(ai2);
+                a2.append("Lugares Populares");
+                bnav.appendChild(a2);
+
+                /*Tercero*/
+                const a3 = document.createElement("a");
+                a3.id = "a3";
+                a3.href = "#";
+                const ai3 = document.createElement("img");
+                ai3.src = "./../../../src/media/images/icons/icon_event.png";
+                ai3.classList.add("icon_nav");
+                a3.appendChild(ai3);
+                a3.append("Eventos Recientes");
+                bnav.appendChild(a3);
+
+                /*Boton de registro o iniciar sesion*/
+                const btn_is_r = document.createElement("button");
+                btn_is_r.id = "btn_is_r";
+                const btn_a = document.createElement("a");
+                const icon_user = document.createElement("img");
+                icon_user.src = "./../../../src/media/images/icons/icon_user.png";
+                icon_user.classList.add("icon_user");
+                btn_a.appendChild(icon_user);
+                btn_is_r.appendChild(btn_a);
+                bnav.appendChild(btn_is_r);
+
+
+            });
+
+        fetch("./../../../src/components/footer.html")
+            .then(response => response.text())
+            .then(data => {
+                document.body.insertAdjacentHTML("beforeend", data);
+
+                document.getElementById("f_icon").src =
+                    "./../../../src/media/images/icons/icon_arc.png";
+
+                document.querySelector(".f_link").href = "#";
+
+                const f_general = document.getElementById("f_general");
+                f_general.style.backgroundImage =
+                    "url(./../../../src/media/images/layout/imgLayout20.jpg)";
+                f_general.style.backgroundPosition = "50% 80%";
+            });
+
+        function img(src) {
+            const i = document.createElement("img");
+            i.src = src;
+            i.classList.add("icon_nav");
+            return i;
+        }
     }
 });
