@@ -3,7 +3,7 @@ window.addEventListener("load", function(){
     let contenedorLugar = document.getElementById("selecciones");
     let ol = document.createElement("ol");
     fetch("./../../data/logic/lugarLogic.php").then(response => response.json()).then(data => {
-    for(let i = 0; i <= data.length; i++){
+    for(let i = 0; i <= data.zona.length; i++){
         let li = document.createElement("li");
         let liTxt = document.createTextNode(data[i].zona);
         li.appendChild(liTxt);
