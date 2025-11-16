@@ -30,5 +30,19 @@ class organizadorDAO{
         }
 
     }
+
+    public function getOrganizadorPorID($idOrganizadora){
+        try{
+            $sql = "SELECT * FROM organizers WHERE id_organizador = :id";
+            $stmt = $this->conexion->prepare($sql);
+            $stmt->bindParam(":id", $idOrganizadora, PDO::PARAM_INT);
+            $stmt->execute();
+
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch(PDOException $e){
+            throw new Exception("Error al obtener organizador: " . $e->getMessage());
+        }
+    }
+
 }
 ?>
