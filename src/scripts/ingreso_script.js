@@ -78,5 +78,64 @@ window.addEventListener("load", function () {
     const close_datos_incorrectos = document.getElementById("close_datos_incorrectos");
     close_datos_incorrectos.addEventListener("click", function () {
         datos_incorrectos.close();
+
+    });
+    const boton_registrarse = document.getElementById("boton_registrarse");
+    const tipo_usuario = sessionStorage.getItem("tipo_usuario");
+    if (tipo_usuario == 2) {
+        boton_registrarse.disabled = true;
+    } else {
+        boton_registrarse.disabled = false;
+    }
+    const registro_correcto = document.getElementById("registro_correcto");
+    const close_registro_correcto = document.getElementById("close_registro_correcto");
+    const registro_duplicado = document.getElementById("registro_duplicado");
+    const close_registro_duplicado = document.getElementById("close_registro_duplicado");
+    boton_registrarse.addEventListener("click", (e) => {
+        /*
+        const r_nombre = document.getElementById("r_nombre");
+        const r_apellido = document.getElementById("r_apellido");
+        const r_correo = document.getElementById("r_correo");
+        const r_telefono = document.getElementById("r_telefono");
+        const r_usuario = document.getElementById("r_usuario");
+        const r_password = document.getElementById("r_password");
+        const nombre = r_nombre.value;
+        const apellido = r_apellido.value;
+        const correo = r_correo.value;
+        const telefono = r_telefono.value;
+        const usuario = r_usuario.value;
+        const contra = r_password.value;
+        */
+        e.preventDefault();
+        const form_registro = document.getElementById("form_registro");
+        const formData = new FormData(form_registro);
+        formData.append('tipo_registro', tipo_usuario);
+        fetch("./../data/Logic/registroLogic.php", {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error en la respuesta de la peticion.');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.correcto === true) {
+                    registro_correcto.showModal();
+                } else {
+                    registro_duplicado.showModal();
+                }
+            })
+            .catch(error => {
+                registro_duplicado.showModal();
+            });
+    });
+    close_registro_duplicado.addEventListener("click", () => {
+        registro_duplicado.close();
+    });
+    close_registro_correcto.addEventListener("click", () => {
+        registro_correcto.close();
+        window.location.href = "./../../index.html";
     });
 });

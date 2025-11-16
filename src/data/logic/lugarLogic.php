@@ -55,7 +55,7 @@
                     $lugarDAO->updateLugar($id_actual, $nombre, $descripcion, $direccion, $ciudad, $zona);
                     
                     if ($imagen && $imagen["error"] === UPLOAD_ERR_OK) {
-$tipoArchivo = $imagen["type"];
+                $tipoArchivo = $imagen["type"];
             if ($tipoArchivo !== 'image/jpeg' && $tipoArchivo !== 'image/jpg') { 
             $respuesta['mensaje'] = "Error: Solo se permiten archivos JPG y JPEG.";
             echo json_encode($respuesta);
