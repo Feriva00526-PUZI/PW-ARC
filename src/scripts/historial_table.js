@@ -1,5 +1,3 @@
-
-
 function getStatusClass(status) {
   const s = (status || "").toLowerCase();
 
@@ -18,7 +16,7 @@ function initHistorialTable(data) {
   // Limpia la tabla
   tbody.innerHTML = "";
 
-  // Crea cada fila de la tabla
+  // Crea cada fila
   data.forEach(item => {
     const tr = document.createElement("tr");
 
@@ -48,7 +46,7 @@ function initHistorialTable(data) {
     btnDescripcion.className = "hist-btn hist-btn-desc";
     btnDescripcion.textContent = "Descripcion";
 
-    // Revisa si ya no se puede cancelar
+    // Deshabilitar botón cancelar si ya no procede
     const st = (item.status || "").toLowerCase();
     const noCancelable =
       st.includes("cancel") ||
@@ -82,17 +80,14 @@ function initHistorialTable(data) {
       );
     });
 
-    // Agrega botones a la celda
     tdAcciones.appendChild(btnCancelar);
     tdAcciones.appendChild(btnDescripcion);
 
-    // Agrega todas las celdas a la fila
     tr.appendChild(tdDestino);
     tr.appendChild(tdEstado);
     tr.appendChild(tdFecha);
     tr.appendChild(tdAcciones);
 
-    // Agrega la fila a la tabla
     tbody.appendChild(tr);
   });
 }

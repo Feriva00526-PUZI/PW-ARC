@@ -86,60 +86,55 @@ window.addEventListener("load", function () {
         nav.appendChild(btnUsuario);
       }
 
-      // Cargar datos del historial desde varios archivos JSON
+    fetch("../../php/logic/HistorialLogic.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id_cliente: usuario.id_cliente })
+      })
+      .then(r => r.json())
+      .then(data => {
 
-      Promise.all([
-        fetch("./../../data/viajes.json").then(r => r.json()),
-        fetch("./../../data/lugares.json").then(r => r.json()),
-        fetch("./../../data/agencias.json").then(r => r.json()),
-        fetch("./../../data/eventos.json").then(r => r.json())
-      ])
-        .then(([viajes, lugares, agencias, eventos]) => {
-          // datos de varios JSON
-          const historyData = viajes.map(v => {
-            const lugar = lugares.find(l => l.id_lugar === v.id_paquete) || {};
-            const agencia = agencias.find(a => a.id_agencia === v.id_cliente) || {};
-            const evento = eventos.find(e => e.id_evento === v.id_paquete) || {};
+        if (!data.correcto) {
+          console.error("Error cargando historial:", data.mensaje);
+          return;
+        }
 
-            const nombreLugar = lugar.nombre_lugar || ("Paquete " + v.id_paquete);
-            const ciudad = lugar.ciudad ? (" (" + lugar.ciudad + ")") : "";
-            const destino = nombreLugar + ciudad;
+        const viajes = data.viajes;
 
-            return {
-              destino: destino,
-              status: v.estado || "Desconocido",
-              fecha: (v.fecha_viaje || "") + " " + (v.hora_viaje || ""),
-              detalle: {
-                lugarNombre: lugar.nombre_lugar || "-",
-                lugarDescripcion: lugar.descripcion || "-",
-                lugarDireccion: lugar.direccion || "-",
-                agenciaNombre: agencia.nombre_agencia || "-",
-                eventoNombre: evento.nombre_evento || "-"
-              }
-            };
-          });
+        // Transformar datos DB → formato tabla
+        const historyData = viajes.map(v => {
+          const destinoTexto = "Paquete " + v.id_paquete;
 
-          // Cargar archivo historial_table.js y inicializar la tabla
-          const scriptTabla = document.createElement("script");
-          scriptTabla.src = "./../../scripts/historial_table.js";
-
-          scriptTabla.onload = () => {
-            if (typeof window.initHistorialTable === "function") {
-              window.initHistorialTable(historyData);
-            } else {
-              console.error("No se encontro la funcion initHistorialTable.");
+          return {
+            destino: destinoTexto,
+            status: v.estado,
+            fecha: `${v.fecha_viaje} ${v.hora_viaje}`,
+            detalle: {
+              lugarNombre: destinoTexto,
+              lugarDescripcion: "-",
+              lugarDireccion: "-",
+              agenciaNombre: "-",
+              eventoNombre: "-"
             }
           };
-
-          document.body.appendChild(scriptTabla);
-        })
-        .catch(err => {
-          console.error("Error cargando archivos JSON del historial:", err);
         });
 
-    })
-    .catch(err => {
-      console.error("Error cargando header.html:", err);
+        const scriptTabla = document.createElement("script");
+        scriptTabla.src = "./../../scripts/historial_table.js";
+
+        scriptTabla.onload = () => {
+          if (typeof window.initHistorialTable === "function") {
+            window.initHistorialTable(historyData);
+          }
+        };
+
+        document.body.appendChild(scriptTabla);
+
+      })
+      .catch(err => {
+        console.error("Error leyendo historial desde MySQL:", err);
+      });
+
     });
 
 
