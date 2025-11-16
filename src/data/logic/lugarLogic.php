@@ -22,7 +22,6 @@
             echo json_encode($respuesta);
         }
     } 
-
     else if ($_SERVER["REQUEST_METHOD"] == "POST"){
         $respuesta = ['correcto' => false];
         if(!empty($_POST) || !empty($_FILES)){
@@ -93,4 +92,42 @@
             echo json_encode($respuesta);
         }
  }
-}
+} else if ($_SERVER["REQUEST_METHOD"] == "DELETE") {
+        try {
+            // Leer el body de la solicitud DELETE
+            $json_data = file_get_contents("php://input");
+            $data = json_decode($json_data, true);
+
+            $id_lugar = $data['id_lugar'] ?? null;
+
+            if ($id_lugar === null || !is_numeric($id_lugar)) {
+                $respuesta = ['correcto' => false, 'mensaje' => 'ID de lugar no válido.'];
+                echo json_encode($respuesta);
+                exit;
+            }
+
+            $lugar = $lugarDAO->getLugarPorID($id_lugar);
+
+            if ($lugar) {
+                $nombre_imagen = $lugar['imagen_url'];
+                if ($lugarDAO->eliminarLugarPorId($id_lugar)) {
+                    if (!empty($nombre_imagen)) {
+                        $ruta_fisica_imagen = $RUTA_FISICA_GUARDADO . $nombre_imagen;
+
+                        if (file_exists($ruta_fisica_imagen)) {
+                            @unlink($ruta_fisica_imagen);
+                        }
+                    }
+                    $respuesta = ['correcto' => true, 'mensaje' => 'Lugar eliminado exitosamente.'];
+                } else {
+                    $respuesta = ['correcto' => false, 'mensaje' => 'Error al eliminar el lugar de la base de datos.'];
+                }
+            } else {
+                $respuesta = ['correcto' => true, 'mensaje' => 'El lugar no existe o ya fue eliminado.'];
+            }
+            echo json_encode($respuesta);
+        } catch (Exception $e) {
+            $respuesta = ['correcto' => false, 'mensaje' => 'Error al eliminar: ' . $e->getMessage()];
+            echo json_encode($respuesta);
+        }
+    }

@@ -122,7 +122,9 @@ window.addEventListener("load", function () {
     const button_proceder = document.getElementById("button_proceder");
     const button_revert = document.getElementById("button_revert");
     const error_in_delete = document.getElementById("error_in_delete");
+    const delete_success = document.getElementById("delete_success");
     const button_error_revert = document.getElementById("button_error_revert");
+    const button_succes_revert = document.getElementById("button_succes_revert");
 
     boton_eliminar_lugar.addEventListener("click", (e) => {
         e.preventDefault();
@@ -130,7 +132,7 @@ window.addEventListener("load", function () {
     });
     button_proceder.addEventListener("click", () => {
         confirm_delete.close();
-        fetch("./lugarLogic.php", {
+        fetch("./../../data/Logic/lugarLogic.php", {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json"
@@ -145,7 +147,7 @@ window.addEventListener("load", function () {
             return response.json();
         }).then(data => {
             if (data.correcto) {
-                window.location.href = "./a_gestion_view.html";
+                delete_success.showModal();
             } else {
                 error_in_delete.showModal();
             }
@@ -158,5 +160,9 @@ window.addEventListener("load", function () {
     });
     button_error_revert.addEventListener("click", () => {
         error_in_delete.close();
+    });
+    button_succes_revert.addEventListener("click", () => {
+        delete_success.close();
+        window.location.href = "./a_gestion_view.html";
     });
 });
