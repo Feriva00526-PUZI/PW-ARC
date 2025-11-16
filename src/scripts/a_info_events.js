@@ -76,4 +76,103 @@ window.addEventListener("load", function () {
             /*Cambiar que parte de la imagen se ve, el primer 50 es horizontalmente(no cambiarlo) y el segundo es para la altura que se visualiza */
             f_general.style.backgroundPosition = "50% 80%";
         });
+
+    const titulo_overlay2 = document.getElementById("titulo_overlay2");
+    const est1 = document.getElementById("est1");
+    const est2 = document.getElementById("est2");
+    const est3 = document.getElementById("est3");
+    const est4 = document.getElementById("est4");
+    const est5 = document.getElementById("est5");
+    const overlay3 = document.getElementById("overlay3");
+    const overlay4 = document.getElementById("overlay4");
+    const overlayEx = document.getElementById("overlayEx");
+
+    est1.addEventListener("click", () => {
+        titulo_overlay2.textContent = "Popularidad de los lugares";
+        overlay3.innerHTML = `<div class="minicard">Cargando filtro...</div>`;
+        overlay4.innerHTML = `<div class="minicard">Detalles</div>`;
+        overlayEx.innerHTML = `
+                <select id="filtroLugares">
+                    <option value="populares">Mas Populares</option>
+                    <option value="menos_populares">Menos Populares</option>
+                </select>
+        `;
+
+        const cargarLugares = (filtro = 'populares') => {
+            overlay3.innerHTML = `<div class="minicard">Cargando lugares...</div>`;
+            fetch(`./../../data/logic/infoEventosLogic.php?filtro=${filtro}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.correcto && data.lugares) {
+                        const lugares = data.lugares;
+                        overlay3.innerHTML = "";
+                        lugares.forEach(lugar => {
+                            const card = document.createElement("div");
+                            card.innerHTML = `
+                                <div class="cards">
+                                    <div class="div-info-card">
+                                        <h2>${lugar.nombre_lugar}</h2>
+                                        <span class="info-card-ciudad">${lugar.ciudad}</span>
+                                        <span class="info-card-direccion">${lugar.direccion}</span>
+                                        <button class="btn-revisar" id="br-${lugar.id_lugar}">Revisar Lugar</button>
+                                    </div>
+                                    <div class="div-image-card">
+                                        <img class="image-card" src="${lugar.imagen_url}" alt="Imagen del lugar">
+                                    </div>
+                                </div>`;
+                            overlay3.appendChild(card);
+                            const reviewButton = card.querySelector(`#br-${lugar.id_lugar}`);
+                            reviewButton.addEventListener('click', function () {
+                                sessionStorage.setItem('id_lugar_selected', lugar.id_lugar);
+                                sessionStorage.setItem('lugar_objeto', JSON.stringify(lugar));
+                                overlay4.innerHTML = `
+        <div class="maxicard">
+            <h4 class="maxicard-titulo">${lugar.nombre_lugar}</h4>
+            <div class="maxicard-imagen">
+                <img src="${lugar.imagen_url}" alt="Imagen de ${lugar.nombre_lugar}">
+            </div>
+            <div class="maxicard-descripcion">
+                <p>Descripción:</p>
+                <span>${lugar.descripcion}</span>
+            </div>
+            <div class="maxicard-info-grid">
+                <p class="maxicard-dato">Ciudad: <span>${lugar.ciudad}</span></p>
+                <p class="maxicard-dato">Zona: <span>${lugar.zona}</span></p>
+                <p class="maxicard-dato dato-full">Dirección: <span>${lugar.direccion}</span></p>
+                <p class="maxicard-dato">Asistencias: <span>${lugar.total_asistencias}</span></p>
+                <p class="maxicard-dato">ID: <span>${lugar.id_lugar}</span></p>
+            </div>
+            
+        </div>
+    `;
+                            });
+                        });
+                    } else {
+                        overlay3.innerHTML = `<div class="minicard">No se encontraron lugares...</div>`;
+                    }
+                })
+                .catch(error => {
+                    overlay3.innerHTML = `<div class="minicard">Error al cargar datos: ${error.message}</div>`;
+                });
+        };
+
+        cargarLugares('populares');
+        const filtroLugares = document.getElementById("filtroLugares");
+        filtroLugares.addEventListener("change", () => {
+            const filtroSelected = filtroLugares.value;
+            cargarLugares(filtroSelected);
+        });
+    });
+    est2.addEventListener("click", () => {
+        titulo_overlay2.textContent = "Popularidad de Eventos";
+    });
+    est3.addEventListener("click", () => {
+        titulo_overlay2.textContent = "Informacion de las Asistencias";
+    });
+    est4.addEventListener("click", () => {
+        titulo_overlay2.textContent = "Tamaño de los eventos";
+    });
+    est5.addEventListener("click", () => {
+        titulo_overlay2.textContent = "Informacion de las Organizadoras";
+    });
 });
