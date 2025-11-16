@@ -4,7 +4,7 @@ window.addEventListener("load", function () {
 
     let organizadora = JSON.parse(sessionStorage.getItem("organizador_logeado"));
     console.log(organizadora)
-    
+
     const idOrg = organizadora.id_organizadora;
 
     if (!organizadora) {
@@ -13,18 +13,16 @@ window.addEventListener("load", function () {
         return;
     } else {
         organizadora = fetch(`../../data/Logic/organizerController.php?accion=organizador&id_organizadora=${idOrg}`)
-        .then(res => res.json())
-        .then(json => {
-            if (json.correcto) {
-                document.getElementById("numeroEventos")
-                    .innerText = `Numero de eventos este mes: ${json.total}`;
-            } else {
-                console.error(json.mensaje);
-            }
-        });
+            .then(res => res.json())
+            .then(json => {
+                if (json.correcto) {
+                    document.getElementById("numeroEventos")
+                        .innerText = `Numero de eventos este mes: ${json.total}`;
+                } else {
+                    console.error(json.mensaje);
+                }
+            });
     }
-
-    console.log(organizadora);
 
     // Configuracion inicial
     document.title = organizadora.nombre_agencia;
@@ -46,8 +44,8 @@ window.addEventListener("load", function () {
 
     // Cargar eventos
     let eventos = [];
-//src\data\DAO\organizadorDAO.php
-//src\scripts\organizers.js
+    //src\data\DAO\organizadorDAO.php
+    //src\scripts\organizers.js
     fetch(`../../data/Logic/organizerController.php?accion=eventos&id_organizadora=${idOrg}`)
         .then(res => res.json())
         .then(json => {
@@ -171,41 +169,63 @@ window.addEventListener("load", function () {
                 script.src = "./../../../src/scripts/header_script.js";
                 document.body.appendChild(script);
 
+                /*HEADER DINAMICO */
+                /*Cambio de la imagen del header */
                 const s_header = document.getElementById("s_header");
-                s_header.style.backgroundImage =
-                    "url(./../../../src/media/images/layout/img_background_header.jpg)";
+                s_header.style.backgroundImage = "url(./../../../src/media/images/layout/img_background_header.jpg)";
 
-                document.getElementById("n_h2").innerText = organizadora.nombre_agencia;
-                document.getElementById("s_icon").src = "./../../../src/media/images/icons/icon_arc.png";
-
+                /*Cambiar el titulo del header */
+                document.getElementById("n_h2").innerText = "PAGINA PRINCIPAL";
+                document.getElementById("s_icon").setAttribute("src", "./../../../src/media/images/icons/icon_arc.png");
                 const bnav = document.getElementById("underline_nav");
 
+                /*Agregar los elementos al nav */
+
+                /*Primero*/
                 const a1 = document.createElement("a");
+                a1.id = "a1";
                 a1.href = "#";
-                a1.appendChild(img("./../../../src/media/images/icons/icon_home.png"));
+                const ai1 = document.createElement("img");
+                ai1.src = "./../../../src/media/images/icons/icon_home.png";
+                ai1.classList.add("icon_nav");
+                a1.appendChild(ai1);
                 a1.append("Pagina Principal");
                 bnav.appendChild(a1);
 
+                /*Segundo*/
                 const a2 = document.createElement("a");
+                a2.id = "a2";
                 a2.href = "#";
-                a2.appendChild(img("./../../../src/media/images/icons/icon_travel.png"));
+                const ai2 = document.createElement("img");
+                ai2.src = "./../../../src/media/images/icons/icon_travel.png";
+                ai2.classList.add("icon_nav");
+                a2.appendChild(ai2);
                 a2.append("Lugares Populares");
                 bnav.appendChild(a2);
 
+                /*Tercero*/
                 const a3 = document.createElement("a");
+                a3.id = "a3";
                 a3.href = "#";
-                a3.appendChild(img("./../../../src/media/images/icons/icon_event.png"));
+                const ai3 = document.createElement("img");
+                ai3.src = "./../../../src/media/images/icons/icon_event.png";
+                ai3.classList.add("icon_nav");
+                a3.appendChild(ai3);
                 a3.append("Eventos Recientes");
                 bnav.appendChild(a3);
 
+                /*Boton de registro o iniciar sesion*/
                 const btn_is_r = document.createElement("button");
+                btn_is_r.id = "btn_is_r";
                 const btn_a = document.createElement("a");
-                btn_a.appendChild(img("./../../../src/media/images/icons/icon_user.png"));
+                const icon_user = document.createElement("img");
+                icon_user.src = "./../../../src/media/images/icons/icon_user.png";
+                icon_user.classList.add("icon_user");
+                btn_a.appendChild(icon_user);
                 btn_is_r.appendChild(btn_a);
                 bnav.appendChild(btn_is_r);
 
-                const select_login = document.getElementById("select_login");
-                btn_is_r.addEventListener("click", () => select_login.showModal());
+
             });
 
         fetch("./../../../src/components/footer.html")
