@@ -1,33 +1,22 @@
 // import { obtenerEventosPorOrganizadora, obtenerNumeroEventosEsteMes } from "./dao/daoEventos.js";
 
+let organizadora = JSON.parse(sessionStorage.getItem("organizador_logeado"));
+
 window.addEventListener("load", function () {
 
-    let organizadora = JSON.parse(sessionStorage.getItem("organizador_logeado"));
     console.log(organizadora)
-
     const idOrg = organizadora.id_organizadora;
 
     if (!organizadora) {
-        // Si no hay sesión, redirigir
         window.location.href = "../../../index.html";
-        return;
-    } else {
-        organizadora = fetch(`../../data/Logic/organizerController.php?accion=organizador&id_organizadora=${idOrg}`)
-            .then(res => res.json())
-            .then(json => {
-                if (json.correcto) {
-                    document.getElementById("numeroEventos")
-                        .innerText = `Numero de eventos este mes: ${json.total}`;
-                } else {
-                    console.error(json.mensaje);
-                }
-            });
-    }
+    } 
 
+
+    console.log(organizadora.imagen_url);
     // Configuracion inicial
     document.title = organizadora.nombre_agencia;
     document.getElementById("imgAgencia").src =
-        `../../media/images/organizers/${organizadora.image_url}`;
+        `./../../../src/media/images/organizers/${organizadora.imagen_url}`;
 
 
     // Obtener número eventos mes

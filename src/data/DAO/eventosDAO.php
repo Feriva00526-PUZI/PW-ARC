@@ -1,7 +1,7 @@
 <?php
 require_once "./../conexion.php";
 
-class organizadorDAO{
+class eventosDAO{
 
     private $id;
     private $conexion;

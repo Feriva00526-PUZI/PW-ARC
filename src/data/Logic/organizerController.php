@@ -125,4 +125,3 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
         echo json_encode(["correcto" => false, "mensaje" => $e->getMessage()]);
     }
 }
-?>
