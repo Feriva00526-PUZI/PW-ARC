@@ -28,10 +28,10 @@ window.addEventListener("load", function () {
       // Configurar navegacion del header
       const nav = document.getElementById("underline_nav");
       if (nav) {
-        const crearNavItem = (id, img, texto) => {
+        const crearNavItem = (id, img, texto, redirect) => {
           const a = document.createElement("a");
           a.id = id;
-          a.href = "#";
+          a.href = redirect;
 
           const icono = document.createElement("img");
           icono.src = img;
@@ -45,7 +45,29 @@ window.addEventListener("load", function () {
         nav.appendChild(crearNavItem(
           "a1",
           "./../../media/images/icons/icon_home.png",
-          "Pagina Principal"
+          "Pagina Principal",
+          "./usuario_principal.html"
+        ));
+
+        nav.appendChild(crearNavItem(
+          "a2",
+          "./../../media/images/icons/icon_home.png",
+          "Paquetes de viaje",
+          "./usuarioviajes.html"
+        ));
+
+        nav.appendChild(crearNavItem(
+          "a3",
+          "./../../media/images/icons/icon_home.png",
+          "Actividades",
+          "./usuarioEventos.html"
+        ));
+
+        nav.appendChild(crearNavItem(
+          "a4",
+          "./../../media/images/icons/icon_home.png",
+          "Historial",
+          "./usuario_historial.html"
         ));
 
         const btnUsuario = document.createElement("button");
