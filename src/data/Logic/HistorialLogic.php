@@ -11,24 +11,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $id_cliente = $data['id_cliente'];
 
         try {
-            $viajes = $viajesDAO->obtenerViajesPorCliente($id_cliente);
+            $viajes = $viajesDAO->obtenerHistorialDetallado($id_cliente);
 
-            $respuesta = [
+            echo json_encode([
                 'correcto' => true,
                 'viajes' => $viajes
-            ];
-
-            echo json_encode($respuesta);
+            ]);
 
         } catch (Exception $e) {
 
-            $respuesta = [
+            echo json_encode([
                 'correcto' => false,
                 'mensaje' => 'Error en el servidor: ' . $e->getMessage()
-            ];
-
-            echo json_encode($respuesta);
+            ]);
         }
     }
 }
+
 ?>

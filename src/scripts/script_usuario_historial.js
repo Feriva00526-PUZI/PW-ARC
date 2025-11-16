@@ -86,55 +86,40 @@ window.addEventListener("load", function () {
         nav.appendChild(btnUsuario);
       }
 
-    fetch("../../php/logic/HistorialLogic.php", {
+fetch("../../php/logic/HistorialLogic.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id_cliente: usuario.id_cliente })
       })
-      .then(r => r.json())
-      .then(data => {
+        .then(r => r.json())
+        .then(data => {
+          if (!data.correcto) {
+            console.error("Error:", data.mensaje);
+            return;
+          }
 
-        if (!data.correcto) {
-          console.error("Error cargando historial:", data.mensaje);
-          return;
-        }
+          // Cargar tabla
+          const scriptTabla = document.createElement("script");
+          scriptTabla.src = "./../../scripts/historial_table.js";
 
-        const viajes = data.viajes;
-
-        // Transformar datos DB → formato tabla
-        const historyData = viajes.map(v => {
-          const destinoTexto = "Paquete " + v.id_paquete;
-
-          return {
-            destino: destinoTexto,
-            status: v.estado,
-            fecha: `${v.fecha_viaje} ${v.hora_viaje}`,
-            detalle: {
-              lugarNombre: destinoTexto,
-              lugarDescripcion: "-",
-              lugarDireccion: "-",
-              agenciaNombre: "-",
-              eventoNombre: "-"
+          scriptTabla.onload = () => {
+            if (typeof window.initHistorialTable === "function") {
+              window.initHistorialTable(data.viajes);
+            } else {
+              console.error("No se encontró initHistorialTable");
             }
           };
+
+          document.body.appendChild(scriptTabla);
+
+        })
+        .catch(err => {
+          console.error("Error cargando historial:", err);
         });
 
-        const scriptTabla = document.createElement("script");
-        scriptTabla.src = "./../../scripts/historial_table.js";
-
-        scriptTabla.onload = () => {
-          if (typeof window.initHistorialTable === "function") {
-            window.initHistorialTable(historyData);
-          }
-        };
-
-        document.body.appendChild(scriptTabla);
-
-      })
-      .catch(err => {
-        console.error("Error leyendo historial desde MySQL:", err);
-      });
-
+    })
+    .catch(err => {
+      console.error("Error cargando header.html:", err);
     });
 
 
