@@ -1,0 +1,156 @@
+/* =========================================================
+   historial_table.css
+   Estilos visuales del componente "Historial de Reservas"
+   ========================================================= */
+
+/* Accesibilidad */
+.visually-hidden {
+  position: absolute !important;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  white-space: nowrap;
+}
+
+/* Contenedor general */
+#hist-table-sample {
+  padding: 18px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(2, 62, 138, 0.08);
+  overflow-x: auto;
+}
+
+/* TABLA BASE */
+#hist-table-sample .hist-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  min-width: 640px;
+  font-size: 0.95rem;
+  color: #222;
+}
+
+/* Header */
+#hist-table-sample .hist-table thead th {
+  text-align: left;
+  padding: 12px 14px;
+  background: #023E8A;
+  color: #fff;
+  font-weight: 700;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.06);
+}
+
+/* Celdas */
+#hist-table-sample .hist-table td {
+  padding: 12px 14px;
+  vertical-align: middle;
+  border-bottom: 1px solid rgba(2, 62, 138, 0.08);
+  background: transparent;
+}
+
+/* Filas */
+#hist-table-sample .hist-table tbody tr:nth-child(odd) td {
+  background: rgba(2, 62, 138, 0.02);
+}
+#hist-table-sample .hist-table tbody tr:hover td {
+  background: rgba(2, 62, 138, 0.05);
+  transition: background 0.2s ease;
+}
+
+/* Estados */
+.badge {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: #fff;
+  text-align: center;
+}
+
+.status-en-espera {
+  background: #ff8c00;
+  color: #2b1a00;
+}
+
+.status-cancelado {
+  background: #d00000;
+}
+
+.status-realizado {
+  background: #00a86b;
+}
+
+/* Botones */
+.hist-btn {
+  padding: 7px 12px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  font-weight: 700;
+  margin-right: 6px;
+  box-shadow: 0 4px 10px rgba(2, 62, 138, 0.08);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.hist-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(2, 62, 138, 0.16);
+}
+
+.hist-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+  box-shadow: none;
+  transform: none;
+}
+
+.hist-btn-cancel {
+  background: #d00000;
+}
+
+.hist-btn-desc {
+  background: #023E8A;
+}
+
+
+@media (max-width: 900px) {
+  #hist-table-sample {
+    padding: 14px;
+  }
+
+  #hist-table-sample .hist-table {
+    min-width: 560px;
+    font-size: 0.9rem;
+  }
+
+  #hist-table-sample .hist-table thead th,
+  #hist-table-sample .hist-table td {
+    padding: 10px 12px;
+  }
+
+  .hist-btn {
+    padding: 6px 10px;
+    font-size: 0.85rem;
+  }
+
+  /* Botones deshabilitados (gris) */
+  .disabled-btn {
+    background: #b0b0b0 !important;
+    color: #fff !important;
+    cursor: not-allowed !important;
+    box-shadow: none !important;
+    transform: none !important;
+  }
+}
+
+/* Estado: En curso */
+.status-en-curso {
+  background: #0077b6;
+}
