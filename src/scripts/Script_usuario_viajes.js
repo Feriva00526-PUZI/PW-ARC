@@ -1,10 +1,6 @@
-import { crearCarrusel } from "./carruselUP.js";
+
 window.addEventListener("load", function () {
-    const usuarioSession = sessionStorage.getItem("usuario_logeado");
-    if (usuarioSession == null) {
-        window.location.href = "./../../../index.html";
-        return;
-    }
+
     fetch("./../../components/header.html")
         .then(response => response.text())
         .then(data => {
@@ -13,7 +9,7 @@ window.addEventListener("load", function () {
             const script = document.createElement("script");
             script.src = "./../../scripts/header_script.js";
             document.body.appendChild(script);
-
+            console.log("algo");
             /*HEADER DINAMICO */
             /*Cambio de la imagen del header */
             const s_header = document.getElementById("s_header");
@@ -28,7 +24,7 @@ window.addEventListener("load", function () {
             /*Primero*/
             const a1 = document.createElement("a");
             a1.id = "a1";
-            a1.href = "./usuario_principal.html";
+            a1.href = "#";
             const ai1 = document.createElement("img");
             ai1.src = "./../../media/images/icons/icon_home.png";
             ai1.classList.add("icon_nav");
@@ -38,33 +34,23 @@ window.addEventListener("load", function () {
             /*Segundo*/
             const a2 = document.createElement("a");
             a2.id = "a2";
-            a2.href = "./usuarioviajes.html";
+            a2.href = "#";
             const ai2 = document.createElement("img");
             ai2.src = "./../../media/images/icons/icon_travel.png";
             ai2.classList.add("icon_nav");
             a2.appendChild(ai2);
-            a2.append("Paquetes de viaje");
+            a2.append("Lugares Populares");
             bnav.appendChild(a2);
             /*Tercero*/
             const a3 = document.createElement("a");
             a3.id = "a3";
-            a3.href = "./usuarioEventos.html";
+            a3.href = "#";
             const ai3 = document.createElement("img");
             ai3.src = "./../../media/images/icons/icon_event.png";
             ai3.classList.add("icon_nav");
             a3.appendChild(ai3);
-            a3.append("Actividades");
+            a3.append("Eventos Recientes");
             bnav.appendChild(a3);
-            /*Cuarto*/
-            const a4 = document.createElement("a");
-            a4.id = "a4";
-            a4.href = "./usuario_historial.html";
-            const ai4 = document.createElement("img");
-            ai4.src = "./../../media/images/icons/icon_event.png";
-            ai4.classList.add("icon_nav");
-            a4.appendChild(ai4);
-            a4.append("Historial");
-            bnav.appendChild(a4);
             /*Boton de registro o iniciar sesion*/
             const btn_is_r = document.createElement("button");
             btn_is_r.id = "btn_is_r";
@@ -98,12 +84,4 @@ window.addEventListener("load", function () {
             /*Cambiar que parte de la imagen se ve, el primer 50 es horizontalmente(no cambiarlo) y el segundo es para la altura que se visualiza */
             f_general.style.backgroundPosition = "50% 80%";
         });
-
-
-    crearCarrusel({
-        containerSelector: "#carrusel-paquetes",
-        dataFile: "paquetes.json",
-        type: "paquete",
-        title: "Paquetes destacados"
-    });
 });

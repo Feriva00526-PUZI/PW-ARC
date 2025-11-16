@@ -27,6 +27,7 @@ window.addEventListener("load", function () {
             metodosBusqueda.buscarUsuarios(usuario, contra).then(validacion => {
                 if (validacion) {
                     sessionStorage.setItem("usuario_logeado", JSON.stringify(validacion));
+                    window.location.href = "./user/usuario_principal.html";
                 } else {
                     datos_incorrectos.showModal();
                 }
