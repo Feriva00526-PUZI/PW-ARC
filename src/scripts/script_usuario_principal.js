@@ -1,6 +1,10 @@
-
+import { crearCarrusel } from "./carruselUP.js";
 window.addEventListener("load", function () {
-
+    const usuarioSession = sessionStorage.getItem("usuario_logeado");
+    if (usuarioSession == null) {
+        window.location.href = "./../../../index.html";
+        return;
+    }
     fetch("./../../components/header.html")
         .then(response => response.text())
         .then(data => {
@@ -84,4 +88,12 @@ window.addEventListener("load", function () {
             /*Cambiar que parte de la imagen se ve, el primer 50 es horizontalmente(no cambiarlo) y el segundo es para la altura que se visualiza */
             f_general.style.backgroundPosition = "50% 80%";
         });
+
+
+    crearCarrusel({
+        containerSelector: "#carrusel-paquetes",
+        dataFile: "paquetes.json",
+        type: "paquete",
+        title: "Paquetes destacados"
+    });
 });

@@ -1,139 +1,145 @@
-// Cargar dinamicamente el header
-fetch("./../../components/header.html")
-  .then(r => r.text())
-  .then(html => {
-    document.body.insertAdjacentHTML("afterbegin", html);
+window.addEventListener("load", function () {
+  const usuarioSession = sessionStorage.getItem("usuario_logeado");
+  if (usuarioSession == null) {
+    window.location.href = "./../../../index.html";
+    return;
+  }
+  fetch("./../../components/header.html")
+    .then(r => r.text())
+    .then(html => {
+      document.body.insertAdjacentHTML("afterbegin", html);
 
-    // Cargar script del header
-    const scriptHeader = document.createElement("script");
-    scriptHeader.src = "./../../scripts/header_script.js";
-    document.body.appendChild(scriptHeader);
+      // Cargar script del header
+      const scriptHeader = document.createElement("script");
+      scriptHeader.src = "./../../scripts/header_script.js";
+      document.body.appendChild(scriptHeader);
 
-    // Ajustes visuales del header
-    const s_header = document.getElementById("s_header");
-    if (s_header)
-      s_header.style.backgroundImage = "url(./../../media/images/layout/background-img-historial.jpeg)";
+      // Ajustes visuales del header
+      const s_header = document.getElementById("s_header");
+      if (s_header)
+        s_header.style.backgroundImage = "url(./../../media/images/layout/background-img-historial.jpeg)";
 
-    const n_h2 = document.getElementById("n_h2");
-    if (n_h2) n_h2.innerText = "HISTORIAL USUARIO";
+      const n_h2 = document.getElementById("n_h2");
+      if (n_h2) n_h2.innerText = "HISTORIAL USUARIO";
 
-    const s_icon = document.getElementById("s_icon");
-    if (s_icon) s_icon.src = "./../../media/images/icons/icon_arc.png";
+      const s_icon = document.getElementById("s_icon");
+      if (s_icon) s_icon.src = "./../../media/images/icons/icon_arc.png";
 
-    // Configurar navegacion del header
-    const nav = document.getElementById("underline_nav");
-    if (nav) {
-      const crearNavItem = (id, img, texto) => {
-        const a = document.createElement("a");
-        a.id = id;
-        a.href = "#";
+      // Configurar navegacion del header
+      const nav = document.getElementById("underline_nav");
+      if (nav) {
+        const crearNavItem = (id, img, texto) => {
+          const a = document.createElement("a");
+          a.id = id;
+          a.href = "#";
 
-        const icono = document.createElement("img");
-        icono.src = img;
-        icono.classList.add("icon_nav");
+          const icono = document.createElement("img");
+          icono.src = img;
+          icono.classList.add("icon_nav");
 
-        a.appendChild(icono);
-        a.append(" " + texto);
-        return a;
-      };
-
-      nav.appendChild(crearNavItem(
-        "a1",
-        "./../../media/images/icons/icon_home.png",
-        "Pagina Principal"
-      ));
-
-      const btnUsuario = document.createElement("button");
-      btnUsuario.id = "btn_is_r";
-
-      const aUser = document.createElement("a");
-      aUser.href = "#";
-      aUser.target = "_blank";
-
-      const iconUser = document.createElement("img");
-      iconUser.src = "./../../media/images/icons/icon_user.png";
-      iconUser.classList.add("icon_user");
-
-      aUser.appendChild(iconUser);
-      btnUsuario.appendChild(aUser);
-      nav.appendChild(btnUsuario);
-    }
-
-    // Cargar datos del historial desde varios archivos JSON
-
-    Promise.all([
-      fetch("./../../data/viajes.json").then(r => r.json()),
-      fetch("./../../data/lugares.json").then(r => r.json()),
-      fetch("./../../data/agencias.json").then(r => r.json()),
-      fetch("./../../data/eventos.json").then(r => r.json())
-    ])
-      .then(([viajes, lugares, agencias, eventos]) => {
-        // datos de varios JSON
-        const historyData = viajes.map(v => {
-          const lugar = lugares.find(l => l.id_lugar === v.id_paquete) || {};
-          const agencia = agencias.find(a => a.id_agencia === v.id_cliente) || {};
-          const evento = eventos.find(e => e.id_evento === v.id_paquete) || {};
-
-          const nombreLugar = lugar.nombre_lugar || ("Paquete " + v.id_paquete);
-          const ciudad = lugar.ciudad ? (" (" + lugar.ciudad + ")") : "";
-          const destino = nombreLugar + ciudad;
-
-          return {
-            destino: destino,
-            status: v.estado || "Desconocido",
-            fecha: (v.fecha_viaje || "") + " " + (v.hora_viaje || ""),
-            detalle: {
-              lugarNombre: lugar.nombre_lugar || "-",
-              lugarDescripcion: lugar.descripcion || "-",
-              lugarDireccion: lugar.direccion || "-",
-              agenciaNombre: agencia.nombre_agencia || "-",
-              eventoNombre: evento.nombre_evento || "-"
-            }
-          };
-        });
-
-        // Cargar archivo historial_table.js y inicializar la tabla
-        const scriptTabla = document.createElement("script");
-        scriptTabla.src = "./../../scripts/historial_table.js";
-
-        scriptTabla.onload = () => {
-          if (typeof window.initHistorialTable === "function") {
-            window.initHistorialTable(historyData);
-          } else {
-            console.error("No se encontro la funcion initHistorialTable.");
-          }
+          a.appendChild(icono);
+          a.append(" " + texto);
+          return a;
         };
 
-        document.body.appendChild(scriptTabla);
-      })
-      .catch(err => {
-        console.error("Error cargando archivos JSON del historial:", err);
-      });
+        nav.appendChild(crearNavItem(
+          "a1",
+          "./../../media/images/icons/icon_home.png",
+          "Pagina Principal"
+        ));
 
-  })
-  .catch(err => {
-    console.error("Error cargando header.html:", err);
-  });
+        const btnUsuario = document.createElement("button");
+        btnUsuario.id = "btn_is_r";
+
+        const aUser = document.createElement("a");
+        aUser.href = "#";
+        aUser.target = "_blank";
+
+        const iconUser = document.createElement("img");
+        iconUser.src = "./../../media/images/icons/icon_user.png";
+        iconUser.classList.add("icon_user");
+
+        aUser.appendChild(iconUser);
+        btnUsuario.appendChild(aUser);
+        nav.appendChild(btnUsuario);
+      }
+
+      // Cargar datos del historial desde varios archivos JSON
+
+      Promise.all([
+        fetch("./../../data/viajes.json").then(r => r.json()),
+        fetch("./../../data/lugares.json").then(r => r.json()),
+        fetch("./../../data/agencias.json").then(r => r.json()),
+        fetch("./../../data/eventos.json").then(r => r.json())
+      ])
+        .then(([viajes, lugares, agencias, eventos]) => {
+          // datos de varios JSON
+          const historyData = viajes.map(v => {
+            const lugar = lugares.find(l => l.id_lugar === v.id_paquete) || {};
+            const agencia = agencias.find(a => a.id_agencia === v.id_cliente) || {};
+            const evento = eventos.find(e => e.id_evento === v.id_paquete) || {};
+
+            const nombreLugar = lugar.nombre_lugar || ("Paquete " + v.id_paquete);
+            const ciudad = lugar.ciudad ? (" (" + lugar.ciudad + ")") : "";
+            const destino = nombreLugar + ciudad;
+
+            return {
+              destino: destino,
+              status: v.estado || "Desconocido",
+              fecha: (v.fecha_viaje || "") + " " + (v.hora_viaje || ""),
+              detalle: {
+                lugarNombre: lugar.nombre_lugar || "-",
+                lugarDescripcion: lugar.descripcion || "-",
+                lugarDireccion: lugar.direccion || "-",
+                agenciaNombre: agencia.nombre_agencia || "-",
+                eventoNombre: evento.nombre_evento || "-"
+              }
+            };
+          });
+
+          // Cargar archivo historial_table.js y inicializar la tabla
+          const scriptTabla = document.createElement("script");
+          scriptTabla.src = "./../../scripts/historial_table.js";
+
+          scriptTabla.onload = () => {
+            if (typeof window.initHistorialTable === "function") {
+              window.initHistorialTable(historyData);
+            } else {
+              console.error("No se encontro la funcion initHistorialTable.");
+            }
+          };
+
+          document.body.appendChild(scriptTabla);
+        })
+        .catch(err => {
+          console.error("Error cargando archivos JSON del historial:", err);
+        });
+
+    })
+    .catch(err => {
+      console.error("Error cargando header.html:", err);
+    });
 
 
-// Cargar dinamicamente el footer
-fetch("./../../components/footer.html")
-  .then(r => r.text())
-  .then(html => {
-    document.body.insertAdjacentHTML("beforeend", html);
+  // Cargar dinamicamente el footer
+  fetch("./../../components/footer.html")
+    .then(r => r.text())
+    .then(html => {
+      document.body.insertAdjacentHTML("beforeend", html);
 
-    const f_icon = document.getElementById("f_icon");
-    if (f_icon) f_icon.src = "./../../media/images/icons/icon_arc.png";
+      const f_icon = document.getElementById("f_icon");
+      if (f_icon) f_icon.src = "./../../media/images/icons/icon_arc.png";
 
-    const linkAbout = document.querySelector(".f_link");
-    if (linkAbout) linkAbout.href = "#";
+      const linkAbout = document.querySelector(".f_link");
+      if (linkAbout) linkAbout.href = "#";
 
-    const f_general = document.getElementById("f_general");
-    if (f_general) {
-      f_general.style.backgroundImage = "url(./../../media/images/layout/imgLayout20.jpg)";
-      f_general.style.backgroundPosition = "50% 80%";
-    }
-  })
-  .catch(err => {
-    console.error("Error cargando footer.html:", err);
-  });
+      const f_general = document.getElementById("f_general");
+      if (f_general) {
+        f_general.style.backgroundImage = "url(./../../media/images/layout/imgLayout20.jpg)";
+        f_general.style.backgroundPosition = "50% 80%";
+      }
+    })
+    .catch(err => {
+      console.error("Error cargando footer.html:", err);
+    });
+});
