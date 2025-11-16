@@ -26,37 +26,81 @@
         $respuesta = ['correcto' => false];
         if(!empty($_POST) || !empty($_FILES)){
             
+            $id_lugar_update = $_POST["id_lugar_update"] ?? null;
+            $imagen = $_FILES["imagen"] ?? null;
+
+
             $nombre = $_POST["nombre"];
             $descripcion = $_POST["descripcion"];
             $direccion = $_POST["direccion"];
             $ciudad = $_POST["ciudad"];
             $zona = $_POST["zona"];
             $id_admin = $_POST["id_admin"];
-            $imagen = $_FILES["imagen"];
+            $imagen = $_FILES["imagen"] ?? null;
 
-            if (empty($nombre) || empty($descripcion) || empty($direccion) || empty($ciudad) || empty($zona) || empty($id_admin) || !isset($_FILES["imagen"])) {
-                $error = "Datos incompletos";
+            if (empty($nombre) || empty($descripcion) || empty($direccion) || empty($ciudad) || empty($zona) || empty($id_admin)) {
+                $error = "Datos incompletos.";
                 $respuesta = array("correcto" => false, "mensaje" => $error);
                 echo json_encode($respuesta);
                 exit;
             }
 
-            if (!$imagen || $imagen["error"] !== UPLOAD_ERR_OK) {
-                $respuesta['mensaje'] = "Error: Imagen no valida";
-                echo json_encode($respuesta);
-                exit;
-            }
+            
 
-            $tipoArchivo = $imagen["type"];
+            $id_lugar = 0;
+
+            try {
+                if ($id_lugar_update) {
+                    $id_actual = $id_lugar_update;
+                    $lugarDAO->updateLugar($id_actual, $nombre, $descripcion, $direccion, $ciudad, $zona);
+                    
+                    if ($imagen && $imagen["error"] === UPLOAD_ERR_OK) {
+$tipoArchivo = $imagen["type"];
             if ($tipoArchivo !== 'image/jpeg' && $tipoArchivo !== 'image/jpg') { 
             $respuesta['mensaje'] = "Error: Solo se permiten archivos JPG y JPEG.";
             echo json_encode($respuesta);
             exit;
             }
 
-            $id_lugar = 0;
+                        $lugar_antiguo = $lugarDAO->getLugarPorID($id_actual);
+                        $nombre_imagen_anterior = $lugar_antiguo['imagen_url'] ?? '';
 
-            try {
+                        $extension = "jpg";
+                        $nombre_img_db = 'lim' . $id_actual . '.' . $extension;
+                        $ruta_almacenamiento_fisica = $RUTA_FISICA_GUARDADO . $nombre_img_db;
+
+                        if (move_uploaded_file($imagen["tmp_name"], $ruta_almacenamiento_fisica)) {
+                            $lugarDAO->updateImagen($id_actual, $nombre_img_db);
+                            
+                            if (!empty($nombre_imagen_anterior) && $nombre_imagen_anterior !== $nombre_img_db) {
+                                $ruta_fisica_anterior = $RUTA_FISICA_GUARDADO . $nombre_imagen_anterior;
+                                if (file_exists($ruta_fisica_anterior)) {
+                                    @unlink($ruta_fisica_anterior);
+                                }
+                            }
+                        } else {
+                            $respuesta = array("correcto" => false, "mensaje" => "Error: No se pudo guardar físicamente la nueva imagen.");
+                            echo json_encode($respuesta);
+                            exit;
+                        }
+                    }
+                    $respuesta = array("correcto" => true, "mensaje" => "Lugar modificado exitosamente.");
+                    echo json_encode($respuesta);
+                    exit;
+                } else {
+                    if (!$imagen || $imagen["error"] !== UPLOAD_ERR_OK) {
+                    $respuesta['mensaje'] = "Error: Imagen requerida para crear el lugar.";
+                    echo json_encode($respuesta);
+                    exit;
+                }
+                
+                // 2. VALIDACIÓN DE TIPO DE IMAGEN (Para la creación)
+                $tipoArchivo = $imagen["type"];
+                if ($tipoArchivo !== 'image/jpeg' && $tipoArchivo !== 'image/jpg') { 
+                    $respuesta['mensaje'] = "Error: Solo se permiten archivos JPG y JPEG.";
+                    echo json_encode($respuesta);
+                    exit;
+                }
             $id_lugar = $lugarDAO->crearLugar($nombre, $descripcion, $direccion, $ciudad, $zona, $id_admin);
             if ($id_lugar > 0) {
                 $extension = "jpg";
@@ -83,7 +127,7 @@
         }else{
             $respuesta['mensaje'] = "Error: No se pudo obtener el ID para actualizar la ruta de imagen";
             echo json_encode($respuesta);
-        }
+        }}
         } catch (Exception $e) {
             if ($id_lugar > 0) {
                  $lugarDAO->eliminarLugarPorId($id_lugar);

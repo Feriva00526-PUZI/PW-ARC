@@ -85,5 +85,21 @@ class lugarDAO{
         }
     }
 
+    public function updateLugar($id, $nombre, $descripcion, $direccion, $ciudad, $zona) {
+        try {
+            $sql = "UPDATE lugares SET nombre_lugar = :nombre, descripcion = :descripcion, direccion = :direccion, ciudad = :ciudad, zona = :zona WHERE id_lugar = :id";
+            
+            $stmt = $this->conexion->prepare($sql);
+            $stmt->bindParam(':nombre', $nombre);
+            $stmt->bindParam(':descripcion', $descripcion);
+            $stmt->bindParam(':direccion', $direccion);
+            $stmt->bindParam(':ciudad', $ciudad);
+            $stmt->bindParam(':zona', $zona);
+            $stmt->bindParam(':id', $id);
+            return $stmt->execute();
+        } catch(PDOException $e) {
+            throw new Exception("Error al actualizar el lugar en la base de datos: " . $e->getMessage());
+        }
+    }
 }
 ?>
