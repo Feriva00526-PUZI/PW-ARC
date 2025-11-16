@@ -1,6 +1,4 @@
-import {
-    obtenerTodosLugares
-} from "../scripts/dao/daoEventos.js";
+import obtenerTodosLugares from "../scripts/dao/daoEventos.js";
 window.addEventListener("load", function(){
     let contenedorLugar = document.getElementById("selecciones");
     let ol = document.createElement("ol");
