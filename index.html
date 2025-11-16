@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARC - Pagina Princiapl</title>
+    <link rel="stylesheet" href="./src/styles/header_style.css">
+    <link rel="stylesheet" href="./src/styles/footer_style.css">
+    <link rel="stylesheet" href="./src/styles/style_generico.css">
+    <link rel="stylesheet" href="./src/styles/index.css">
+    <link rel="stylesheet" href="./src/styles/carousel.css">
+    <script src="./src/scripts/index.js" type="module"></script>
+</head>
+
+<body>
+    <main class="box">
+        <dialog class="dialog_select" id="select_login">
+            <h3 class="dialog_h3">¿Como quieres acceder?</h3>
+            <div class="dialog_options">
+                <button id="btn_usuario">
+                    <img class="img_ls" src="./src/media/images/icons/iconLS1.png">
+                    <p class="dialog_text_btn">Usuario</p>
+                </button>
+                <button id="btn_admin">
+                    <img class="img_ls" src="./src/media/images/icons/iconLS2.png">
+                    <p class="dialog_text_btn">Administrador</p>
+                </button>
+                <button id="btn_organizador">
+                    <img class="img_ls" src="./src/media/images/icons/iconLS3.png">
+                    <p class="dialog_text_btn">Organizador de Eventos</p>
+                </button>
+                <button id="btn_agencia">
+                    <img class="img_ls" src="./src/media/images/icons/iconLS4.png">
+                    <p class="dialog_text_btn">Agencia de Viajes</p>
+                </button>
+            </div><br>
+            <button class="button_ls_close" id="close_select_login">
+                <img class="img_ls_close" src="./src/media/images/icons/iconLS5.png">
+                <p class="dialog_text_btn_close">Cancelar</p>
+            </button>
+
+        </dialog>
+        <section>
+            <div id="carrusel-paquetes"></div>
+        </section>
+
+    </main>
+
+</body>
+
+</html>

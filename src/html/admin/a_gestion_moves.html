@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARC - Gestor de lugares</title>
+    <link rel="stylesheet" href="./../../styles/header_style.css">
+    <link rel="stylesheet" href="./../../styles/footer_style.css">
+    <link rel="stylesheet" href="./../../styles/style_generico.css">
+    <link rel="stylesheet" href="./../../styles/a_gestion_moves.css">
+    <script src="./../../scripts/a_gestion_moves.js"></script>
+</head>
+
+<body>
+    <main class="box event-box">
+        <form>
+            <h2 class="modulo_h2">Vista predeterminada del lugar seleccionado</h2>
+            <div class="div_imagen_lugar">
+                <img class="imagen_lugar" src="./../../media/images/layout/imgLayout4.jpg" alt="Imagen del lugar">
+            </div>
+            <div class="div_nombre_lugar">
+                <label for="txt_nombre_lugar">Nombre del lugar</label>
+                <input type="text" id="txt_nombre_lugar" placeholder="Nombre del lugar">
+            </div>
+
+            <div class="div_descripcion_lugar">
+                <label for="txt_descripcion_lugar">Descripción</label>
+                <textarea class="txt_descripcion_lugar" id="txt_descripcion_lugar" placeholder="Descripción"></textarea>
+            </div>
+
+            <div class="div_mapa_lugar">
+                <img class="mapa_lugar" src="./../../media/images/layout/imgLayout4.jpg" alt="Imagen del lugar">
+            </div>
+
+            <div class="div_direccion_lugar">
+                <label for="txt_direccion_lugar">Dirección</label>
+                <input type="text" id="txt_direccion_lugar" placeholder="Dirección">
+            </div>
+            <div class="div_zona_lugar">
+                <label for="txt_zona_lugar">Zona</label>
+                <input type="text" id="txt_zona_lugar" placeholder="Zona">
+            </div>
+            <div class="div_ciudad_lugar">
+                <label for="txt_ciudad_lugar">Ciudad</label>
+                <input type="text" id="txt_ciudad_lugar" placeholder="Ciudad">
+            </div>
+            <label for="file_new_img" class="label_new_img">
+                <div class="file_content_box">
+                    <span id="file_name_display">Cambiar Imagen</span>
+                    <input type="file" class="file_new_img" id="file_new_img" name="file_new_image" accept="image/*">
+                </div>
+            </label>
+            <input type="submit" value="Eliminar" class="boton_eliminar_lugar button" id="boton_eliminar_lugar">
+            <input type="submit" value="Modificar" class="boton_modificar_lugar button" id="boton_modificar_lugar">
+        </form>
+    </main>
+
+</body>
+
+</html>
