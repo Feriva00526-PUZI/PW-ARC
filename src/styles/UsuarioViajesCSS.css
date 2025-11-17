@@ -1,81 +1,94 @@
-.container{
-            display: grid;
-            grid-template-columns: 0.3fr 0.5fr;
-            grid-template-areas: "viajes        titulo"
-                                 "buscador      ImgMapa"
-                                 "buscador      paquete"
-                                 "buscador      comentar";
-            grid-gap: 5px;
-        }
-        #viajes{
-            grid-area: viajes;
-            /*border: 2px solid black;*/
-        }
-        #titulo{
-            grid-area: titulo;
-            /*border: 2px solid black;*/
-        }
-        #ImgMapa{
-            grid-area: ImgMapa;
-            display: grid;
-            grid-template-columns: 0.25fr 0.25fr;
-            grid-template-areas: "img   mapa";
-        }
-        
-        #img1{
-            grid-area: img;
-            width: 300px;
-            /*border: 2px solid black;*/
-        }
-        #mapa{
-            grid-area: mapa;
-            /*border: 2px solid black;*/
-        }
-        #buscador{
-            grid-area: buscador;
-            display: grid;
-            grid-template-rows: 0.1fr 2fr;
-            grid-template-areas: "buscar"
-                                 "selecciones"
-                                 "selecciones";
-        }
-        #buscar{
-            grid-area: buscar;
-            /*border: 2px solid black;*/
-        }
-        #selecciones{
-            grid-area: selecciones;
-            overflow-y: auto;
-            height: 315px;
-            /*border: 2px solid black;*/
-        }
-        #paquete{
-            grid-area: paquete;
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            grid-template-areas: "paq1 paq2 paq3";
-        }
-        #paq1{
-            grid-area: paq1;
-            /*border: 2px solid black;*/
-            height: 100px;
-        }
-        #paq2{
-            grid-area: paq2;
-            /*border: 2px solid black;*/
-            height: 100px;
-        }
-        #paq3{
-            grid-area: paq3;
-            /*border: 2px solid black;*/
-            height: 100px;
-        }
-        #comentar{
-            grid-area: comentar;
-            /*border: 2px solid black;*/
-        }
-        .minicard {
-    background-color: #caccd4;
+.container {
+    display: grid;
+    grid-template-columns: 0.3fr 0.5fr;
+    grid-template-areas: "viajes        titulo"
+        "buscador      ImgMapa"
+        "buscador      paquete"
+        "buscador      comentar";
+    grid-gap: 5px;
+}
+
+#viajes {
+    grid-area: viajes;
+    /*border: 2px solid black;*/
+}
+
+#titulo {
+    grid-area: titulo;
+    /*border: 2px solid black;*/
+}
+
+#ImgMapa {
+    grid-area: ImgMapa;
+    display: grid;
+    grid-template-columns: 0.25fr 0.25fr;
+    grid-template-areas: "img   mapa";
+}
+
+#img1 {
+    grid-area: img;
+    width: 300px;
+    /*border: 2px solid black;*/
+}
+
+#mapa {
+    grid-area: mapa;
+    /*border: 2px solid black;*/
+}
+
+#buscador {
+    grid-area: buscador;
+    display: grid;
+    grid-template-rows: 0.1fr 2fr;
+    grid-template-areas: "buscar"
+        "selecciones"
+        "selecciones";
+}
+
+#buscar {
+    grid-area: buscar;
+    /*border: 2px solid black;*/
+}
+
+#selecciones {
+    grid-area: selecciones;
+    overflow-y: auto;
+    height: 315px;
+    /*border: 2px solid black;*/
+}
+
+#paquete {
+    grid-area: paquete;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-areas: "paq1 paq2 paq3";
+}
+
+#paq1 {
+    grid-area: paq1;
+    /*border: 2px solid black;*/
+    height: 100px;
+}
+
+#paq2 {
+    grid-area: paq2;
+    /*border: 2px solid black;*/
+    height: 100px;
+}
+
+#paq3 {
+    grid-area: paq3;
+    /*border: 2px solid black;*/
+    height: 100px;
+}
+
+#comentar {
+    grid-area: comentar;
+    /*border: 2px solid black;*/
+}
+
+.minicard {
+    background-color: black;
     border-left: 5px solid #023E8A;
     border-radius: 8px;
     padding: 12px;
