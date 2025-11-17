@@ -70,9 +70,7 @@ function initHistorialTable(data) {
       );
     });
     
-    // ******************************************************
-    // SOLUCIÓN: La acción de cancelar va DENTRO del bucle forEach.
-    // ******************************************************
+    
     if (estadoViaje === "pendiente") {
         btnCancelar.addEventListener("click", () => {
 
@@ -122,7 +120,6 @@ function initHistorialTable(data) {
     tbody.appendChild(tr);
   });
     
-    // NOTA: El bloque de código de cancelación que estaba al final se ha eliminado.
 }
 
 window.initHistorialTable = initHistorialTable;
