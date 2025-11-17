@@ -74,3 +74,33 @@
             grid-area: comentar;
             /*border: 2px solid black;*/
         }
+        .minicard {
+    background-color: #caccd4;
+    border-left: 5px solid #023E8A;
+    border-radius: 8px;
+    padding: 12px;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    transition:
+        background-color 0.3s ease,
+        box-shadow 0.3s ease,
+        transform 0.25s ease,
+        border-left-color 0.3s ease;
+}
+
+
+.minicard span {
+    font-size: 0.95rem;
+    color: #333;
+}
+
+.minicard:hover {
+    background-color: #dbe3f7;
+    border-left-color: #1f3461;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+}
