@@ -1,77 +1,99 @@
+
+
 function getStatusClass(status) {
- const s = (status || "").toLowerCase();
+  const s = (status || "").toLowerCase();
 
- if (s === "pendiente") return "status-en-espera badge";
- if (s === "cancelado") return "status-cancelado badge";
- if (s === "completado") return "status-realizado badge";
+  if (s.includes("program") || s.includes("espera")) return "status-en-espera badge";
+  if (s.includes("curso")) return "status-en-curso badge";
+  if (s.includes("cancel")) return "status-cancelado badge";
+  if (s.includes("final") || s.includes("realiz")) return "status-realizado badge";
 
- return "status-en-espera badge";
+  return "status-realizado badge";
 }
 
 function initHistorialTable(data) {
- const tbody = document.querySelector("#hist-table-sample tbody");
- tbody.innerHTML = "";
+  const tbody = document.querySelector("#hist-table-sample tbody");
+  if (!tbody) return;
 
- data.forEach(item => {
- const tr = document.createElement("tr");
+  // Limpia la tabla
+  tbody.innerHTML = "";
 
- // id_paquete (Esta celda se usaba para el destino en tu captura)
-  const tdId = document.createElement("td");
-  tdId.textContent = item.id_paquete;
+  // Crea cada fila de la tabla
+  data.forEach(item => {
+    const tr = document.createElement("tr");
 
-  // nombre del paquete (INNER JOIN)
-  const tdPaquete = document.createElement("td");
-  tdPaquete.textContent = item.nombre_paquete + " - " + item.nombre_lugar;
+    // Destino
+    const tdDestino = document.createElement("td");
+    tdDestino.textContent = item.destino || "-";
 
-  // Estado
-  const tdEstado = document.createElement("td");
-  const divEstado = document.createElement("div");
-  divEstado.textContent = item.estado;
-  divEstado.className = getStatusClass(item.estado);
-  tdEstado.appendChild(divEstado);
+    // Estado
+    const tdEstado = document.createElement("td");
+    const divEstado = document.createElement("div");
+    divEstado.textContent = item.status || "-";
+    divEstado.className = getStatusClass(item.status);
+    tdEstado.appendChild(divEstado);
 
-  // Fecha
-  const tdFecha = document.createElement("td");
-  tdFecha.textContent = item.fecha_viaje;
+    // Fecha
+    const tdFecha = document.createElement("td");
+    tdFecha.textContent = item.fecha || "-";
 
-  // Hora
-  const tdHora = document.createElement("td");
-  tdHora.textContent = item.hora_viaje;
+    // Acciones
+    const tdAcciones = document.createElement("td");
+    const btnCancelar = document.createElement("button");
+    btnCancelar.className = "hist-btn hist-btn-cancel";
+    btnCancelar.textContent = "Cancelar";
 
-  // Acciones
-  // Descripcion
-  const tdAcciones = document.createElement("td");
-  const btnDescripcion = document.createElement("button");
-  btnDescripcion.className = "hist-btn hist-btn-desc";
-  btnDescripcion.textContent = "Descripción";
-// Cancelar
-const btnCancelar = document.createElement("button");
-btnCancelar.className = "hist-btn hist-btn-cancel";
-btnCancelar.textContent = "Cancelar";
+    btnDescripcion.className = "hist-btn hist-btn-desc";
+    btnDescripcion.textContent = "Descripcion";
 
- btnDescripcion.addEventListener("click", () => {
- alert(
- "Paquete: " + item.nombre_paquete + "\n" +
- "Lugar: " + item.nombre_lugar + "\n" +
- "Ciudad: " + item.ciudad + "\n" +
-"Estado: " + item.estado + "\n" +
- "Fecha: " + item.fecha_viaje + "\n" +
- "Hora: " + item.hora_viaje
- );
- });
+    // Revisa si ya no se puede cancelar
+    const st = (item.status || "").toLowerCase();
+    const noCancelable =
+      st.includes("cancel") ||
+      st.includes("final") ||
+      st.includes("realiz");
 
- tdAcciones.appendChild(btnDescripcion);
+    if (noCancelable) {
+      btnCancelar.disabled = true;
+      btnCancelar.classList.add("disabled-btn");
+    }
 
- // Añadir las celdas en el orden correcto
- tr.appendChild(tdId);
- tr.appendChild(tdPaquete);
- tr.appendChild(tdEstado);
- tr.appendChild(tdFecha);
- tr.appendChild(tdHora);
- tr.appendChild(tdAcciones);
+    // Evento cancelar
+    btnCancelar.addEventListener("click", () => {
+      item.status = "Cancelado";
+      divEstado.textContent = "Cancelado";
+      divEstado.className = getStatusClass(item.status);
+      btnCancelar.disabled = true;
+      btnCancelar.classList.add("disabled-btn");
+      alert("El viaje a " + item.destino + " fue cancelado.");
+    });
 
- tbody.appendChild(tr);
- });
+    // Evento descripcion
+    btnDescripcion.addEventListener("click", () => {
+      const d = item.detalle || {};
+      alert(
+        "Lugar: " + (d.lugarNombre || "-") + "\n" +
+        "Estado: " + (item.status || "-") + "\n" +
+        "Fecha: " + (item.fecha || "-") + "\n" +
+        "Agencia: " + (d.agenciaNombre || "-") + "\n" +
+        "Evento: " + (d.eventoNombre || "-")
+      );
+    });
+
+    // Agrega botones a la celda
+    
+    tdAcciones.appendChild(btnDescripcion);
+    tdAcciones.appendChild(btnCancelar);
+
+    // Agrega todas las celdas a la fila
+    tr.appendChild(tdDestino);
+    tr.appendChild(tdEstado);
+    tr.appendChild(tdFecha);
+    tr.appendChild(tdAcciones);
+
+    // Agrega la fila a la tabla
+    tbody.appendChild(tr);
+  });
 }
 
 window.initHistorialTable = initHistorialTable;
