@@ -73,6 +73,33 @@ btnCancelar.textContent = "Cancelar";
 
     tbody.appendChild(tr);
   });
+
+// Acción de cancelar viaje
+btnCancelar.addEventListener("click", () => {
+
+  if (!confirm("¿Seguro que deseas cancelar este viaje?")) return;
+
+  fetch("./../logic/HistorialLogic.php", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      accion: "cancelar",
+      id_viaje: item.id_viaje
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.correcto) {
+      alert("El viaje ha sido cancelado correctamente.");
+      item.estado = "cancelado"; // por si quieres actualizar sin recargar
+      location.reload(); // si quieres refrescar la tabla
+    } else {
+      alert("Error: " + data.mensaje);
+    }
+  })
+  .catch(err => console.error("Error en fetch:", err));
+});
+
 }
 
 window.initHistorialTable = initHistorialTable;
