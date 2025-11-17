@@ -15,7 +15,7 @@ window.addEventListener("load", function () {
 
                 let liTxt = document.createTextNode(data.nombre_lugar);
                 li.appendChild(liTxt);
-                li.setAttribute("class", "cards");
+                li.setAttribute("class", "minicard");
                 li.addEventListener("click", function () {
                     let id_lugar = data.id_lugar;
                     console.log(id_lugar);
