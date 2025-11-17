@@ -1,4 +1,3 @@
-
 window.addEventListener("load", function () {
     let contenedorLugar = document.getElementById("selecciones");
     let contenedorPaquete = document.getElementById("paquete");
@@ -31,6 +30,8 @@ window.addEventListener("load", function () {
                             paqcont++;
                             div.setAttribute("class", "minicard");
                             contenedorPaquete.appendChild(div);
+                            const imgMapa = document.getElementById("imgMapa");
+                            imgMapa.src = `./../../media/images/lugares/limg${data.id_lugar}.jpg`;
                         }
 
                         )
@@ -54,7 +55,7 @@ window.addEventListener("load", function () {
             console.log("Hubo error en el if de correcto y lugares");
         }
     }).catch(error => {
-        alert("Error de conexión al servidor. No se pudieron obtener los lugares.");
+        alert("Error de conexiÃ³n al servidor. No se pudieron obtener los lugares.");
     });
 
 
