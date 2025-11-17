@@ -14,6 +14,7 @@ function initHistorialTable(data) {
 
   data.forEach(item => {
     const tr = document.createElement("tr");
+    const estadoViaje = (item.estado || "").toLowerCase(); // Normalizar el estado
 
     // id_paquete
     const tdId = document.createElement("td");
@@ -39,16 +40,24 @@ function initHistorialTable(data) {
     tdHora.textContent = item.hora_viaje;
 
     // Acciones
-    // Boton de descripcion
     const tdAcciones = document.createElement("td");
+    
+    // Boton de descripcion
     const btnDescripcion = document.createElement("button");
     btnDescripcion.className = "hist-btn hist-btn-desc";
     btnDescripcion.textContent = "Descripción";
-
-// Botón Cancelar (solo aparece)
-const btnCancelar = document.createElement("button");
-btnCancelar.className = "hist-btn hist-btn-cancel";
-btnCancelar.textContent = "Cancelar";
+    
+    // Botón Cancelar
+    const btnCancelar = document.createElement("button");
+    btnCancelar.className = "hist-btn hist-btn-cancel";
+    btnCancelar.textContent = "Cancelar";
+    
+    // Deshabilitar si no está pendiente y aplicar estilo CSS de deshabilitado
+    if (estadoViaje !== "pendiente") {
+        btnCancelar.disabled = true;
+        btnCancelar.classList.add("disabled-btn");
+        btnCancelar.textContent = estadoViaje === "cancelado" ? "Cancelado" : "Realizado";
+    }
 
     btnDescripcion.addEventListener("click", () => {
       alert(
@@ -60,6 +69,45 @@ btnCancelar.textContent = "Cancelar";
         "Hora: " + item.hora_viaje
       );
     });
+    
+    // ******************************************************
+    // SOLUCIÓN: La acción de cancelar va DENTRO del bucle forEach.
+    // ******************************************************
+    if (estadoViaje === "pendiente") {
+        btnCancelar.addEventListener("click", () => {
+
+            if (!confirm("¿Seguro que deseas cancelar este viaje?")) return;
+
+            fetch("../../data/logic/HistorialLogic.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    accion: "cancelar",
+                    id_viaje: item.id_viaje // 'item.id_viaje' es accesible aquí.
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.correcto) {
+                    alert("El viaje ha sido cancelado correctamente.");
+                    // location.reload(); // Recargar para ver el cambio
+                    
+                    // Opcional: Actualizar el DOM sin recargar
+                    item.estado = "cancelado";
+                    divEstado.textContent = "cancelado";
+                    divEstado.className = getStatusClass("cancelado");
+                    btnCancelar.disabled = true;
+                    btnCancelar.classList.add("disabled-btn");
+                    btnCancelar.textContent = "Cancelado";
+                    btnCancelar.removeEventListener("click", this); // Remover el listener para evitar errores
+                } else {
+                    alert("Error: " + data.mensaje);
+                }
+            })
+            .catch(err => console.error("Error en fetch:", err));
+        });
+    }
+
 
     tdAcciones.appendChild(btnDescripcion);
     tdAcciones.appendChild(btnCancelar);
@@ -73,33 +121,8 @@ btnCancelar.textContent = "Cancelar";
 
     tbody.appendChild(tr);
   });
-
-// Accion de cancelar viaje
-btnCancelar.addEventListener("click", () => {
-
-  if (!confirm("¿Seguro que deseas cancelar este viaje?")) return;
-
-  fetch("../../data/logic/HistorialLogic.php", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      accion: "cancelar",
-      id_viaje: item.id_viaje
-    })
-  })
-  .then(res => res.json())
-  .then(data => {
-    if (data.correcto) {
-      alert("El viaje ha sido cancelado correctamente.");
-      item.estado = "cancelado"; // por si quieres actualizar sin recargar
-      location.reload(); // si quieres refrescar la tabla
-    } else {
-      alert("Error: " + data.mensaje);
-    }
-  })
-  .catch(err => console.error("Error en fetch:", err));
-});
-
+    
+    // NOTA: El bloque de código de cancelación que estaba al final se ha eliminado.
 }
 
 window.initHistorialTable = initHistorialTable;
