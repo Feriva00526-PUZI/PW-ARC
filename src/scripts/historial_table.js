@@ -38,17 +38,13 @@ function initHistorialTable(data) {
     tdFecha.textContent = item.fecha || "-";
 
     // Acciones
-const tdAcciones = document.createElement("td");
+    const tdAcciones = document.createElement("td");
+    const btnCancelar = document.createElement("button");
+    btnCancelar.className = "hist-btn hist-btn-cancel";
+    btnCancelar.textContent = "Cancelar";
 
-// Botón Descripción
-const btnDescripcion = document.createElement("button");
-btnDescripcion.className = "hist-btn hist-btn-desc";
-btnDescripcion.textContent = "Descripción";
-
-// Botón Cancelar
-const btnCancelar = document.createElement("button");
-btnCancelar.className = "hist-btn hist-btn-cancel";
-btnCancelar.textContent = "Cancelar";
+    btnDescripcion.className = "hist-btn hist-btn-desc";
+    btnDescripcion.textContent = "Descripcion";
 
     // Revisa si ya no se puede cancelar
     const st = (item.status || "").toLowerCase();
@@ -101,3 +97,4 @@ btnCancelar.textContent = "Cancelar";
 }
 
 window.initHistorialTable = initHistorialTable;
+
