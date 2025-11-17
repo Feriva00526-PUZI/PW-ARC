@@ -15,9 +15,10 @@ window.addEventListener("load", function () {
     console.log(organizadora.imagen_url);
     // Configuracion inicial
     document.title = organizadora.nombre_agencia;
+    
     document.getElementById("imgAgencia").src =
-        `./../../../src/media/images/organizers/${organizadora.imagen_url}`;
-
+        `../../../src/media/images/organizers/${organizadora.imagen_url}`;
+    
 
     // Obtener número eventos mes
     fetch(`../../data/Logic/organizerController.php?accion=numeroEventosMes&id_organizadora=${idOrg}`)
@@ -35,11 +36,12 @@ window.addEventListener("load", function () {
     let eventos = [];
     //src\data\DAO\organizadorDAO.php
     //src\scripts\organizers.js
-    fetch(`../../data/Logic/organizerController.php?accion=eventos&id_organizadora=${idOrg}`)
+    fetch(`../../data/Logic/organizerController.php?accion=eventosCalendario&id_organizadora=${idOrg}`)
         .then(res => res.json())
         .then(json => {
             if (json.correcto) {
                 eventos = json.data;
+                console.log(eventos);
                 window.eventosCalendario = eventos;
                 filtrarEventos();
             } else {
@@ -62,11 +64,11 @@ window.addEventListener("load", function () {
         lista.forEach(ev => {
             const tr = document.createElement("tr");
             tr.innerHTML = `
-                <td>${ev.fecha_evento}</td>
-                <td>${ev.nombre_evento}</td>
-                <td>${ev.lugar || "N/A"}</td>
-                <td>$${ev.precio_boleto}</td>
-                <td>
+                <td data-label="Fecha">${ev.fecha_evento}</td>
+                <td data-label="Nombre">${ev.nombre_evento}</td>
+                <td data-label="Lugar">${ev.lugar || "N/A"}</td>
+                <td data-label="Precio">$${ev.precio_boleto}</td>
+                <td data-label="Acciones">
                     <button class="btn-modificar" data-id="${ev.id_evento}">Modificar</button>
                     <button class="btn-cancelar" data-id="${ev.id_evento}">Cancelar</button>
                     <button class="btn-calendario" data-id="${ev.id_evento}">📅</button>

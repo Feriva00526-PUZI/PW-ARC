@@ -31,8 +31,8 @@ function renderCalendar(month, year) {
   currentYear = year;
 
   const monthNames = [
-    "Enero","Febrero","Marzo","Abril","Mayo","Junio",
-    "Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"
+    "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+    "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
   ];
   currentDateLabel.textContent = `${monthNames[month]} ${year}`;
 
@@ -56,6 +56,12 @@ function renderCalendar(month, year) {
     const evento = eventosMes.find(e => new Date(e.fecha_evento).getDate() === day);
     if (evento) {
       li.classList.add("event-day");
+
+      // === CAMBIO IMPORTANTE AQUÍ ===
+      // Añadimos la imagen del evento como fondo del 'li'
+      li.style.backgroundImage = `url('../../media/images/events/${evento.imagen_url}')`;
+      // ==============================
+
       li.addEventListener("click", () => openDayInfo(evento));
     }
 
@@ -71,15 +77,25 @@ function renderCalendar(month, year) {
 }
 
 function openDayInfo(evento) {
-  dayInfoTitle.textContent = `${evento.nombre_evento} (${evento.fecha_evento})`;
-  dayInfoDescription.innerHTML = 
-  `
-  <img src = "/src/media/images/events/${evento.imagen_url}" >
-  <p>Lugar: ${evento.id_lugar}</p>
-  <p>Fecha: ${evento.descripcion}</p>
-  <p>Hora: ${evento.descripcion}</p>
-  <p>Precio: $${evento.precio_boleto}</p`;
+  // Título más limpio
+  dayInfoTitle.textContent = evento.nombre_evento;
 
+  // === CAMBIO IMPORTANTE AQUÍ ===
+  // HTML más estructurado para el modal, usando clases
+  dayInfoDescription.innerHTML = `
+    <img src="../../media/images/events/${evento.imagen_url}" alt="Imagen de ${evento.nombre_evento}">
+    
+    <div class="day-info__details">
+        <p><strong>Lugar:</strong> ${evento.nombre_lugar}</p>
+        <p><strong>Fecha:</strong> ${evento.fecha_evento}</p>
+        <p><strong>Hora:</strong> ${evento.hora_evento}</p>
+    </div>
+    
+    <p class="day-info__description">${evento.descripcion}</p>
+    
+    <p class="day-info__price">Precio: $${evento.precio_boleto}</p>
+  `;
+  // ==============================
 
   dayInfoModal.classList.add("active");
 }

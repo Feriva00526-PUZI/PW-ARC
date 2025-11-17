@@ -23,6 +23,24 @@ class eventosDAO{
             throw new Exception("Error al obtener eventos: " . $e->getMessage());
         }
     }
+    
+    public function getEventosParaCalendario($idOrganizadora){
+        try{
+            $sql = 
+            "SELECT E.id_evento, E.nombre_evento, E.descripcion, E.fecha_evento, E.hora_evento, E.precio_boleto, E.imagen_url, L.nombre_lugar 
+            FROM eventos E
+            JOIN lugares L ON E.id_lugar = L.id_lugar
+            where id_organizadora = :id";
+
+            $stmt = $this->conexion->prepare($sql);
+            $stmt->bindParam(":id", $idOrganizadora, PDO::PARAM_INT);
+            $stmt->execute();
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch(PDOException $e){
+            throw new Exception("Error al obtener eventos: " . $e->getMessage());
+        }
+    }
 
     public function getNumeroEventosEsteMes($idOrganizadora){
         try{

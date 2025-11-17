@@ -1,7 +1,6 @@
 <?php
 header("Content-Type: application/json");
 
-// IMPORTACIÓN DE TODOS LOS DAO QUE NECESITES
 require_once "./../dao/organizadorDAO.php";
 require_once "./../dao/lugarDAO.php";
 require_once "./../dao/eventosDAO.php";
@@ -39,6 +38,15 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
                 if (!$id) throw new Exception("Falta id_organizadora");
 
                 $data = $eventosDAO->getEventosPorOrganizadora($id);
+                echo json_encode(["correcto" => true, "data" => $data]);
+                break;
+        
+            // Obtener los eventos con un formato especifico para el calendario
+            case "eventosCalendario":
+                $id = $_GET["id_organizadora"] ?? null;
+                if (!$id) throw new Exception("Falta id_organizadora");
+
+                $data = $eventosDAO->getEventosParaCalendario($id);
                 echo json_encode(["correcto" => true, "data" => $data]);
                 break;
 
