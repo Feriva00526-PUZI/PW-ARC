@@ -1,4 +1,9 @@
 window.addEventListener("load", function () {
+    const usuarioSession = sessionStorage.getItem("usuario_logeado");
+  if (usuarioSession == null) {
+    window.location.href = "./../../../index.html";
+    return;
+  }
     let contenedorLugar = document.getElementById("selecciones");
     let contenedorPaquete = document.getElementById("paquete");
     let paqcont = 1;
