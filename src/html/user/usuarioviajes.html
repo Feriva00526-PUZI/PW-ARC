@@ -7,6 +7,7 @@
     <title>Usuario Viajes</title>
     <link rel="stylesheet" href="../../styles/style_generico.css">
     <link rel="stylesheet" href="../../styles/header_style.css">
+    <link rel="stylesheet" href="../../styles/footer_style.css">
     <link rel="stylesheet" href="../../styles/UsuarioViajesCSS.css">
     <script src="./../../scripts/Script_usuario_viajes.js"></script>
     <script src="./../../scripts/UsuarioViajes_Lugares.js"></script>
@@ -15,22 +16,18 @@
 </head>
 
 <body>
-    <div class="container box">
+    <main class="box">
         <div id="viajes">Lugares</div>
         <div id="titulo">Titulo del Lugar seleccionado</div>
 
-        <div id="ImgMapa">
-            <img src="../../media/images/ImgLugar.jpeg" id="img1">
-
-            <!-- <iframe src="#" frameborder="1" width="200" height="200"></iframe>
-    -->
+        <div id="containerImgMapa">
+            <img src="./../../media/images/layout/imgLayout4.jpg" id="imgMapa">
+            <!-- <iframe src="#" frameborder="1" width="200" height="200"></iframe>-->
         </div>
         <div id="paquete">
-            <!--
-            <div id="paq1" class="cards">paquete1</div>
+            <!-- <div id="paq1" class="cards">paquete1</div>
             <div id="paq2" class="cards">paquete2</div>
-            <div id="paq3" class="cards">paquete3</div>
-        -->
+            <div id="paq3" class="cards">paquete3</div>-->
         </div>
         <!--
     <div id="comentar">
@@ -39,8 +36,8 @@
     </div>-->
         <div id="buscador">
             <div>
-                <label for="Txt_Buscar">txt a buscar</label>
-                <input type="text" id="Txt_Buscar">
+                <!--<label for="Txt_Buscar">txt a buscar</label>-->
+                <input type="text" id="Txt_Buscar" placeholder="Busca por el nombre del lugar">
             </div>
             <div id="selecciones">
                 <!--
@@ -66,7 +63,7 @@
             </div>
 
         </div>
-    </div>
+    </main>
 </body>
 
 </html>
