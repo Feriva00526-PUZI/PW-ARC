@@ -8,32 +8,42 @@ $RUTA_FISICA_GUARDADO = __DIR__ . "/../../media/images/lugares/";
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
     $query = isset($_GET['query']) ? $_GET['query'] : 'query1';
-    $lugares = null;
+    $resultados = null;
+    $respuesta = null;
 
     try {
         switch ($query) {
             case 'query1':
-                $lugares = $lugarDAO->getMasPopulares();
+                $resultados = $lugarDAO->getMasPopulares();
                 break;
             case 'query2':
+                $resultados = $lugarDAO->getMenosPopulares();
+                break;
+            case 'query3':
+                $resultados = $lugarDAO->getEventosMasPopulares();
+                break;
+            case 'query4':
+                $resultados = $lugarDAO->getEventosMenosPopulares();
+                break;
             default:
-                $lugares = $lugarDAO->getMenosPopulares();
+                $resultados = [];
                 break;
         }
-
-        if ($lugares !== null && !empty($lugares)) {
-            // Procesamiento de la URL de la imagen si se encontraron lugares
-            foreach ($lugares as &$lugar) {
-                $lugar['imagen_url'] = $RUTA_IMG_ESTANDAR . $lugar['imagen_url'];
+        if ($resultados !== null && !empty($resultados)) {
+            foreach ($resultados as &$item) {
+                $item['imagen_url'] = $RUTA_IMG_ESTANDAR . $item['imagen_url'];
             }
-            $respuesta = ['correcto' => true, 'lugares' => $lugares];
+            $respuesta = ['correcto' => true, 'lugares' => $resultados];
         } else {
-            // Si la consulta no devolvió resultados
-            $respuesta = ['correcto' => false, 'lugares' => []];
+            $respuesta = ['correcto' => 'gamboa', 'lugares' => []];
         }
         echo json_encode($respuesta);
     } catch (Exception $e) {
-        $respuesta = ['correcto' => false, 'mensaje' => 'Error - ' . $e->getMessage()];
+        $respuesta = [
+            'correcto' => 'martin',
+            'mensaje' => 'Error - ' . $e->getMessage(),
+            'lugares' => []
+        ];
         echo json_encode($respuesta);
     }
 }

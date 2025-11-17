@@ -98,7 +98,54 @@ window.addEventListener("load", function () {
                 </select>
         `;
 
-        const cargarLugares = (query = 'query1') => {
+        cargarDatos('query1');
+        const filtroLugares = document.getElementById("filtroLugares");
+        filtroLugares.addEventListener("change", () => {
+            const filtroSelected = filtroLugares.value;
+            cargarDatos(tipoQuery(filtroSelected));
+        });
+    });
+    est2.addEventListener("click", () => {
+        titulo_overlay2.textContent = "Popularidad de Eventos";
+        overlay3.innerHTML = `<div class="minicard">Cargando filtro...</div>`;
+        overlay4.innerHTML = `<div class="minicard">Detalles</div>`;
+        overlayEx.innerHTML = `
+                <select id="filtroEventos">
+                    <option value="query3">Mas Populares</option>
+                    <option value="query4">Menos Populares</option>
+                </select>
+        `;
+
+        cargarDatos('query3');
+        const filtroEventos = document.getElementById("filtroEventos");
+        filtroEventos.addEventListener("change", () => {
+            const filtroSelected = filtroEventos.value;
+            cargarDatos(tipoQuery(filtroSelected));
+        });
+    });
+    est3.addEventListener("click", () => {
+        titulo_overlay2.textContent = "Informacion de las Asistencias";
+    });
+    est4.addEventListener("click", () => {
+        titulo_overlay2.textContent = "Tamaño de los eventos";
+    });
+    est5.addEventListener("click", () => {
+        titulo_overlay2.textContent = "Informacion de las Organizadoras";
+    });
+    function tipoQuery(valorFiltro) {
+        if (valorFiltro === "query1") {
+            return "query1";
+        } else if (valorFiltro === "query2") {
+            return "query2";
+        } else if (valorFiltro === "query3") {
+            return "query3";
+        } else if (valorFiltro === "query4") {
+            return "query4";
+        }
+    }
+    const cargarDatos = (query) => {
+        if (!query) return;
+        if (query === 'query1' || query === 'query2') {
             overlay3.innerHTML = `<div class="minicard">Cargando lugares...</div>`;
             fetch(`./../../data/logic/infoEventosLogic.php?query=${query}`)
                 .then(response => response.json())
@@ -126,25 +173,23 @@ window.addEventListener("load", function () {
                                 sessionStorage.setItem('id_lugar_selected', lugar.id_lugar);
                                 sessionStorage.setItem('lugar_objeto', JSON.stringify(lugar));
                                 overlay4.innerHTML = `
-        <div class="maxicard">
-            <h4 class="maxicard-titulo">${lugar.nombre_lugar}</h4>
-            <div class="maxicard-imagen">
-                <img src="${lugar.imagen_url}" alt="Imagen de ${lugar.nombre_lugar}">
-            </div>
-            <div class="maxicard-descripcion">
-                <p>Descripción:</p>
-                <span>${lugar.descripcion}</span>
-            </div>
-            <div class="maxicard-info-grid">
-                <p class="maxicard-dato">Ciudad: <span>${lugar.ciudad}</span></p>
-                <p class="maxicard-dato">Zona: <span>${lugar.zona}</span></p>
-                <p class="maxicard-dato dato-full">Dirección: <span>${lugar.direccion}</span></p>
-                <p class="maxicard-dato">Asistencias: <span>${lugar.total_asistencias}</span></p>
-                <p class="maxicard-dato">ID: <span>${lugar.id_lugar}</span></p>
-            </div>
-            
-        </div>
-    `;
+                                    <div class="maxicard">
+                                        <h4 class="maxicard-titulo">${lugar.nombre_lugar}</h4>
+                                        <div class="maxicard-imagen">
+                                            <img src="${lugar.imagen_url}" alt="Imagen de ${lugar.nombre_lugar}">
+                                        </div>
+                                        <div class="maxicard-descripcion">
+                                            <p>Descripción:</p>
+                                            <span>${lugar.descripcion}</span>
+                                        </div>
+                                        <div class="maxicard-info-grid">
+                                            <p class="maxicard-dato">Ciudad: <span>${lugar.ciudad}</span></p>
+                                            <p class="maxicard-dato">Zona: <span>${lugar.zona}</span></p>
+                                            <p class="maxicard-dato dato-full">Dirección: <span>${lugar.direccion}</span></p>
+                                            <p class="maxicard-dato">Asistencias: <span>${lugar.total_asistencias}</span></p>
+                                            <p class="maxicard-dato">ID: <span>${lugar.id_lugar}</span></p>
+                                        </div>
+                                    </div>`;
                             });
                         });
                     } else {
@@ -154,34 +199,68 @@ window.addEventListener("load", function () {
                 .catch(error => {
                     overlay3.innerHTML = `<div class="minicard">Error al cargar datos: ${error.message}</div>`;
                 });
-        };
+        } else if (query === 'query3' || query === 'query4') {
+            overlay3.innerHTML = `<div class="minicard">Cargando eventos...</div>`;
+            fetch(`./../../data/logic/infoEventosLogic.php?query=${query}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data.correcto);
+                    console.log(data.lugares);
 
-        cargarLugares('query1');
-        const filtroLugares = document.getElementById("filtroLugares");
-        filtroLugares.addEventListener("change", () => {
-            const filtroSelected = filtroLugares.value;
-            cargarLugares(tipoQuery(filtroSelected));
-        });
-    });
-    est2.addEventListener("click", () => {
-        titulo_overlay2.textContent = "Popularidad de Eventos";
-    });
-    est3.addEventListener("click", () => {
-        titulo_overlay2.textContent = "Informacion de las Asistencias";
-    });
-    est4.addEventListener("click", () => {
-        titulo_overlay2.textContent = "Tamaño de los eventos";
-    });
-    est5.addEventListener("click", () => {
-        titulo_overlay2.textContent = "Informacion de las Organizadoras";
-    });
-    function tipoQuery(valorFiltro) {
-        if (valorFiltro === "query1") {
-            return "query1";
-        } else if (valorFiltro === "query2") {
-            return "query2";
-        } else {
-            return "";
+                    // Usamos 'lugares' porque el PHP lo devuelve así, aunque sean eventos
+                    if (data.correcto && data.lugares) {
+                        const eventos = data.lugares;
+                        overlay3.innerHTML = "";
+
+                        eventos.forEach(evento => {
+                            const card = document.createElement("div");
+                            card.innerHTML = `
+                        <div class="cards">
+                            <div class="div-info-card">
+                                <h2>${evento.nombre_evento}</h2>
+                                <span class="info-card-ciudad">Fecha: ${evento.fecha_evento}</span>
+                                <span class="info-card-direccion">Lugar: ${evento.nombre_lugar}</span>
+                                <button class="btn-revisar" id="br-${evento.id_evento}">Revisar Evento</button>
+                            </div>
+                            <div class="div-image-card">
+                                <img class="image-card" src="${evento.imagen_url}" alt="Imagen del evento">
+                            </div>
+                        </div>`;
+                            overlay3.appendChild(card);
+
+                            const reviewButton = card.querySelector(`#br-${evento.id_evento}`);
+                            reviewButton.addEventListener('click', function () {
+                                sessionStorage.setItem('id_evento_selected', evento.id_evento);
+                                sessionStorage.setItem('evento_objeto', JSON.stringify(evento));
+
+                                // MAXICARD CORREGIDA
+                                overlay4.innerHTML = `
+                            <div class="maxicard">
+                                <h4 class="maxicard-titulo">${evento.nombre_evento}</h4>
+                                <div class="maxicard-imagen">
+                                    <img src="${evento.imagen_url}" alt="Imagen de ${evento.nombre_evento}">
+                                </div>
+                                <div class="maxicard-descripcion">
+                                    <p>Descripción:</p>
+                                    <span>${evento.descripcion}</span>
+                                </div>
+                                <div class="maxicard-info-grid">
+                                    <p class="maxicard-dato">Lugar: <span>${evento.nombre_lugar}</span></p>
+                                    <p class="maxicard-dato">Fecha: <span>${evento.fecha_evento}</span></p> 
+                                    <p class="maxicard-dato">Hora: <span>${evento.hora_evento}</span></p> 
+                                    <p class="maxicard-dato dato-full">Total Asistencias: <span>${evento.total_asistencias}</span></p>
+                                    <p class="maxicard-dato">ID Evento: <span>${evento.id_evento}</span></p>
+                                </div>
+                            </div>`;
+                            });
+                        });
+                    } else {
+                        overlay3.innerHTML = `<div class="minicard">No se encontraron eventos...</div>`;
+                    }
+                })
+                .catch(error => {
+                    overlay3.innerHTML = `<div class="minicard">Error al cargar datos: ${error.message}</div>`;
+                });
         }
-    }
+    };
 });
