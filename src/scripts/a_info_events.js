@@ -93,14 +93,14 @@ window.addEventListener("load", function () {
         overlay4.innerHTML = `<div class="minicard">Detalles</div>`;
         overlayEx.innerHTML = `
                 <select id="filtroLugares">
-                    <option value="populares">Mas Populares</option>
-                    <option value="menos_populares">Menos Populares</option>
+                    <option value="query1">Mas Populares</option>
+                    <option value="query2">Menos Populares</option>
                 </select>
         `;
 
-        const cargarLugares = (filtro = 'populares') => {
+        const cargarLugares = (query = 'query1') => {
             overlay3.innerHTML = `<div class="minicard">Cargando lugares...</div>`;
-            fetch(`./../../data/logic/infoEventosLogic.php?filtro=${filtro}`)
+            fetch(`./../../data/logic/infoEventosLogic.php?query=${query}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.correcto && data.lugares) {
@@ -156,11 +156,11 @@ window.addEventListener("load", function () {
                 });
         };
 
-        cargarLugares('populares');
+        cargarLugares('query1');
         const filtroLugares = document.getElementById("filtroLugares");
         filtroLugares.addEventListener("change", () => {
             const filtroSelected = filtroLugares.value;
-            cargarLugares(filtroSelected);
+            cargarLugares(tipoQuery(filtroSelected));
         });
     });
     est2.addEventListener("click", () => {
@@ -175,4 +175,13 @@ window.addEventListener("load", function () {
     est5.addEventListener("click", () => {
         titulo_overlay2.textContent = "Informacion de las Organizadoras";
     });
+    function tipoQuery(valorFiltro) {
+        if (valorFiltro === "query1") {
+            return "query1";
+        } else if (valorFiltro === "query2") {
+            return "query2";
+        } else {
+            return "";
+        }
+    }
 });

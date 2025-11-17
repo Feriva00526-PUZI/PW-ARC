@@ -6,16 +6,30 @@ $RUTA_IMG_ESTANDAR = "./../../media/images/lugares/";
 $RUTA_FISICA_GUARDADO = __DIR__ . "/../../media/images/lugares/";
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    $filtro = isset($_GET['filtro']) ? $_GET['filtro'] : 'populares';
+
+    $query = isset($_GET['query']) ? $_GET['query'] : 'query1';
+    $lugares = null;
+
     try {
-        $lugares = $lugarDAO->getLugares($filtro);
-        if ($lugares != null) {
+        switch ($query) {
+            case 'query1':
+                $lugares = $lugarDAO->getMasPopulares();
+                break;
+            case 'query2':
+            default:
+                $lugares = $lugarDAO->getMenosPopulares();
+                break;
+        }
+
+        if ($lugares !== null && !empty($lugares)) {
+            // Procesamiento de la URL de la imagen si se encontraron lugares
             foreach ($lugares as &$lugar) {
                 $lugar['imagen_url'] = $RUTA_IMG_ESTANDAR . $lugar['imagen_url'];
             }
             $respuesta = ['correcto' => true, 'lugares' => $lugares];
         } else {
-            $respuesta = ['correcto' => false];
+            // Si la consulta no devolvió resultados
+            $respuesta = ['correcto' => false, 'lugares' => []];
         }
         echo json_encode($respuesta);
     } catch (Exception $e) {
