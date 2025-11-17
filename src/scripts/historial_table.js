@@ -38,13 +38,17 @@ function initHistorialTable(data) {
     tdFecha.textContent = item.fecha || "-";
 
     // Acciones
-    const tdAcciones = document.createElement("td");
-    const btnCancelar = document.createElement("button");
-    btnCancelar.className = "hist-btn hist-btn-cancel";
-    btnCancelar.textContent = "Cancelar";
+const tdAcciones = document.createElement("td");
 
-    btnDescripcion.className = "hist-btn hist-btn-desc";
-    btnDescripcion.textContent = "Descripcion";
+// Botón Descripción
+const btnDescripcion = document.createElement("button");
+btnDescripcion.className = "hist-btn hist-btn-desc";
+btnDescripcion.textContent = "Descripción";
+
+// Botón Cancelar
+const btnCancelar = document.createElement("button");
+btnCancelar.className = "hist-btn hist-btn-cancel";
+btnCancelar.textContent = "Cancelar";
 
     // Revisa si ya no se puede cancelar
     const st = (item.status || "").toLowerCase();
