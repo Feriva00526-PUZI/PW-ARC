@@ -118,6 +118,41 @@ window.addEventListener("load", function () {
           console.error("Error cargando historial:", err);
         });
 
+      
+// ******************************************************
+// HISTORIAL DE RESERVACIONES 
+// ******************************************************
+
+      fetch("../../data/logic/ReservacionLogic.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id_cliente: usuario.id_cliente })
+      })
+      .then(r => r.json())
+      .then(data => {
+        if (!data.correcto) {
+            console.error("Error cargando historial de reservaciones:", data.mensaje);
+            return;
+        }
+
+        // Cargar script de la tabla de reservaciones
+        const scriptTablaReservaciones = document.createElement("script");
+        scriptTablaReservaciones.src = "./../../scripts/reservations_table.js"; // <--- NOMBRE SOLICITADO
+
+        scriptTablaReservaciones.onload = () => {
+            if (typeof window.initReservacionesTable === "function") {
+                window.initReservacionesTable(data.reservaciones);
+            } else {
+                console.error("No se encontró initReservacionesTable");
+            }
+        };
+
+        document.body.appendChild(scriptTablaReservaciones);
+      })
+      .catch(err => {
+        console.error("Error cargando historial de reservaciones:", err);
+      });  
+
     })
     .catch(err => {
       console.error("Error cargando header.html:", err);
