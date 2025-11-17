@@ -2,15 +2,18 @@
 :root {
   /* Colores primarios heredados de style_generico.css */
   --color-primario: #023E8A;
-  --color-secundario: #0077b6; /* Para botón "Modificar" */
-  --color-peligro: #d62828; /* Para botón "Cancelar" */
-  
+  --color-secundario: #0077b6;
+  /* Para botón "Modificar" */
+  --color-peligro: #d62828;
+  /* Para botón "Cancelar" */
+
   --color-texto: #333;
   --color-blanco: #fff;
   --color-borde: #ddd;
   --color-borde-input: #ccc;
-  
-  --radio-borde: 8px; /* Radio estándar para elementos internos */
+
+  --radio-borde: 8px;
+  /* Radio estándar para elementos internos */
   --espaciado-medio: 15px;
   --espaciado-grande: 20px;
   --transicion-rapida: all 0.2s ease-in-out;
@@ -53,8 +56,15 @@
 }
 
 @keyframes fadeInSlogan {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .numero-eventos {
@@ -69,7 +79,8 @@
 /* === Layout principal === */
 .organizers-box {
   display: grid;
-  grid-template-columns: 1fr 2.5fr; /* Damos más espacio a la tabla */
+  grid-template-columns: 1fr 2.5fr;
+  /* Damos más espacio a la tabla */
   gap: 30px;
   align-items: start;
 }
@@ -80,18 +91,20 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  position: sticky; /* Se fija al hacer scroll */
+  position: sticky;
+  /* Se fija al hacer scroll */
   top: 200px;
 }
 
 .organizers-info img {
   width: 100%;
-  max-width: 400px; /* Evita que la imagen sea gigante */
+  max-width: 400px;
+  /* Evita que la imagen sea gigante */
   max-height: 400px;
   height: auto;
   border-radius: 50%;
   margin-bottom: var(--espaciado-medio);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
 .mensaje-bienvenida {
@@ -112,7 +125,8 @@
   border-bottom: 2px solid var(--color-primario);
   padding-bottom: 10px;
   margin-bottom: var(--espaciado-grande);
-  font-size: 2rem; /* Tamaño de fuente base */
+  font-size: 2rem;
+  /* Tamaño de fuente base */
 }
 
 /* === Filtros === */
@@ -142,14 +156,15 @@
   background-color: #e0e0e0;
 }
 
-#btnAgregar{
+#btnAgregar {
   margin-top: 15px;
 }
 
 /* === SOLUCIÓN TABLA RESPONSIVA === */
 .table-wrapper {
   width: 100%;
-  overflow-x: auto; /* Activa el scroll horizontal */
+  overflow-x: auto;
+  /* Activa el scroll horizontal */
   margin-bottom: var(--espaciado-grande);
   border: 1px solid var(--color-borde);
   border-radius: var(--radio-borde);
@@ -158,7 +173,7 @@
 .tabla-eventos {
   width: 100%;
   border-collapse: collapse;
-  white-space: nowrap; 
+  white-space: nowrap;
 }
 
 .tabla-eventos th,
@@ -262,7 +277,8 @@
     margin-right: 10px;
   }
 
-  .btn-modificar, .btn-cancelar {
+  .btn-modificar,
+  .btn-cancelar {
     width: 48%;
     text-align: center;
     padding: 8px 0;
@@ -284,11 +300,6 @@
     margin-bottom: 20px;
   }
 
-  .organizers-box {
-    grid-template-columns: 1fr; /* Una sola columna */
-    gap: var(--espaciado-grande);
-  }
-
   .filters {
     flex-direction: column;
     gap: 10px;
@@ -305,9 +316,7 @@
   }
 }
 
-/* ============================================ */
-/* ⭐ MEJORA GENERAL DE ESPACIADOS Y TIPOGRAFÍA */
-/* ============================================ */
+
 @media (max-width: 480px) {
   .organizers-box {
     padding: 10px;
@@ -329,8 +338,8 @@
 
 @media (max-width: 1200px) {
 
-  .tabla-eventos td:nth-child(2){
-  white-space: wrap; 
+  .tabla-eventos td:nth-child(2) {
+    white-space: wrap;
   }
 
   .organizers-events-box h2 {
@@ -347,6 +356,15 @@
   }
 }
 
+@media (max-width: 1200px) {
+  .organizers-info {
+    position: static;
+    margin-bottom: 20px;
+  }
 
-
-
+  .organizers-box {
+    grid-template-columns: 1fr;
+    /* Una sola columna */
+    gap: var(--espaciado-grande);
+  }
+}

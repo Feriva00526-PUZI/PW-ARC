@@ -9,16 +9,16 @@ window.addEventListener("load", function () {
 
     if (!organizadora) {
         window.location.href = "../../../index.html";
-    } 
+    }
 
 
     console.log(organizadora.imagen_url);
     // Configuracion inicial
     document.title = organizadora.nombre_agencia;
-    
+
     document.getElementById("imgAgencia").src =
         `../../../src/media/images/organizers/${organizadora.imagen_url}`;
-    
+
 
     // Obtener número eventos mes
     fetch(`../../data/Logic/organizerController.php?accion=numeroEventosMes&id_organizadora=${idOrg}`)
@@ -36,13 +36,11 @@ window.addEventListener("load", function () {
     let eventos = [];
     //src\data\DAO\organizadorDAO.php
     //src\scripts\organizers.js
-    fetch(`../../data/Logic/organizerController.php?accion=eventosCalendario&id_organizadora=${idOrg}`)
+    fetch(`../../data/Logic/organizerController.php?accion=eventos&id_organizadora=${idOrg}`)
         .then(res => res.json())
         .then(json => {
             if (json.correcto) {
                 eventos = json.data;
-                console.log(eventos);
-                window.eventosCalendario = eventos;
                 filtrarEventos();
             } else {
                 console.error(json.mensaje);
@@ -77,6 +75,7 @@ window.addEventListener("load", function () {
             tbody.appendChild(tr);
         });
     }
+
 
     // Filtrar 
     function filtrarEventos() {
@@ -131,19 +130,25 @@ window.addEventListener("load", function () {
             }
 
         } else if (e.target.classList.contains("btn-modificar")) {
-
-            alert(`Función para modificar evento ID: ${e.target.dataset.id}`);
+            this.sessionStorage.setItem("evento_seleccionado", e.target.dataset.id);
+            window.location.href = "events.html";
 
         } else if (e.target.classList.contains("btn-calendario")) {
 
             const evento = eventos.find(ev => ev.id_evento == e.target.dataset.id);
             if (evento) {
                 const fecha = new Date(evento.fecha_evento);
+
                 window.dispatchEvent(new CustomEvent("abrirCalendario", {
-                    detail: { month: fecha.getMonth(), year: fecha.getFullYear() }
+                    detail: {
+                        month: fecha.getMonth(),
+                        year: fecha.getFullYear(),
+                        source: "organizer"
+                    }
                 }));
             }
         }
+
     });
 
     // Crear el footer y el header

@@ -40,15 +40,6 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
                 $data = $eventosDAO->getEventosPorOrganizadora($id);
                 echo json_encode(["correcto" => true, "data" => $data]);
                 break;
-        
-            // Obtener los eventos con un formato especifico para el calendario
-            case "eventosCalendario":
-                $id = $_GET["id_organizadora"] ?? null;
-                if (!$id) throw new Exception("Falta id_organizadora");
-
-                $data = $eventosDAO->getEventosParaCalendario($id);
-                echo json_encode(["correcto" => true, "data" => $data]);
-                break;
 
             // Obtener cantidad de eventos este mes
             case "numeroEventosMes":

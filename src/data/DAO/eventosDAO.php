@@ -63,7 +63,7 @@ class eventosDAO{
 
     public function getTipoActividadPorID($idTipoActividad){
         try{
-            $sql = "SELECT * FROM tipo_actividad WHERE id_tipo_actividad = :id";
+            $sql = "SELECT * FROM tipoactividad WHERE id_tipo_actividad = :id";
             $stmt = $this->conexion->prepare($sql);
             $stmt->bindParam(":id", $idTipoActividad, PDO::PARAM_INT);
             $stmt->execute();
@@ -153,6 +153,19 @@ class eventosDAO{
         }
     }
 
+    public function actualizarFechaEvento($idEvento, $nuevaFecha) {
+        try {
+            $sql = "UPDATE eventos SET fecha_evento = :fecha WHERE id_evento = :id";
+            $stmt = $this->conexion->prepare($sql);
+            $stmt->bindParam(":id", $idEvento, PDO::PARAM_INT);
+            $stmt->bindParam(":fecha", $nuevaFecha, PDO::PARAM_STR);
+
+            return $stmt->execute();
+        } catch(PDOException $e) {
+            throw new Exception("Error al actualizar fecha del evento: " . $e->getMessage());
+        }
+    }
+
+
 
 }
-?>
