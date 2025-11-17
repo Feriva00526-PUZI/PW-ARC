@@ -1,0 +1,272 @@
+.cards {
+    /*height: 200px;
+    max-height: 200px;*/
+    background-color: #caccd4;
+    border-left: 5px solid #023E8A;
+    border-radius: 8px;
+    padding: 12px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: "info-card image-card";
+    gap: 10px;
+    transition:
+        background-color 0.3s ease,
+        box-shadow 0.3s ease,
+        transform 0.25s ease,
+        border-left-color 0.3s ease;
+    align-items: stretch;
+    /*height: 100%;*/
+    min-height: 200px;
+    margin-bottom: 10px;
+}
+
+.div-info-card {
+    /*height: 170px;*/
+    grid-area: info-card;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: min-content min-content 1fr min-content;
+    grid-template-areas: "info-card-title"
+        "info-card-ciudad"
+        "info-card-direccion"
+        "info-card-btn";
+    /*overflow: hidden;*/
+}
+
+.cards .div-info-card h2 {
+    grid-area: info-card-title;
+    font-size: 1.25rem;
+    color: #333;
+}
+
+.cards .div-info-card .info-card-ciudad {
+    grid-area: info-card-ciudad;
+    font-size: 0.95rem;
+    color: #333;
+}
+
+.cards .div-info-card .info-card-direccion {
+    grid-area: info-card-direccion;
+    font-size: 0.95rem;
+    color: #333;
+}
+
+.cards .div-info-card button {
+    font-size: 1rem;
+    grid-area: info-card-btn;
+    align-self: end;
+    margin-top: 10px;
+}
+
+.div-image-card {
+    grid-area: image-card;
+    background-color: #f0f2fa;
+    border-radius: 10px;
+    /*height: 170px;*/
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    height: 100%;
+}
+
+.image-card {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    overflow: hidden;
+}
+
+.minicard {
+    background-color: #caccd4;
+    border-left: 5px solid #023E8A;
+    border-radius: 8px;
+    padding: 12px;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    transition:
+        background-color 0.3s ease,
+        box-shadow 0.3s ease,
+        transform 0.25s ease,
+        border-left-color 0.3s ease;
+}
+
+
+.minicard span {
+    font-size: 0.95rem;
+    color: #333;
+}
+
+.minicard:hover {
+    background-color: #dbe3f7;
+    border-left-color: #1f3461;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+}
+
+.overlay1 .minicard {
+    border-left-color: #00B4D8;
+}
+
+.overlay3 .minicard {
+    border-left-color: #001233;
+}
+
+
+.cuadricula {
+    display: grid;
+    grid-template-columns: 1fr 2fr 2fr;
+    grid-template-rows: 50px 50px auto;
+    grid-template-areas:
+        "overlay1 overlay2 overlay4"
+        "overlay1 overlayEx overlay4"
+        "overlay1 overlay3 overlay4";
+    gap: 10px;
+}
+
+.overlay1 {
+    grid-area: overlay1;
+}
+
+.overlay2 {
+    grid-area: overlay2;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.overlay3 {
+    grid-area: overlay3;
+}
+
+.overlay4 {
+    grid-area: overlay4;
+}
+
+.overlayEx {
+    grid-area: overlayEx;
+}
+
+h3 {
+    font-size: 1.5rem;
+}
+
+select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 2px solid #cbd1e3;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: #333;
+    background-color: white;
+    cursor: pointer;
+}
+
+select:focus {
+    border-color: #023E8A;
+    box-shadow: 0 0 6px rgba(41, 67, 128, 0.3);
+    outline: none;
+}
+
+option {
+    padding: 8px 10px;
+    font-size: 1rem;
+    color: #333;
+    background-color: #ffffff;
+}
+
+/*Maxicard*/
+.maxicard {
+    background-color: #caccd4;
+    border-left: 5px solid #023E8A;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: auto auto 1fr;
+    grid-template-areas:
+        "titulo titulo"
+        "descripcion imagen"
+        "info-grid info-grid";
+    gap: 15px 10px;
+}
+
+.maxicard-titulo {
+    grid-area: titulo;
+    color: #023E8A;
+    font-size: 1.5rem;
+    padding-bottom: 5px;
+    border-bottom: 2px solid #333;
+    margin: 0;
+}
+
+.maxicard-imagen {
+    grid-area: imagen;
+    border-radius: 6px;
+    overflow: hidden;
+    height: auto;
+    min-height: 150px;
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.maxicard-imagen img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.maxicard-descripcion {
+    grid-area: descripcion;
+    font-size: 1rem;
+    color: black;
+}
+
+.maxicard-descripcion p {
+    margin: 0 0 5px 0;
+    font-weight: bold;
+}
+
+.maxicard-descripcion span {
+    display: block;
+    color: #444;
+    font-weight: normal;
+}
+
+
+.maxicard-info-grid {
+    grid-area: info-grid;
+    border-top: 2px solid #333;
+    padding-top: 10px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px 15px;
+    align-items: start;
+    font-size: 0.95rem;
+    color: #444;
+}
+
+.maxicard-info-grid p {
+    color: black;
+    margin: 0 0 5px 0;
+    font-weight: bold;
+}
+
+.maxicard-info-grid span {
+    display: block;
+    color: #444;
+    font-weight: normal;
+}
+
+.maxicard-dato {
+    margin: 0;
+    line-height: 1.3;
+}
+
+.maxicard-dato.dato-full {
+    grid-column: 1 / -1;
+}
