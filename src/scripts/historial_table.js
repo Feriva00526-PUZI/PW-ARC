@@ -39,10 +39,15 @@ function initHistorialTable(data) {
   tdHora.textContent = item.hora_viaje;
 
   // Acciones
+  // Descripcion
   const tdAcciones = document.createElement("td");
   const btnDescripcion = document.createElement("button");
   btnDescripcion.className = "hist-btn hist-btn-desc";
   btnDescripcion.textContent = "Descripción";
+// Cancelar
+const btnCancelar = document.createElement("button");
+btnCancelar.className = "hist-btn hist-btn-cancel";
+btnCancelar.textContent = "Cancelar";
 
  btnDescripcion.addEventListener("click", () => {
  alert(
