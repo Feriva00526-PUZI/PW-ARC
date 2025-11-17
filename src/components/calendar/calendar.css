@@ -1,51 +1,61 @@
+/*
+========================================
+  CALENDAR.CSS (Versión Mejorada)
+========================================
+*/
 
+/* --- Variables Globales del Calendario --- */
+:root {
+  --cal-bg: #ffffff;
+  --cal-overlay-bg: rgba(0, 0, 0, 0.55);
+  --cal-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
+  --cal-radius: 1rem;
+  --cal-padding: 1.5rem;
 
-/* ==== Página principal ==== */
-.page-content {
-  text-align: center;
+  --cal-primary: #023E8A;
+  --cal-primary-hover: #0077B6;
+  --cal-secondary: #48CAE4;
+  --cal-secondary-hover: #90E0EF;
+
+  --cal-day-bg: #DCE6F2;
+  --cal-day-bg-hover: #CAF0F8;
+  --cal-day-text: #1B263B;
+  --cal-day-empty-opacity: 0.4;
+
+  --cal-event-bg: var(--cal-secondary);
+  --cal-event-border: var(--cal-primary);
+  --cal-event-text: var(--cal-primary);
 }
 
-.open-calendar {
-  margin-top: 1rem;
-  background: #023E8A;
-  color: #fff;
-  border: none;
-  padding: 0.8rem 1.5rem;
-  font-size: 1rem;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
 
-.open-calendar:hover {
-  background: #0077B6;
-}
-
-/* ==== Modal ==== */
 .calendar-modal,
 .day-info-modal {
-  display: none;
+  display: none; /* Oculto por defecto */
   position: fixed;
-  top: 0; left: 0;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   z-index: 1001;
-  opacity: 0;
+  opacity: 0; /* Controla el fade del overlay */
   transition: opacity 0.25s ease;
+  
+  /* Centrado de contenido */
+  justify-content: center;
+  align-items: center;
 }
 
+/* Estado activo: se muestra */
 .calendar-modal.active,
 .day-info-modal.active {
   display: flex;
-  justify-content: center;
-  align-items: center;
   opacity: 1;
-  animation: fadeIn 0.25s ease forwards;
 }
 
+/* Estado de cierre (para JS) */
 .calendar-modal.closing,
 .day-info-modal.closing {
-  animation: fadeOut 0.25s ease forwards;
+  opacity: 0;
 }
 
 .calendar-modal__overlay,
@@ -53,23 +63,33 @@
   position: absolute;
   width: 100%;
   height: 100%;
+  background: var(--cal-overlay-bg);
 }
 
 .calendar-modal__content,
 .day-info-content {
   position: relative;
   z-index: 1002;
-  background: #ffffff;
-  border-radius: 1rem;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.25);
-  padding: 1.5rem;
+  background: var(--cal-bg);
+  border-radius: var(--cal-radius);
+  box-shadow: var(--cal-shadow);
+  padding: var(--cal-padding);
   width: 90%;
-  max-width: 600px;
-  transform: translateY(-10px);
-  transition: transform 0.25s ease, opacity 0.25s ease;
+  
+  /* Animación de "pop" */
+  opacity: 0;
+  transform: translateY(-20px) scale(0.98);
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s ease;
 }
 
-/* ==== Botones de cierre ==== */
+/* Animación de entrada del contenido */
+.calendar-modal.active .calendar-modal__content,
+.day-info-modal.active .day-info-content {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Botón de cierre genérico */
 .calendar-modal__close,
 .day-info-close {
   position: absolute;
@@ -77,23 +97,31 @@
   right: 15px;
   background: transparent;
   border: none;
-  font-size: 1.5rem;
-  color: #023E8A;
+  font-size: 1.75rem;
+  font-weight: bold;
+  color: var(--cal-primary);
   cursor: pointer;
+  line-height: 1;
+  padding: 0.25rem;
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 
-/* ==== Animaciones ==== */
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.97); }
-  to { opacity: 1; transform: scale(1); }
+.calendar-modal__close:hover,
+.day-info-close:hover {
+  color: var(--cal-primary-hover);
+  transform: scale(1.1);
 }
 
-@keyframes fadeOut {
-  from { opacity: 1; transform: scale(1); }
-  to { opacity: 0; transform: scale(0.97); }
+/*
+========================================
+  2. Estilos Específicos del CALENDARIO
+========================================
+*/
+
+.calendar-modal__content {
+  max-width: 600px; /* Ancho máximo para el calendario */
 }
 
-/* ==== Estilos del calendario ==== */
 .calendar {
   display: flex;
   flex-direction: column;
@@ -104,11 +132,19 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0 0.5rem;
+}
+
+.container__heading {
+  color: var(--cal-primary);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
 }
 
 .calendar__button {
-  background: #023E8A;
-  color: #fff;
+  background: var(--cal-primary);
+  color: var(--cal-bg);
   border: none;
   border-radius: 0.5rem;
   padding: 0.5rem 1rem;
@@ -118,7 +154,7 @@
 }
 
 .calendar__button:hover {
-  background: #0077B6;
+  background: var(--cal-primary-hover);
 }
 
 .calendar__weekdays {
@@ -126,16 +162,24 @@
   grid-template-columns: repeat(7, 1fr);
   text-align: center;
   font-weight: bold;
-  color: #023E8A;
+  color: var(--cal-primary);
+  padding: 0 0.5rem;
+}
+
+.calendar__weekdays div {
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--cal-day-bg);
 }
 
 .calendar__days {
   list-style: none;
+  padding: 0;
+  margin: 0;
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  grid-template-rows: repeat(6, 1fr);
+  /* Reemplaza a height: 420px para hacerlo flexible */
+  grid-auto-rows: minmax(60px, 1fr); 
   gap: 0.5rem;
-  height: 420px;
 }
 
 .calendar__days li {
@@ -143,138 +187,162 @@
   justify-content: center;
   align-items: center;
   border-radius: 0.5rem;
-  background: #DCE6F2;
-  color: #1B263B;
+  background: var(--cal-day-bg);
+  color: var(--cal-day-text);
   font-weight: 500;
   transition: all 0.2s ease;
+  cursor: pointer;
 }
 
 .calendar__days li:hover {
-  background: #90E0EF;
-  color: #023E8A;
-  cursor: pointer;
+  background: var(--cal-day-bg-hover);
+  color: var(--cal-primary);
+  transform-origin: center;
+  transform: scale(1.05);
 }
 
 .calendar__days li.empty {
-  background: none;
+  background: transparent;
   cursor: default;
-  opacity: 0.4;
+  opacity: var(--cal-day-empty-opacity);
   pointer-events: none;
+  transform: none;
 }
 
 .calendar__days li.event-day {
-  background: #48CAE4;
-  border: 2px solid #023E8A;
-  color: #023E8A;
+  background: var(--cal-event-bg);
+  border: 2px solid var(--cal-event-border);
+  color: var(--cal-event-text);
   font-weight: bold;
+
 }
 
 .calendar__days li.event-day:hover {
-  background: #90E0EF;
-  cursor: pointer;
+  background: var(--cal-secondary-hover);
 }
 
-/* Estilo para el modal de información */
-.day-info-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro semitransparente */
-  display: none; /* Ocultar modal por defecto */
-  justify-content: center;
-  align-items: center;
-  transition: opacity 0.3s ease-in-out;
-}
+/*
+========================================
+  3. Estilos Específicos del Modal de INFO DÍA
+========================================
+*/
 
-.day-info-modal.active {
-  display: flex; /* Mostrar modal cuando tiene la clase "active" */
-  opacity: 1;
-}
-
-/* Estilo para el overlay (fondo semitransparente) */
-.day-info-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
-/* Contenido del modal */
 .day-info-content {
-  position: relative;
-  background-color: white;
-  padding: 20px;
-  max-width: 600px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 450px; /* Más pequeño que el calendario */
   text-align: center;
-  z-index: 10;
-  overflow: hidden;
+  padding-top: 3rem; /* Más espacio para el título */
 }
 
 .day-info-content h2 {
-  font-size: 24px;
-  margin-bottom: 10px;
+  font-size: 1.5rem; /* 24px */
+  margin-bottom: 1rem;
   color: #333;
 }
 
 .day-info-content p {
-  font-size: 16px;
+  font-size: 1rem; /* 16px */
   color: #555;
   line-height: 1.6;
+  margin-bottom: 1rem;
 }
 
 .day-info-content .price {
-  font-size: 18px;
+  font-size: 1.125rem; /* 18px */
   font-weight: bold;
-  color: #e67e22;
+  color: #e67e22; /* Color específico para precio */
   margin-top: 10px;
 }
 
-/* Estilo para la imagen del evento */
 .day-info-content img {
   width: 100%;
-  height: 30%;
+  height: auto;
+  max-height: 250px;
+  object-fit: cover;
   border-radius: 8px;
   margin-bottom: 15px;
 }
 
-/* Botón de cierre */
-.day-info-close {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 24px;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  color: #888;
-}
 
-.day-info-close:hover {
-  color: #333;
-}
-
-/* Responsividad */
 @media (max-width: 768px) {
+  .calendar-modal__content {
+    padding: 1rem;
+  }
+  
+  .calendar__button {
+    padding: 0.5rem;
+    font-size: 0.8rem;
+  }
+  
+  .container__heading {
+    font-size: 1.1rem;
+  }
+
+  .calendar__weekdays {
+    font-size: 0.75rem;
+    padding: 0 0.25rem;
+  }
+  
+  .calendar__days {
+    gap: 0.25rem;
+    grid-auto-rows: minmax(45px, 1fr); /* Más pequeño en móvil */
+  }
+  
+  .calendar__days li {
+    font-size: 0.8rem;
+    border-radius: 0.25rem;
+  }
+
+  /* --- Info Modal --- */
   .day-info-content {
-    padding: 15px;
+    padding: 1rem;
+    padding-top: 2.5rem;
     width: 90%;
   }
-
+  
   .day-info-content h2 {
-    font-size: 20px;
+    font-size: 1.25rem; /* 20px */
   }
-
+  
   .day-info-content p {
-    font-size: 14px;
+    font-size: 0.875rem; /* 14px */
   }
-
+  
   .day-info-content .price {
-    font-size: 16px;
+    font-size: 1rem; /* 16px */
   }
+}
+
+.calendar__days li.event-day {
+  color: #FFFFFF; /* Texto en blanco para legibilidad */
+  font-weight: bold;
+  border: 2px solid var(--cal-primary);
+
+  /* Estilos para la imagen de fondo (añadida por JS) */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  /* Superposición oscura para legibilidad del número */
+  box-shadow: inset 0 0 0 200px rgba(0, 0, 0, 0.45);
+
+  /* Aseguramos que las transformaciones ocurran desde el centro */
+  transform-origin: center;
+
+  z-index: 1;
+  transition: transform 0.3s ease; /* Suaviza la transición */
+}
+
+/* Hover sobre los días con evento */
+.calendar__days li.event-day:hover {
+  transform: scale(1.2); /* Escala la celda de los días de evento al hacer hover */
+  background-size: 110%; /* Aumenta el tamaño de la imagen */
+}
+
+/* Alternativa si quieres que la imagen se acerque al centro solo cuando se hace hover */
+.calendar__days li.event-day img {
+  transition: transform 0.3s ease;
+}
+
+.calendar__days li.event-day:hover img {
+  transform: scale(1.2); /* Aumenta la imagen cuando se hace hover */
 }

@@ -1,7 +1,6 @@
 <?php
 header("Content-Type: application/json");
 
-// IMPORTACIÓN DE TODOS LOS DAO QUE NECESITES
 require_once "./../dao/organizadorDAO.php";
 require_once "./../dao/lugarDAO.php";
 require_once "./../dao/eventosDAO.php";
@@ -125,4 +124,3 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
         echo json_encode(["correcto" => false, "mensaje" => $e->getMessage()]);
     }
 }
-?>

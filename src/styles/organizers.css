@@ -1,207 +1,370 @@
-/* === Layout principal === */
-.organizers-box {
-  display: grid;
-  grid-template-columns: 1fr 2fr; /* Columna izquierda (info) y derecha (tabla) */
-  gap: 30px;
-  align-items: start;
-  width: 100%;
-  margin: 0 auto;
-  padding: 20px;
-}
+/* === :root - Variables Específicas del Componente === */
+:root {
+  /* Colores primarios heredados de style_generico.css */
+  --color-primario: #023E8A;
+  --color-secundario: #0077b6;
+  /* Para botón "Modificar" */
+  --color-peligro: #d62828;
+  /* Para botón "Cancelar" */
 
-/* Columna izquierda (imagen y descripción) */
-.organizers-info {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
+  --color-texto: #333;
+  --color-blanco: #fff;
+  --color-borde: #ddd;
+  --color-borde-input: #ccc;
 
-.organizers-info img {
-  width: 100%;
-  height: auto;
-  border-radius: 10px;
-  margin-bottom: 15px;
-}
-
-.mensaje-bienvenida {
-  font-size: 1rem;
-  line-height: 1.5;
-  color: #333;
-  max-width: 300px;
-}
-
-.filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 15px;
-  align-items: center;
-}
-
-.filters input, .filters button {
-  padding: 6px 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-}
-
-.tabla-eventos {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 15px;
-}
-
-.tabla-eventos th, .tabla-eventos td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: center;
-}
-
-.tabla-eventos th {
-  background-color: #023E8A;
-  color: white;
-}
-
-.btn-modificar {
-  background-color: #0077b6;
-  color: white;
-  border: none;
-  padding: 5px 8px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.btn-cancelar {
-  background-color: #d62828;
-  color: white;
-  border: none;
-  padding: 5px 8px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.btn-modificar:hover, .btn-cancelar:hover {
-  opacity: 0.85;
-}
-
-@media (max-width: 900px) {
-  .organizers-box {
-    grid-template-columns: 1fr; /* Una sola columna */
-  }
-
-  .organizers-info {
-    margin-bottom: 20px;
-  }
-
-  .filters {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .filters input,
-  .filters button {
-    width: 100%;
-  }
-
-  /* --- Ajustes para tabla y texto en móvil --- */
-  .tabla-eventos {
-    font-size: 0.9rem;
-  }
-
-  .tabla-eventos th,
-  .tabla-eventos td {
-    padding: 6px;
-  }
-
-  .btn-modificar,
-  .btn-cancelar {
-    padding: 4px 6px;
-    font-size: 0.85rem;
-  }
-
-  .mensaje-bienvenida {
-    font-size: 0.9rem;
-  }
-}
-
-@media (max-width: 600px) {
-  /* Más compacta en pantallas muy pequeñas */
-  .tabla-eventos {
-    font-size: 0.8rem;
-  }
-
-  .btn-modificar,
-  .btn-cancelar {
-    padding: 3px 5px;
-    font-size: 0.8rem;
-  }
+  --radio-borde: 8px;
+  /* Radio estándar para elementos internos */
+  --espaciado-medio: 15px;
+  --espaciado-grande: 20px;
+  --transicion-rapida: all 0.2s ease-in-out;
 }
 
 /* === Estilo del banner === */
 .banner {
   position: relative;
-  background-image: url('../media/images/background-events-organizers.jpg'); /* Imagen de fondo */
+  background-image: url('../media/images/background-events-organizers.jpg');
   background-size: cover;
   background-position: center;
-  text-align: center;
-  color: white;
-  border-radius: 8px;
-  margin-bottom: 10px;
-  height: 400px; /* Aumenta la altura del banner */
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Sombra para dar profundidad */
+  color: var(--color-blanco);
+  border-radius: var(--radio-borde);
+  margin-bottom: 30px;
+  height: 400px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
 }
 
 .banner-content {
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.6); 
-  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.65);
   display: flex;
   flex-direction: column;
-  justify-content: center; 
+  justify-content: center;
   align-items: center;
-  padding: 0 20px; 
+  padding: 0 var(--espaciado-grande);
+  text-align: center;
 }
 
 .slogan {
-  font-size: 2.5rem; 
-  font-weight: bold;
-  margin-bottom: 20px;
-  animation: fadeIn 6s ease-out 1; 
-  line-height: 1.4; 
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); 
-  max-width: 80%;
-  word-wrap: break-word; 
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: var(--espaciado-grande);
+  animation: fadeInSlogan 1.5s ease-out forwards;
+  line-height: 1.4;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+  max-width: 900px;
 }
 
-/* Animación para el eslogan */
-@keyframes fadeIn {
-  0% { opacity: 0; transform: translateY(30px); }
-  50% { opacity: 1; transform: translateY(0); }
-  100% { opacity: 0; transform: translateY(-30px); }
+@keyframes fadeInSlogan {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* Estilo para el número de eventos */
 .numero-eventos {
   font-size: 1.8rem;
-  font-weight: bold;
+  font-weight: 700;
+  margin-top: var(--espaciado-grande);
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  animation: fadeInSlogan 1.5s 0.5s ease-out forwards;
+}
+
+/* === Layout principal === */
+.organizers-box {
+  display: grid;
+  grid-template-columns: 1fr 2.5fr;
+  /* Damos más espacio a la tabla */
+  gap: 30px;
+  align-items: start;
+}
+
+/* === Columna izquierda (Info) === */
+.organizers-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: sticky;
+  /* Se fija al hacer scroll */
+  top: 200px;
+}
+
+.organizers-info img {
+  width: 100%;
+  max-width: 400px;
+  /* Evita que la imagen sea gigante */
+  max-height: 400px;
+  height: auto;
+  border-radius: 50%;
+  margin-bottom: var(--espaciado-medio);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.mensaje-bienvenida {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--color-texto);
+}
+
+/* === Columna derecha (Eventos) === */
+.organizers-events-box {
   margin-top: 20px;
-  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6); 
+  box-sizing: border-box;
+  width: auto;
 }
 
+.organizers-events-box h2 {
+  margin-top: 0;
+  border-bottom: 2px solid var(--color-primario);
+  padding-bottom: 10px;
+  margin-bottom: var(--espaciado-grande);
+  font-size: 2rem;
+  /* Tamaño de fuente base */
+}
+
+/* === Filtros === */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: var(--espaciado-grande);
+  align-items: center;
+}
+
+.filters label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 0;
+}
+
+/* El botón de filtros ("Ordenar") usa el estilo genérico 'button', pero le damos un aspecto secundario (no azul). */
+.filters button {
+  background-color: var(--color-primario);
+  color: var(--color-blanco);
+  border: 1px solid var(--color-borde-input);
+}
+
+.filters button:hover {
+  background-color: #e0e0e0;
+}
+
+#btnAgregar {
+  margin-top: 15px;
+}
+
+/* === SOLUCIÓN TABLA RESPONSIVA === */
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  /* Activa el scroll horizontal */
+  margin-bottom: var(--espaciado-grande);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-borde);
+}
+
+.tabla-eventos {
+  width: 100%;
+  border-collapse: collapse;
+  white-space: nowrap;
+}
+
+.tabla-eventos th,
+.tabla-eventos td {
+  border: 1px solid var(--color-borde);
+  padding: 10px 10px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.tabla-eventos th {
+  border-bottom: 2px solid var(--color-borde);
+}
+
+.tabla-eventos td {
+  border-top: 1px solid var(--color-borde);
+}
+
+.tabla-eventos th {
+  background-color: var(--color-primario);
+  color: var(--color-blanco);
+  font-weight: 600;
+}
+
+.tabla-eventos tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+.tabla-eventos td:last-child {
+  gap: 8px;
+  justify-content: center;
+}
+
+.btn-modificar,
+.btn-cancelar {
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-blanco);
+  transition: var(--transicion-rapida);
+}
+
+.btn-modificar {
+  background-color: var(--color-secundario);
+}
+
+.btn-modificar:hover {
+  background-color: #005f8d;
+}
+
+.btn-cancelar {
+  background-color: var(--color-peligro);
+}
+
+.btn-cancelar:hover {
+  background-color: #ab1f1f;
+}
+
+
+/* ============================================ */
+/* A PARTIR DE AQUÍ: TABLA FORMATO TARJETAS */
+/* ============================================ */
+@media (max-width: 900px) {
+  .tabla-eventos thead {
+    display: none;
+  }
+
+  .tabla-eventos tr {
+    display: block;
+    background: #fff;
+    margin-bottom: 15px;
+    padding: 15px;
+    border-radius: var(--radio-borde);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+  }
+
+  .tabla-eventos td {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 5px;
+    border: none;
+    border-bottom: 1px solid var(--color-borde);
+    white-space: normal;
+  }
+
+  .tabla-eventos td:last-child {
+    border-bottom: none;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .tabla-eventos td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: var(--color-primario);
+    margin-right: 10px;
+  }
+
+  .btn-modificar,
+  .btn-cancelar {
+    width: 48%;
+    text-align: center;
+    padding: 8px 0;
+    font-size: 0.9rem;
+  }
+
+  .table-wrapper {
+    overflow-x: visible;
+    border: none;
+  }
+}
+
+/* ===================================================== */
+/* ⭐ MEJORA VISUAL DE FILTROS PARA PANTALLAS PEQUEÑAS */
+/* ===================================================== */
 @media (max-width: 768px) {
-  .slogan {
-    font-size: 2rem; 
+  .organizers-info {
+    position: static;
+    margin-bottom: 20px;
   }
 
-  .numero-eventos {
-    font-size: 1.5rem;
+  .filters {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .filters input,
+  .filters label,
+  .filters button {
+    width: 100%;
+  }
+
+  .filters label {
+    justify-content: space-between;
   }
 }
+
 
 @media (max-width: 480px) {
+  .organizers-box {
+    padding: 10px;
+  }
+
+  .organizers-events-box h2 {
+    font-size: 1.3rem;
+  }
+
   .slogan {
-    font-size: 1.6rem; 
-    max-width: 90%; 
+    font-size: 1.4rem;
+  }
+
+  .btn-modificar,
+  .btn-cancelar {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 1200px) {
+
+  .tabla-eventos td:nth-child(2) {
+    white-space: wrap;
+  }
+
+  .organizers-events-box h2 {
+    font-size: 0.9rem;
+  }
+
+  .slogan {
+    font-size: 1.4rem;
+  }
+
+  .btn-modificar,
+  .btn-cancelar {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 1200px) {
+  .organizers-info {
+    position: static;
+    margin-bottom: 20px;
+  }
+
+  .organizers-box {
+    grid-template-columns: 1fr;
+    /* Una sola columna */
+    gap: var(--espaciado-grande);
   }
 }

@@ -1,7 +1,7 @@
 <?php
 require_once "./../conexion.php";
 
-class organizadorDAO{
+class eventosDAO{
 
     private $id;
     private $conexion;
@@ -14,6 +14,24 @@ class organizadorDAO{
     public function getEventosPorOrganizadora($idOrganizadora){
         try{
             $sql = "SELECT * FROM eventos WHERE id_organizadora = :id";
+            $stmt = $this->conexion->prepare($sql);
+            $stmt->bindParam(":id", $idOrganizadora, PDO::PARAM_INT);
+            $stmt->execute();
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch(PDOException $e){
+            throw new Exception("Error al obtener eventos: " . $e->getMessage());
+        }
+    }
+    
+    public function getEventosParaCalendario($idOrganizadora){
+        try{
+            $sql = 
+            "SELECT E.id_evento, E.nombre_evento, E.descripcion, E.fecha_evento, E.hora_evento, E.precio_boleto, E.imagen_url, L.nombre_lugar 
+            FROM eventos E
+            JOIN lugares L ON E.id_lugar = L.id_lugar
+            where id_organizadora = :id";
+
             $stmt = $this->conexion->prepare($sql);
             $stmt->bindParam(":id", $idOrganizadora, PDO::PARAM_INT);
             $stmt->execute();
@@ -45,7 +63,7 @@ class organizadorDAO{
 
     public function getTipoActividadPorID($idTipoActividad){
         try{
-            $sql = "SELECT * FROM tipo_actividad WHERE id_tipo_actividad = :id";
+            $sql = "SELECT * FROM tipoactividad WHERE id_tipo_actividad = :id";
             $stmt = $this->conexion->prepare($sql);
             $stmt->bindParam(":id", $idTipoActividad, PDO::PARAM_INT);
             $stmt->execute();
@@ -135,6 +153,19 @@ class organizadorDAO{
         }
     }
 
+    public function actualizarFechaEvento($idEvento, $nuevaFecha) {
+        try {
+            $sql = "UPDATE eventos SET fecha_evento = :fecha WHERE id_evento = :id";
+            $stmt = $this->conexion->prepare($sql);
+            $stmt->bindParam(":id", $idEvento, PDO::PARAM_INT);
+            $stmt->bindParam(":fecha", $nuevaFecha, PDO::PARAM_STR);
+
+            return $stmt->execute();
+        } catch(PDOException $e) {
+            throw new Exception("Error al actualizar fecha del evento: " . $e->getMessage());
+        }
+    }
+
+
 
 }
-?>

@@ -13,7 +13,7 @@ class organizadorDAO{
 
     public function validarOrganizador(string $user, string $password){
         try{
-            $sql = "SELECT id_organizadora, user, password, nombre_agencia FROM organizadoras WHERE user = :user";
+            $sql = "SELECT * FROM organizadoras WHERE user = :user";
 
             $stmt = $this->conexion->prepare($sql);
             $stmt->bindParam(':user', $user); 
@@ -33,7 +33,7 @@ class organizadorDAO{
 
     public function getOrganizadorPorID($idOrganizadora){
         try{
-            $sql = "SELECT * FROM organizers WHERE id_organizador = :id";
+            $sql = "SELECT * FROM organizadoras WHERE id_organizadora = :id";
             $stmt = $this->conexion->prepare($sql);
             $stmt->bindParam(":id", $idOrganizadora, PDO::PARAM_INT);
             $stmt->execute();
