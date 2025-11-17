@@ -1,11 +1,8 @@
-<?php 
-require_once "./../dao/viajesDAO.php";
-
-
+<?php
+require_once "./../dao/ReservacionesDAO.php"; 
 header('Content-Type: application/json');
 
-$viajesDAO = new viajesDAO();
-
+$reservacionesDAO = new ReservacionesDAO();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -13,33 +10,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($_SERVER['CONTENT_TYPE'] == 'application/json') {
 
         $data = json_decode(file_get_contents("php://input"), true);
-
+        
         /* =============================
-           CANCELAR UN VIAJE
+            CANCELAR UNA RESERVACIÓN
         ============================== */
-        if (isset($data['accion']) && $data['accion'] === 'cancelar') {
+        if (isset($data['accion']) && $data['accion'] === 'cancelar_reservacion') {
 
-            if (!isset($data['id_viaje'])) {
+            if (!isset($data['id_reservacion'])) {
                 echo json_encode([
                     'correcto' => false,
-                    'mensaje' => 'ID de viaje no recibido'
+                    'mensaje' => 'ID de reservación no recibido'
                 ]);
                 exit;
             }
 
-            $id_viaje = intval($data['id_viaje']);
+            $id_reservacion = intval($data['id_reservacion']);
 
             try {
-                $ok = $viajesDAO->cancelarViaje($id_viaje);
+                $ok = $reservacionesDAO->cancelarReservacion($id_reservacion); 
 
                 echo json_encode([
                     'correcto' => $ok,
-                    'mensaje' => $ok ? 'Viaje cancelado correctamente' : 'No se pudo cancelar el viaje'
+                    'mensaje' => $ok ? 'Reservación cancelada correctamente' : 'No se pudo cancelar la reservación'
                 ]);
             } catch (Exception $e) {
                 echo json_encode([
                     'correcto' => false,
-                    'mensaje' => 'Error al cancelar: ' . $e->getMessage()
+                    'mensaje' => 'Error al cancelar reservación: ' . $e->getMessage()
                 ]);
             }
 
@@ -48,22 +45,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
         /* =============================
-            OBTENER HISTORIAL
+            OBTENER HISTORIAL DE RESERVACIONES
         ============================== */
+      
         if (isset($data['id_cliente'])) {
             $id_cliente = intval($data['id_cliente']);
 
             try {
-                $viajes = $viajesDAO->obtenerHistorialDetallado($id_cliente);
+                // Obtiene el historial de reservaciones
+                $reservaciones = $reservacionesDAO->obtenerHistorialDetallado($id_cliente);
 
                 echo json_encode([
                     'correcto' => true,
-                    'viajes' => $viajes
+                    'reservaciones' => $reservaciones // Devuelve solo las reservaciones
                 ]);
             } catch (Exception $e) {
                 echo json_encode([
                     'correcto' => false,
-                    'mensaje' => 'Error en el servidor: ' . $e->getMessage()
+                    'mensaje' => 'Error en el servidor al obtener historial de reservaciones: ' . $e->getMessage()
                 ]);
             }
 
