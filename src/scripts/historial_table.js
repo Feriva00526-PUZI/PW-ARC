@@ -79,7 +79,7 @@ btnCancelar.addEventListener("click", () => {
 
   if (!confirm("¿Seguro que deseas cancelar este viaje?")) return;
 
-  fetch("./../Logic/HistorialLogic.php", {
+  fetch("../../data/logic/HistorialLogic.php", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
