@@ -123,8 +123,34 @@ window.addEventListener("load", function () {
             cargarDatos(tipoQuery(filtroSelected));
         });
     });
+    const cards5a9 = [
+        { title: "Total de Asistencias Completadas", query: "query5" },
+        { title: "Total de Reservaciones Pendientes", query: "query6" },
+        { title: "Total de Reservaciones Canceladas", query: "query7" },
+        { title: "Total General de Reservaciones", query: "query8" }
+    ];
     est3.addEventListener("click", () => {
         titulo_overlay2.textContent = "Informacion de las Asistencias";
+        overlay4.innerHTML = `<div class="minicard">Detalles de la estadística</div>`;
+        overlayEx.innerHTML = ``;
+        overlay3.innerHTML = "";
+        cards5a9.forEach(ct => {
+            const card = document.createElement("div");
+            card.classList.add("statistic-container");
+            card.innerHTML = `
+                <div class="minicard">
+                    <h4 class="card-title">${ct.title}</h4>
+                    <button class="btn-detalle" data-query="${ct.query}">Detalle</button>
+                </div>
+            `;
+            overlay3.appendChild(card);
+        });
+        document.querySelectorAll(".btn-detalle").forEach(button => {
+            button.addEventListener("click", (event) => {
+                const query = event.target.getAttribute("data-query");
+                cargarDatos(query);
+            });
+        });
     });
     est4.addEventListener("click", () => {
         titulo_overlay2.textContent = "Tamaño de los eventos";
@@ -145,6 +171,25 @@ window.addEventListener("load", function () {
     }
     const cargarDatos = (query) => {
         if (!query) return;
+        /* Manejo de errores */
+        const handleResponse = (response) => {
+            if (!response.ok) {
+                return response.text().then(text => {
+                    throw new Error(`Error HTTP ${response.status}. El servidor respondió con: ${text.substring(0, 100)}...`);
+                });
+            }
+            return response.text();
+        };
+
+        const parseJSON = (text) => {
+            try {
+                return JSON.parse(text);
+            } catch (e) {
+                console.error("Fallo al parsear JSON:", e, "Respuesta RAW:", text);
+                throw new Error("Respuesta no es JSON válida. Contenido raw: " + text.substring(0, 50) + "...");
+            }
+        };
+        /*fin del manejo de errores */
         if (query === 'query1' || query === 'query2') {
             overlay3.innerHTML = `<div class="minicard">Cargando lugares...</div>`;
             fetch(`./../../data/logic/infoEventosLogic.php?query=${query}`)
@@ -204,10 +249,6 @@ window.addEventListener("load", function () {
             fetch(`./../../data/logic/infoEventosLogic.php?query=${query}`)
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data.correcto);
-                    console.log(data.lugares);
-
-                    // Usamos 'lugares' porque el PHP lo devuelve así, aunque sean eventos
                     if (data.correcto && data.lugares) {
                         const eventos = data.lugares;
                         overlay3.innerHTML = "";
@@ -232,8 +273,6 @@ window.addEventListener("load", function () {
                             reviewButton.addEventListener('click', function () {
                                 sessionStorage.setItem('id_evento_selected', evento.id_evento);
                                 sessionStorage.setItem('evento_objeto', JSON.stringify(evento));
-
-                                // MAXICARD CORREGIDA
                                 overlay4.innerHTML = `
                             <div class="maxicard">
                                 <h4 class="maxicard-titulo">${evento.nombre_evento}</h4>
@@ -254,12 +293,36 @@ window.addEventListener("load", function () {
                             </div>`;
                             });
                         });
-                    } else {
+                    }
+                    else {
                         overlay3.innerHTML = `<div class="minicard">No se encontraron eventos...</div>`;
                     }
                 })
                 .catch(error => {
                     overlay3.innerHTML = `<div class="minicard">Error al cargar datos: ${error.message}</div>`;
+                });
+        } else if (query === 'query5' || query === 'query6' || query === 'query7' || query === 'query8') {
+            overlay4.innerHTML = `<div class="maxicard">Cargando detalle de asistencia...</div>`;
+            fetch(`./../../data/logic/infoEventosLogic.php?query=${query}`)
+                .then(handleResponse)
+                .then(parseJSON)
+                .then(data => {
+                    if (data.correcto && data.lugares) {
+                        const result = data.lugares;
+                        overlay4.innerHTML = `
+                            <div class="maxicard">
+                                <h4 class="maxicard-titulo">Resultado de la Consulta</h4>
+                                <div class="maxicard-info-grid">
+                                    <p class="maxicard-dato">Total Cantidad: <span>${result.count}</span></p>
+                                    <p class="maxicard-dato">Porcentaje Total: <span>${result.percentage.toFixed(2)}%</span></p>
+                                </div>
+                            </div>`;
+                    } else {
+                        overlay4.innerHTML = `<div class="maxicard">No se pudo obtener el detalle. Mensaje: ${data.mensaje || 'N/A'}</div>`;
+                    }
+                })
+                .catch(error => {
+                    overlay4.innerHTML = `<div class="maxicard">Error al cargar el detalle: ${error.message}</div>`;
                 });
         }
     };

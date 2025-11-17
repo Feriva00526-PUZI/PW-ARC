@@ -98,4 +98,56 @@ class infoEventosDAO
             throw new Exception("Error al obtener los eventos menos populares: " . $e->getMessage());
         }
     }
+
+    public function getAsistenciasCompletadas()
+    {
+        try {
+            $sql = "SELECT COUNT(id_reservacion) AS count FROM reservaciones WHERE estado = 'completado'";
+            $stmt = $this->conexion->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result['count'] ?? 0;
+        } catch (PDOException $e) {
+            throw new Exception("Error al obtener asistencias completadas: " . $e->getMessage());
+        }
+    }
+
+    public function getReservacionesPendientes()
+    {
+        try {
+            $sql = "SELECT COUNT(id_reservacion) AS count FROM reservaciones WHERE estado = 'pendiente'";
+            $stmt = $this->conexion->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result['count'] ?? 0;
+        } catch (PDOException $e) {
+            throw new Exception("Error al obtener reservaciones pendientes: " . $e->getMessage());
+        }
+    }
+
+    public function getReservacionesCanceladas()
+    {
+        try {
+            $sql = "SELECT COUNT(id_reservacion) AS count FROM reservaciones WHERE estado = 'cancelado'";
+            $stmt = $this->conexion->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result['count'] ?? 0;
+        } catch (PDOException $e) {
+            throw new Exception("Error al obtener reservaciones canceladas: " . $e->getMessage());
+        }
+    }
+
+    public function getReservacionesTotales()
+    {
+        try {
+            $sql = "SELECT COUNT(id_reservacion) AS count FROM reservaciones";
+            $stmt = $this->conexion->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result['count'] ?? 0;
+        } catch (PDOException $e) {
+            throw new Exception("Error al obtener reservaciones totales: " . $e->getMessage());
+        }
+    }
 }
