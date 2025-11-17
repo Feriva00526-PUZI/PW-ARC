@@ -4,6 +4,7 @@ window.addEventListener("load", function () {
     window.location.href = "./../../../index.html";
     return;
   }
+  let usuario = JSON.parse(usuarioSession);
   fetch("./../../components/header.html")
     .then(r => r.text())
     .then(html => {
@@ -86,7 +87,7 @@ window.addEventListener("load", function () {
         nav.appendChild(btnUsuario);
       }
 
-fetch("../../php/logic/HistorialLogic.php", {
+      fetch("../../data/logic/HistorialLogic.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id_cliente: usuario.id_cliente })
