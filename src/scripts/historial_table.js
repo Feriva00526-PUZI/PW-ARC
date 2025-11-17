@@ -39,10 +39,16 @@ function initHistorialTable(data) {
     tdHora.textContent = item.hora_viaje;
 
     // Acciones
+    // Boton de descripcion
     const tdAcciones = document.createElement("td");
     const btnDescripcion = document.createElement("button");
     btnDescripcion.className = "hist-btn hist-btn-desc";
     btnDescripcion.textContent = "Descripción";
+
+// Botón Cancelar (solo aparece)
+const btnCancelar = document.createElement("button");
+btnCancelar.className = "hist-btn hist-btn-cancel";
+btnCancelar.textContent = "Cancelar";
 
     btnDescripcion.addEventListener("click", () => {
       alert(
@@ -56,6 +62,7 @@ function initHistorialTable(data) {
     });
 
     tdAcciones.appendChild(btnDescripcion);
+    tdAcciones.appendChild(btnCancelar);
 
     tr.appendChild(tdId);
     tr.appendChild(tdPaquete);
