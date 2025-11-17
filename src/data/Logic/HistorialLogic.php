@@ -17,7 +17,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 'correcto' => true,
                 'viajes' => $viajes
             ]);
-
         } catch (Exception $e) {
 
             echo json_encode([
@@ -27,5 +26,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 }
-
-?>
