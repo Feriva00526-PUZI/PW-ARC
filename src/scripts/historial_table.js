@@ -74,12 +74,12 @@ btnCancelar.textContent = "Cancelar";
     tbody.appendChild(tr);
   });
 
-// Acción de cancelar viaje
+// Accion de cancelar viaje
 btnCancelar.addEventListener("click", () => {
 
   if (!confirm("¿Seguro que deseas cancelar este viaje?")) return;
 
-  fetch("./../logic/HistorialLogic.php", {
+  fetch("./../Logic/HistorialLogic.php", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
