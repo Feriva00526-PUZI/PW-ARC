@@ -5,6 +5,8 @@ window.addEventListener("load", function () {
         window.location.href = "./../../../index.html";
         return;
     }
+    const administradorObj = JSON.parse(administradorSession);
+    const idAdmin = administradorObj.id_admin;
     const id_lugar = sessionStorage.getItem('id_lugar_selected');
     const lugar_json = sessionStorage.getItem('lugar_objeto');
     if (!id_lugar || !lugar_json) {
@@ -116,5 +118,97 @@ window.addEventListener("load", function () {
             f_general.style.backgroundPosition = "50% 80%";
         });
 
+    const boton_eliminar_lugar = document.getElementById("boton_eliminar_lugar");
+    const boton_modificar_lugar = document.getElementById("boton_modificar_lugar");
+    const id_lugarAct = lugar.id_lugar;
+    const confirm_delete = document.getElementById("confirm_delete");
+    const button_proceder = document.getElementById("button_proceder");
+    const button_revert = document.getElementById("button_revert");
+    const error_in_delete = document.getElementById("error_in_delete");
+    const delete_success = document.getElementById("delete_success");
+    const button_error_revert = document.getElementById("button_error_revert");
+    const button_succes_revert = document.getElementById("button_succes_revert");
 
+    boton_eliminar_lugar.addEventListener("click", (e) => {
+        e.preventDefault();
+        confirm_delete.showModal();
+    });
+    boton_modificar_lugar.addEventListener("click", (e) => {
+        e.preventDefault();
+        const nombre = document.getElementById("txt_nombre_lugar").value;
+        const descripcion = document.getElementById("txt_descripcion_lugar").value;
+        const direccion = document.getElementById("txt_direccion_lugar").value;
+        const zona = document.getElementById("txt_zona_lugar").value;
+        const ciudad = document.getElementById("txt_ciudad_lugar").value;
+        const imagenFile = document.getElementById("file_new_img").files[0];
+
+        const formData = new FormData();
+        formData.append("nombre", nombre);
+        formData.append("descripcion", descripcion);
+        formData.append("direccion", direccion);
+        formData.append("zona", zona);
+        formData.append("ciudad", ciudad);
+        formData.append("id_admin", idAdmin);
+        formData.append("id_lugar_update", id_lugarAct);
+        if (imagenFile) {
+            formData.append("imagen", imagenFile);
+        }
+        fetch("./../../data/Logic/lugarLogic.php", {
+            method: "POST",
+            body: formData
+        }).then(response => {
+            if (!response.ok) {
+                return response.json().catch(() => {
+                    throw new Error('Error en la respuesta de la solicitud.');
+                });
+            }
+            return response.json();
+        }).then(data => {
+            if (data.correcto) {
+                delete_success.querySelector('.dialog_h3').innerText = "Lugar modificado exitosamente.";
+                delete_success.showModal();
+            } else {
+                error_in_delete.querySelector('.dialog_h3').innerText = data.mensaje || "Se produjo un error al modificar el lugar.";
+                error_in_delete.showModal();
+            }
+        }).catch(error => {
+            error_in_delete.querySelector('.dialog_h3').innerText = "Error de conexión o fallo interno al modificar.";
+            error_in_delete.showModal();
+        });
+    });
+    button_proceder.addEventListener("click", () => {
+        confirm_delete.close();
+        fetch("./../../data/Logic/lugarLogic.php", {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ id_lugar: id_lugarAct })
+        }).then(response => {
+            if (!response.ok) {
+                return response.json().catch(() => {
+                    throw new Error('Error en la respuesta de la solicitud.');
+                });
+            }
+            return response.json();
+        }).then(data => {
+            if (data.correcto) {
+                delete_success.showModal();
+            } else {
+                error_in_delete.showModal();
+            }
+        }).catch(error => {
+            error_in_delete.showModal();
+        });
+    });
+    button_revert.addEventListener("click", () => {
+        confirm_delete.close();
+    });
+    button_error_revert.addEventListener("click", () => {
+        error_in_delete.close();
+    });
+    button_succes_revert.addEventListener("click", () => {
+        delete_success.close();
+        window.location.href = "./a_gestion_view.html";
+    });
 });

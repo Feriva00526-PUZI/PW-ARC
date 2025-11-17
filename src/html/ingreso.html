@@ -13,15 +13,15 @@
 <body>
     <div class="contenedor" id="contenedor">
         <div class="contenedor_formulario contenedor_registro">
-            <form action="#">
+            <form id="form_registro">
                 <h1>Registrate</h1>
-                <input type="text" placeholder="Nombre / Nombre de la empresa" id="r_nombre">
-                <input type="text" placeholder="Apellido / Descripcion de la empresa" id="r_apellido">
-                <input type="email" placeholder="Correo" id="r_correo">
-                <input type="tel" placeholder="Telefono" id="r_telefono">
-                <input type="text" placeholder="Usuario" id="r_usuario">
-                <input type="password" placeholder="Contraseña" id="r_password">
-                <button> Registrarse</button>
+                <input type="text" placeholder="Nombre / Nombre de la empresa" id="r_nombre" name="nombre">
+                <input type="text" placeholder="Apellido / Descripcion de la empresa" id="r_apellido" name="apellido">
+                <input type="email" placeholder="Correo" id="r_correo" name="correo">
+                <input type="tel" placeholder="Telefono" id="r_telefono" name="telefono">
+                <input type="text" placeholder="Usuario" id="r_usuario" name="usuario">
+                <input type="password" placeholder="Contraseña" id="r_password" name="contra">
+                <button id="boton_registrarse"> Registrarse</button>
             </form>
         </div>
         <div class="contenedor_formulario contenedor_login">
@@ -53,6 +53,20 @@
             <button class="button_ls_close" id="close_datos_incorrectos">
                 <img class="img_ls_close" src="./../media/images/icons/iconLS5.png">
                 <p class="dialog_text_btn_close">Volver a capturar</p>
+            </button>
+        </dialog>
+        <dialog class="dialog_select" id="registro_duplicado">
+            <h3 class="dialog_h3">El registro fallo. Prueba registrando a otro usuario</h3>
+            <br>
+            <button class="button_ls_close" id="close_registro_duplicado">
+                <p class="dialog_text_btn_close">Volver a capturar</p>
+            </button>
+        </dialog>
+        <dialog class="dialog_select" id="registro_correcto">
+            <h3 class="dialog_h3">Registro exitoso.</h3>
+            <br>
+            <button class="button_ls_close" id="close_registro_correcto">
+                <p class="dialog_text_btn_close">Aceptar</p>
             </button>
         </dialog>
     </div>

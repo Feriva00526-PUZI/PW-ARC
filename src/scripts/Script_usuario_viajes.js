@@ -1,4 +1,3 @@
-
 window.addEventListener("load", function () {
 
     fetch("./../../components/header.html")
@@ -9,7 +8,7 @@ window.addEventListener("load", function () {
             const script = document.createElement("script");
             script.src = "./../../scripts/header_script.js";
             document.body.appendChild(script);
-            console.log("algo");
+
             /*HEADER DINAMICO */
             /*Cambio de la imagen del header */
             const s_header = document.getElementById("s_header");
@@ -24,7 +23,7 @@ window.addEventListener("load", function () {
             /*Primero*/
             const a1 = document.createElement("a");
             a1.id = "a1";
-            a1.href = "#";
+            a1.href = "./usuario_principal.html";
             const ai1 = document.createElement("img");
             ai1.src = "./../../media/images/icons/icon_home.png";
             ai1.classList.add("icon_nav");
@@ -34,23 +33,33 @@ window.addEventListener("load", function () {
             /*Segundo*/
             const a2 = document.createElement("a");
             a2.id = "a2";
-            a2.href = "#";
+            a2.href = "./usuarioviajes.html";
             const ai2 = document.createElement("img");
             ai2.src = "./../../media/images/icons/icon_travel.png";
             ai2.classList.add("icon_nav");
             a2.appendChild(ai2);
-            a2.append("Lugares Populares");
+            a2.append("Paquetes de viaje");
             bnav.appendChild(a2);
             /*Tercero*/
             const a3 = document.createElement("a");
             a3.id = "a3";
-            a3.href = "#";
+            a3.href = "./usuarioEventos.html";
             const ai3 = document.createElement("img");
             ai3.src = "./../../media/images/icons/icon_event.png";
             ai3.classList.add("icon_nav");
             a3.appendChild(ai3);
-            a3.append("Eventos Recientes");
+            a3.append("Actividades");
             bnav.appendChild(a3);
+            /*Cuarto*/
+            const a4 = document.createElement("a");
+            a4.id = "a4";
+            a4.href = "./usuario_historial.html";
+            const ai4 = document.createElement("img");
+            ai4.src = "./../../media/images/icons/icon_event.png";
+            ai4.classList.add("icon_nav");
+            a4.appendChild(ai4);
+            a4.append("Historial");
+            bnav.appendChild(a4);
             /*Boton de registro o iniciar sesion*/
             const btn_is_r = document.createElement("button");
             btn_is_r.id = "btn_is_r";
@@ -65,7 +74,7 @@ window.addEventListener("load", function () {
             bnav.appendChild(btn_is_r);
         });
 
-    /*Copiar y pegar eso para añadir el footer en la pagina que sea */
+    /*Copiar y pegar eso para aÃ±adir el footer en la pagina que sea */
     fetch("./../../components/footer.html")
         .then(response => response.text())
         .then(data => {
