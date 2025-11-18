@@ -3,6 +3,7 @@ require_once "./../dao/infoEventosDAO.php";
 header('Content-Type: application/json');
 $lugarDAO = new infoEventosDAO();
 $RUTA_IMG_ESTANDAR = "./../../media/images/lugares/";
+$RUTA_IMG_ESTANDAR2 = "./../../media/images/events/";
 $RUTA_FISICA_GUARDADO = __DIR__ . "/../../media/images/lugares/";
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
@@ -61,10 +62,19 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                 $resultados = [];
                 break;
         }
-        if ("query1" === $query || "query2" === $query || "query3" === $query || "query4" === $query) {
+        if ("query1" === $query || "query2" === $query) {
             if ($resultados !== null && !empty($resultados)) {
                 foreach ($resultados as &$item) {
                     $item['imagen_url'] = $RUTA_IMG_ESTANDAR . $item['imagen_url'];
+                }
+                $respuesta = ['correcto' => true, 'lugares' => $resultados];
+            } else {
+                $respuesta = ['correcto' => false, 'lugares' => []];
+            }
+        } else if ("query3" === $query || "query4" === $query) {
+            if ($resultados !== null && !empty($resultados)) {
+                foreach ($resultados as &$item) {
+                    $item['imagen_url'] = $RUTA_IMG_ESTANDAR2 . $item['imagen_url'];
                 }
                 $respuesta = ['correcto' => true, 'lugares' => $resultados];
             } else {
