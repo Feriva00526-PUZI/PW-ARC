@@ -1,33 +1,23 @@
 // import { obtenerEventosPorOrganizadora, obtenerNumeroEventosEsteMes } from "./dao/daoEventos.js";
 
+let organizadora = JSON.parse(sessionStorage.getItem("organizador_logeado"));
+
 window.addEventListener("load", function () {
 
-    let organizadora = JSON.parse(sessionStorage.getItem("organizador_logeado"));
     console.log(organizadora)
-
     const idOrg = organizadora.id_organizadora;
 
     if (!organizadora) {
-        // Si no hay sesión, redirigir
         window.location.href = "../../../index.html";
-        return;
-    } else {
-        organizadora = fetch(`../../data/Logic/organizerController.php?accion=organizador&id_organizadora=${idOrg}`)
-            .then(res => res.json())
-            .then(json => {
-                if (json.correcto) {
-                    document.getElementById("numeroEventos")
-                        .innerText = `Numero de eventos este mes: ${json.total}`;
-                } else {
-                    console.error(json.mensaje);
-                }
-            });
     }
 
+
+    console.log(organizadora.imagen_url);
     // Configuracion inicial
     document.title = organizadora.nombre_agencia;
+
     document.getElementById("imgAgencia").src =
-        `../../media/images/organizers/${organizadora.image_url}`;
+        `../../../src/media/images/organizers/${organizadora.imagen_url}`;
 
 
     // Obtener número eventos mes
@@ -51,7 +41,6 @@ window.addEventListener("load", function () {
         .then(json => {
             if (json.correcto) {
                 eventos = json.data;
-                window.eventosCalendario = eventos;
                 filtrarEventos();
             } else {
                 console.error(json.mensaje);
@@ -73,11 +62,11 @@ window.addEventListener("load", function () {
         lista.forEach(ev => {
             const tr = document.createElement("tr");
             tr.innerHTML = `
-                <td>${ev.fecha_evento}</td>
-                <td>${ev.nombre_evento}</td>
-                <td>${ev.lugar || "N/A"}</td>
-                <td>$${ev.precio_boleto}</td>
-                <td>
+                <td data-label="Fecha">${ev.fecha_evento}</td>
+                <td data-label="Nombre">${ev.nombre_evento}</td>
+                <td data-label="Lugar">${ev.lugar || "N/A"}</td>
+                <td data-label="Precio">$${ev.precio_boleto}</td>
+                <td data-label="Acciones">
                     <button class="btn-modificar" data-id="${ev.id_evento}">Modificar</button>
                     <button class="btn-cancelar" data-id="${ev.id_evento}">Cancelar</button>
                     <button class="btn-calendario" data-id="${ev.id_evento}">📅</button>
@@ -86,6 +75,7 @@ window.addEventListener("load", function () {
             tbody.appendChild(tr);
         });
     }
+
 
     // Filtrar 
     function filtrarEventos() {
@@ -140,19 +130,25 @@ window.addEventListener("load", function () {
             }
 
         } else if (e.target.classList.contains("btn-modificar")) {
-
-            alert(`Función para modificar evento ID: ${e.target.dataset.id}`);
+            this.sessionStorage.setItem("evento_seleccionado", e.target.dataset.id);
+            window.location.href = "events.html";
 
         } else if (e.target.classList.contains("btn-calendario")) {
 
             const evento = eventos.find(ev => ev.id_evento == e.target.dataset.id);
             if (evento) {
                 const fecha = new Date(evento.fecha_evento);
+
                 window.dispatchEvent(new CustomEvent("abrirCalendario", {
-                    detail: { month: fecha.getMonth(), year: fecha.getFullYear() }
+                    detail: {
+                        month: fecha.getMonth(),
+                        year: fecha.getFullYear(),
+                        source: "organizer"
+                    }
                 }));
             }
         }
+
     });
 
     // Crear el footer y el header
