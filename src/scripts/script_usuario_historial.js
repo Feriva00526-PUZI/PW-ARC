@@ -134,18 +134,28 @@ fetch("../../data/logic/ReservacionLogic.php", {
     return;
   }
 
-  // Llama a la función initReservacionesTable directamente
-  // (Asumiendo que el script ya se cargó en el HTML - ver paso 1)
-  if (typeof window.initReservacionesTable === "function") {
-    window.initReservacionesTable(data.reservaciones);
-  } else {
-    console.error("Error de sincronización: initReservacionesTable no está definida.");
-  }
+  // Crear el elemento script para reservations_table.js
+  const scriptReservaciones = document.createElement("script");
+  scriptReservaciones.src = "./../../scripts/reservations_table.js"; // <--- Ruta al script
+
+  // Ejecutar el renderizado cuando el script haya terminado de cargar
+  scriptReservaciones.onload = () => {
+    if (typeof window.initReservacionesTable === "function") {
+      // Ahora, la función initReservacionesTable está garantizada de existir
+      window.initReservacionesTable(data.reservaciones); 
+    } else {
+      console.error("No se encontró initReservacionesTable");
+    }
+  };
+
+  // Anadir el script al documento para que se cargue
+  document.body.appendChild(scriptReservaciones);
 
 })
 .catch(err => {
   console.error("Error cargando historial de reservaciones:", err);
 });
+
 
 
     })
