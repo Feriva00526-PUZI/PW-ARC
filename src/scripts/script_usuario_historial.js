@@ -86,7 +86,7 @@ window.addEventListener("load", function () {
         btnUsuario.appendChild(aUser);
         nav.appendChild(btnUsuario);
       }
-
+// cargar historial de viajes
       fetch("../../data/logic/HistorialLogic.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -99,7 +99,7 @@ window.addEventListener("load", function () {
             return;
           }
 
-          // Cargar tabla
+          // Cargar tabla de historial de viajes 
           const scriptTabla = document.createElement("script");
           scriptTabla.src = "./../../scripts/historial_table.js";
 
@@ -119,42 +119,37 @@ window.addEventListener("load", function () {
         });
 
       
-// ******************************************************
-// HISTORIAL DE RESERVACIONES 
-// ******************************************************
+// cargar historial de reservaciones
 fetch("../../data/logic/ReservacionLogic.php", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ id_cliente: usuario.id_cliente })
-})
-.then(r => r.json())
-.then(data => {
-  if (!data.correcto) {
-    console.error("Error cargando historial de reservaciones:", data.mensaje);
-    return;
-  }
+ method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id_cliente: usuario.id_cliente })
+      })
+        .then(r => r.json())
+        .then(data => {
+          if (!data.correcto) {
+            console.error("Error:", data.mensaje);
+            return;
+          }
 
-  // Crear el elemento script para reservations_table.js
+  // Cargar tabla de historial de reservaciones
   const scriptReservaciones = document.createElement("script");
-  scriptReservaciones.src = "./../../scripts/reservations_table.js"; // <--- Ruta al script
+  scriptReservaciones.src = "./../../scripts/reservations_table.js"; 
 
-  // Ejecutar el renderizado cuando el script haya terminado de cargar
-  scriptReservaciones.onload = () => {
-    if (typeof window.initReservacionesTable === "function") {
-      // Ahora, la función initReservacionesTable está garantizada de existir
-      window.initReservacionesTable(data.reservaciones); 
-    } else {
-      console.error("No se encontró initReservacionesTable");
-    }
-  };
+  scriptTabla.onload = () => {
+            if (typeof window.initHistorialTable === "function") {
+              window.initHistorialTable(data.viajes);
+            } else {
+              console.error("No se encontró initHistorialTable");
+            }
+          };
 
-  // Anadir el script al documento para que se cargue
-  document.body.appendChild(scriptReservaciones);
+          document.body.appendChild(scriptTabla);
 
-})
-.catch(err => {
-  console.error("Error cargando historial de reservaciones:", err);
-});
+        })
+        .catch(err => {
+          console.error("Error cargando historial:", err);
+        });
 
 
 
