@@ -11,13 +11,28 @@ function getStatusClass(status) {
 
 
 function initReservacionesTable(data) {
+    console.log("initReservacionesTable llamado con:", data); // Debug
     // Apunta al <tbody> de la nueva tabla en usuario_historial.html
     const tbody = document.querySelector("#reservaciones-table-sample tbody"); 
     if (!tbody) {
         console.error("No se encontró el cuerpo de la tabla #reservaciones-table-sample tbody");
         return;
     }
+    
+    // Validar que data sea un array
+    if (!Array.isArray(data)) {
+        console.error("Los datos no son un array:", data);
+        tbody.innerHTML = "<tr><td colspan='7' style='text-align: center;'>Error: Formato de datos incorrecto</td></tr>";
+        return;
+    }
+    
     tbody.innerHTML = "";
+
+    // Si no hay datos, mostrar mensaje
+    if (data.length === 0) {
+        tbody.innerHTML = "<tr><td colspan='7' style='text-align: center;'>No hay reservaciones registradas</td></tr>";
+        return;
+    }
 
     data.forEach(item => {
         const tr = document.createElement("tr");

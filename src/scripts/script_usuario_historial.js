@@ -127,28 +127,44 @@ fetch("../../data/logic/ReservacionLogic.php", {
       })
         .then(r => r.json())
         .then(data => {
+          console.log("Respuesta de reservaciones:", data); // Debug
           if (!data.correcto) {
             console.error("Error:", data.mensaje);
             return;
           }
 
-  // Cargar tabla de historial de reservaciones
-  const scriptReservaciones = document.createElement("script");
-  scriptReservaciones.src = "./../../scripts/reservations_table.js"; 
+          // Validar que existan reservaciones
+          if (!data.reservaciones || !Array.isArray(data.reservaciones)) {
+            console.warn("No se recibieron reservaciones o el formato es incorrecto");
+            return;
+          }
 
-  scriptReservaciones.onload = () => {
-            if (typeof window.initReservacionesTable === "function") {
-              window.initReservacionesTable(data.reservaciones);
-            } else {
-              console.error("No se encontró initReservacionesTable");
-            }
+          // Cargar tabla de historial de reservaciones
+          const scriptReservaciones = document.createElement("script");
+          scriptReservaciones.src = "./../../scripts/reservations_table.js"; 
+
+          scriptReservaciones.onload = () => {
+            console.log("Script reservations_table.js cargado"); // Debug
+            // Esperar un momento para asegurar que la función esté disponible
+            setTimeout(() => {
+              if (typeof window.initReservacionesTable === "function") {
+                console.log("Inicializando tabla con", data.reservaciones.length, "reservaciones"); // Debug
+                window.initReservacionesTable(data.reservaciones);
+              } else {
+                console.error("No se encontró initReservacionesTable en window");
+              }
+            }, 100);
+          };
+
+          scriptReservaciones.onerror = () => {
+            console.error("Error al cargar el script reservations_table.js");
           };
 
           document.body.appendChild(scriptReservaciones);
 
         })
         .catch(err => {
-          console.error("Error cargando historial:", err);
+          console.error("Error cargando historial de reservaciones:", err);
         });
 
 
