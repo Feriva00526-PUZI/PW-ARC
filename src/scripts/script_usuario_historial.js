@@ -140,7 +140,7 @@ fetch("../../data/logic/ReservacionLogic.php", {
             if (typeof window.initHistorialTable === "function") {
               window.initHistorialTable(data.viajes);
             } else {
-              console.error("No se encontró initHistorialTable");
+              console.error("No se encontró initreservationsTable");
             }
           };
 
