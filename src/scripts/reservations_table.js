@@ -23,44 +23,44 @@ function initReservacionesTable(data) {
         const tr = document.createElement("tr");
         const estadoReservacion = (item.estado_reservacion || "").toLowerCase();
 
-        // 1. ID de la reservación
+        // id de la reservación
         const tdId = document.createElement("td");
         tdId.textContent = item.id_reservacion;
 
-        // 2. Evento y Lugar
+        // Evento y Lugar
         const tdEvento = document.createElement("td");
         tdEvento.textContent = item.nombre_evento + " en " + item.nombre_lugar;
 
-        // 3. Estado
+        // Estado
         const tdEstado = document.createElement("td");
         const divEstado = document.createElement("div");
         divEstado.textContent = item.estado_reservacion;
         divEstado.className = getStatusClass(item.estado_reservacion);
         tdEstado.appendChild(divEstado);
 
-        // 4. Fecha del Evento
+        // Fecha del Evento
         const tdFecha = document.createElement("td");
         tdFecha.textContent = item.fecha_evento;
 
-        // 5. Hora del Evento
+        // Hora del Evento
         const tdHora = document.createElement("td");
         tdHora.textContent = item.hora_evento;
         
-        // 6. Precio del Boleto
+        // Precio del Boleto
         const tdPrecio = document.createElement("td");
         tdPrecio.textContent = new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(item.precio_boleto); 
 
-        // 7. Acciones
+        // Acciones
         const tdAcciones = document.createElement("td");
         
         const btnDescripcion = document.createElement("button");
         btnDescripcion.className = "hist-btn hist-btn-desc";
         btnDescripcion.textContent = "Descripción";
-        
+        // Botón Cancelar
         const btnCancelar = document.createElement("button");
         btnCancelar.className = "hist-btn hist-btn-cancel";
         btnCancelar.textContent = "Cancelar";
-        
+       // Deshabilitar si no está pendiente y aplicar estilo CSS de deshabilitado 
         if (estadoReservacion !== "pendiente") {
             btnCancelar.disabled = true;
             btnCancelar.classList.add("disabled-btn");
