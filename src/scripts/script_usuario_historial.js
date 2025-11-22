@@ -136,15 +136,15 @@ fetch("../../data/logic/ReservacionLogic.php", {
   const scriptReservaciones = document.createElement("script");
   scriptReservaciones.src = "./../../scripts/reservations_table.js"; 
 
-  scriptTabla.onload = () => {
-            if (typeof window.initHistorialTable === "function") {
-              window.initHistorialTable(data.viajes);
+  scriptReservaciones.onload = () => {
+            if (typeof window.initReservacionesTable === "function") {
+              window.initReservacionesTable(data.reservaciones);
             } else {
-              console.error("No se encontró initreservationsTable");
+              console.error("No se encontró initReservacionesTable");
             }
           };
 
-          document.body.appendChild(scriptTabla);
+          document.body.appendChild(scriptReservaciones);
 
         })
         .catch(err => {
