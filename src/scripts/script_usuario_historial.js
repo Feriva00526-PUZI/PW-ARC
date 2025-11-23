@@ -125,46 +125,97 @@ fetch("../../data/logic/ReservacionLogic.php", {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id_cliente: usuario.id_cliente })
       })
-        .then(r => r.json())
+        .then(r => {
+          if (!r.ok) {
+            throw new Error(`HTTP error! status: ${r.status}`);
+          }
+          return r.json();
+        })
         .then(data => {
-          console.log("Respuesta de reservaciones:", data); // Debug
+          console.log("Respuesta completa de reservaciones:", data); // Debug
+          
           if (!data.correcto) {
-            console.error("Error:", data.mensaje);
+            console.error("Error del servidor:", data.mensaje);
+            const tbody = document.querySelector("#reservaciones-table-sample tbody");
+            if (tbody) {
+              tbody.innerHTML = "<tr><td colspan='7' style='text-align: center; color: red;'>Error: " + (data.mensaje || "Error desconocido") + "</td></tr>";
+            }
             return;
           }
 
           // Validar que existan reservaciones
-          if (!data.reservaciones || !Array.isArray(data.reservaciones)) {
-            console.warn("No se recibieron reservaciones o el formato es incorrecto");
+          if (!data.reservaciones) {
+            console.warn("No se recibió la propiedad 'reservaciones' en la respuesta");
+            const tbody = document.querySelector("#reservaciones-table-sample tbody");
+            if (tbody) {
+              tbody.innerHTML = "<tr><td colspan='7' style='text-align: center;'>No se recibieron datos de reservaciones</td></tr>";
+            }
             return;
           }
 
-          // Cargar tabla de historial de reservaciones
-          const scriptReservaciones = document.createElement("script");
-          scriptReservaciones.src = "./../../scripts/reservations_table.js"; 
+          if (!Array.isArray(data.reservaciones)) {
+            console.error("Las reservaciones no son un array:", typeof data.reservaciones, data.reservaciones);
+            const tbody = document.querySelector("#reservaciones-table-sample tbody");
+            if (tbody) {
+              tbody.innerHTML = "<tr><td colspan='7' style='text-align: center; color: red;'>Error: Formato de datos incorrecto</td></tr>";
+            }
+            return;
+          }
 
-          scriptReservaciones.onload = () => {
-            console.log("Script reservations_table.js cargado"); // Debug
-            // Esperar un momento para asegurar que la función esté disponible
-            setTimeout(() => {
-              if (typeof window.initReservacionesTable === "function") {
-                console.log("Inicializando tabla con", data.reservaciones.length, "reservaciones"); // Debug
-                window.initReservacionesTable(data.reservaciones);
-              } else {
-                console.error("No se encontró initReservacionesTable en window");
+          console.log("Reservaciones recibidas:", data.reservaciones.length, "elementos");
+
+          // Verificar si el script ya está cargado
+          if (typeof window.initReservacionesTable === "function") {
+            console.log("Función ya disponible, inicializando tabla directamente");
+            window.initReservacionesTable(data.reservaciones);
+          } else {
+            // Cargar tabla de historial de reservaciones
+            const scriptReservaciones = document.createElement("script");
+            scriptReservaciones.src = "./../../scripts/reservations_table.js"; 
+
+            scriptReservaciones.onload = () => {
+              console.log("Script reservations_table.js cargado exitosamente");
+              
+              // Intentar múltiples veces en caso de que haya un pequeño delay
+              let intentos = 0;
+              const intentarInicializar = () => {
+                intentos++;
+                if (typeof window.initReservacionesTable === "function") {
+                  console.log("Inicializando tabla con", data.reservaciones.length, "reservaciones");
+                  window.initReservacionesTable(data.reservaciones);
+                } else if (intentos < 10) {
+                  console.log("Esperando función... intento", intentos);
+                  setTimeout(intentarInicializar, 50);
+                } else {
+                  console.error("No se pudo encontrar initReservacionesTable después de", intentos, "intentos");
+                  const tbody = document.querySelector("#reservaciones-table-sample tbody");
+                  if (tbody) {
+                    tbody.innerHTML = "<tr><td colspan='7' style='text-align: center; color: red;'>Error: No se pudo cargar la función de inicialización</td></tr>";
+                  }
+                }
+              };
+              
+              setTimeout(intentarInicializar, 50);
+            };
+
+            scriptReservaciones.onerror = (err) => {
+              console.error("Error al cargar el script reservations_table.js:", err);
+              const tbody = document.querySelector("#reservaciones-table-sample tbody");
+              if (tbody) {
+                tbody.innerHTML = "<tr><td colspan='7' style='text-align: center; color: red;'>Error al cargar el script de la tabla</td></tr>";
               }
-            }, 100);
-          };
+            };
 
-          scriptReservaciones.onerror = () => {
-            console.error("Error al cargar el script reservations_table.js");
-          };
-
-          document.body.appendChild(scriptReservaciones);
+            document.body.appendChild(scriptReservaciones);
+          }
 
         })
         .catch(err => {
           console.error("Error cargando historial de reservaciones:", err);
+          const tbody = document.querySelector("#reservaciones-table-sample tbody");
+          if (tbody) {
+            tbody.innerHTML = "<tr><td colspan='7' style='text-align: center; color: red;'>Error de conexión: " + err.message + "</td></tr>";
+          }
         });
 
 

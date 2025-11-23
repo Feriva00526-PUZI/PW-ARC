@@ -12,17 +12,22 @@ function getStatusClass(status) {
 
 function initReservacionesTable(data) {
     console.log("initReservacionesTable llamado con:", data); // Debug
+    console.log("Tipo de datos:", typeof data, "Es array?", Array.isArray(data)); // Debug
+    
     // Apunta al <tbody> de la nueva tabla en usuario_historial.html
     const tbody = document.querySelector("#reservaciones-table-sample tbody"); 
     if (!tbody) {
         console.error("No se encontró el cuerpo de la tabla #reservaciones-table-sample tbody");
+        console.error("Elementos disponibles:", document.querySelectorAll("tbody"));
         return;
     }
     
+    console.log("tbody encontrado:", tbody); // Debug
+    
     // Validar que data sea un array
     if (!Array.isArray(data)) {
-        console.error("Los datos no son un array:", data);
-        tbody.innerHTML = "<tr><td colspan='7' style='text-align: center;'>Error: Formato de datos incorrecto</td></tr>";
+        console.error("Los datos no son un array:", data, "Tipo:", typeof data);
+        tbody.innerHTML = "<tr><td colspan='7' style='text-align: center; color: red;'>Error: Formato de datos incorrecto. Se esperaba un array.</td></tr>";
         return;
     }
     
@@ -30,40 +35,54 @@ function initReservacionesTable(data) {
 
     // Si no hay datos, mostrar mensaje
     if (data.length === 0) {
-        tbody.innerHTML = "<tr><td colspan='7' style='text-align: center;'>No hay reservaciones registradas</td></tr>";
+        console.log("No hay reservaciones para mostrar");
+        tbody.innerHTML = "<tr><td colspan='7' style='text-align: center; padding: 20px;'>No hay reservaciones registradas</td></tr>";
         return;
     }
 
-    data.forEach(item => {
+    console.log("Procesando", data.length, "reservaciones"); // Debug
+
+    data.forEach((item, index) => {
+        try {
+            console.log(`Procesando reservación ${index + 1}:`, item); // Debug
         const tr = document.createElement("tr");
-        const estadoReservacion = (item.estado_reservacion || "").toLowerCase();
+        const estadoReservacion = ((item.estado_reservacion || "pendiente") + "").toLowerCase();
+
+        // Validar campos requeridos
+        if (!item.id_reservacion) {
+            console.warn("Reservación sin ID:", item);
+        }
 
         // id de la reservación
         const tdId = document.createElement("td");
-        tdId.textContent = item.id_reservacion;
+        tdId.textContent = item.id_reservacion || "N/A";
 
         // Evento y Lugar
         const tdEvento = document.createElement("td");
-        tdEvento.textContent = item.nombre_evento + " en " + item.nombre_lugar;
+        const nombreEvento = item.nombre_evento || "Evento no especificado";
+        const nombreLugar = item.nombre_lugar || "Lugar no especificado";
+        tdEvento.textContent = nombreEvento + " en " + nombreLugar;
 
         // Estado
         const tdEstado = document.createElement("td");
         const divEstado = document.createElement("div");
-        divEstado.textContent = item.estado_reservacion;
-        divEstado.className = getStatusClass(item.estado_reservacion);
+        const estadoReservacionTexto = item.estado_reservacion || "pendiente";
+        divEstado.textContent = estadoReservacionTexto;
+        divEstado.className = getStatusClass(estadoReservacionTexto);
         tdEstado.appendChild(divEstado);
 
         // Fecha del Evento
         const tdFecha = document.createElement("td");
-        tdFecha.textContent = item.fecha_evento;
+        tdFecha.textContent = item.fecha_evento || "N/A";
 
         // Hora del Evento
         const tdHora = document.createElement("td");
-        tdHora.textContent = item.hora_evento;
+        tdHora.textContent = item.hora_evento || "N/A";
         
         // Precio del Boleto
         const tdPrecio = document.createElement("td");
-        tdPrecio.textContent = new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(item.precio_boleto); 
+        const precio = item.precio_boleto || 0;
+        tdPrecio.textContent = new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(precio); 
 
         // Acciones
         const tdAcciones = document.createElement("td");
@@ -139,8 +158,18 @@ function initReservacionesTable(data) {
         tr.appendChild(tdPrecio);
         tr.appendChild(tdAcciones);
 
-        tbody.appendChild(tr);
+            tbody.appendChild(tr);
+            console.log(`Reservación ${index + 1} agregada exitosamente`); // Debug
+        } catch (error) {
+            console.error(`Error procesando reservación ${index + 1}:`, error, item);
+            // Agregar una fila de error para este item
+            const trError = document.createElement("tr");
+            trError.innerHTML = `<td colspan='7' style='text-align: center; color: red;'>Error al procesar reservación: ${error.message}</td>`;
+            tbody.appendChild(trError);
+        }
     });
+    
+    console.log("Tabla de reservaciones inicializada. Filas agregadas:", tbody.children.length); // Debug
 }
 
 window.initReservacionesTable = initReservacionesTable;
