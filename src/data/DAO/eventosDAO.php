@@ -166,6 +166,51 @@ class eventosDAO{
         }
     }
 
+    public function actualizarEvento($id_evento, $nombre, $descripcion, $hora_evento, $precio_boleto, $id_lugar, $id_tipo_actividad) {
+        // Preparar la consulta SQL
+        $sql = "UPDATE eventos SET 
+            nombre_evento = :nombre, 
+            descripcion = :descripcion, 
+            hora_evento = :hora_evento, 
+            precio_boleto = :precio_boleto, 
+            id_lugar = :id_lugar, 
+            id_tipo_actividad = :id_tipo_actividad 
+            WHERE id_evento = :id_evento";
 
+        // Preparar la conexión
+        $stmt = $this->conexion->prepare($sql);
+        
+        // Ejecutar la consulta con los parámetros
+        $stmt->bindParam(':id_evento', $id_evento, PDO::PARAM_INT);
+        $stmt->bindParam(':nombre', $nombre, PDO::PARAM_STR);
+        $stmt->bindParam(':descripcion', $descripcion, PDO::PARAM_STR);
+        $stmt->bindParam(':hora_evento', $hora_evento, PDO::PARAM_STR);  // 'HH:MM:SS'
+        $stmt->bindParam(':precio_boleto', $precio_boleto, PDO::PARAM_STR);  // Para manejar decimales
+        $stmt->bindParam(':id_lugar', $id_lugar, PDO::PARAM_INT);
+        $stmt->bindParam(':id_tipo_actividad', $id_tipo_actividad, PDO::PARAM_INT);
+
+        // Retornar el resultado de la ejecución
+        return $stmt->execute();
+    }
+
+    public function actualizarImagen($id_evento, $nuevoNombreImagen) {
+        // Validar que el nuevo nombre de la imagen no esté vacío
+        if (empty($nuevoNombreImagen)) {
+            throw new Exception("El nombre de la imagen no puede estar vacío.");
+        }
+
+        // Preparar la consulta SQL para actualizar solo la imagen
+        $sql = "UPDATE eventos SET imagen_url = :imagen WHERE id_evento = :id_evento";
+        
+        // Preparar la conexión
+        $stmt = $this->conexion->prepare($sql);
+
+        // Ejecutar la consulta con los parámetros
+        $stmt->bindParam(':imagen', $nuevoNombreImagen, PDO::PARAM_STR);
+        $stmt->bindParam(':id_evento', $id_evento, PDO::PARAM_INT);
+
+        // Retornar el resultado de la ejecución
+        return $stmt->execute();
+    }
 
 }

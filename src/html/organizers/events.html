@@ -23,6 +23,7 @@
       <!-- Col 1: Imagen y descripción -->
       <div class="event-image-desc">
         <img src="" alt="" id="event-img">
+        <input type="file" id="file_event_img" accept="image/*" style="display:none;">
         <label for="event-desc">Descripción:</label>
         <textarea name="event_desc" id="event-desc"></textarea>
       </div>
@@ -58,10 +59,12 @@
 
       <!-- Fila 3: Botón calendario -->
       <div class="calendar-row">
-        <button type="button" id="event-calendar" class="open-calendar">
-          📅 Ver fecha del evento
-        </button>
+        <button type="button" id="btn-edit" class="button">Iniciar edición</button>
+        <button type="button" id="event-calendar" class="button">📅 Ver fecha del evento</button>
+        <button type="button" id="btn-save" disabled class="button">Guardar cambios</button>
+        <button type="button" id="btn-delete" class="button">Eliminar evento</button>
       </div>
+
     </form>
 
     </div>

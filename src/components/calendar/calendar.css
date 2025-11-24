@@ -346,3 +346,4 @@
 .calendar__days li.event-day:hover img {
   transform: scale(1.2); /* Aumenta la imagen cuando se hace hover */
 }
+

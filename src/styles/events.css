@@ -160,11 +160,13 @@ textarea:focus {
   margin-top: 1rem;
 }
 
-.open-calendar {
+.button {
   background: var(--primary);
   color: var(--white);
   padding: 14px 32px;
-  border-radius: var(--radius);
+  margin-left: 10px;
+  margin-right: 10px;
+  border-radius: var(25px);
   font-size: 1rem;
   font-weight: 600;
   border: none;
@@ -173,7 +175,9 @@ textarea:focus {
   transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
 }
 
-.open-calendar:hover {
+
+
+.button:hover {
   background: var(--primary-light);
   transform: translateY(-2px);
   box-shadow: 0 6px 18px rgba(37, 99, 235, 0.3);
