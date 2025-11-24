@@ -37,6 +37,19 @@ window.addEventListener("load", function () {
                             contenedorPaquete.appendChild(div);
                             const imgMapa = document.getElementById("imgMapa");
                             imgMapa.src = `./../../media/images/lugares/limg${data.id_lugar}.jpg`;
+                            div.addEventListener("click", function(){
+                                let id_cliente = usuarioSession; 
+                                let id_paquete = data.nombre_paquete; 
+                                let estado = "pendiente"; 
+                                let fecha_viaje = ""; 
+                                let hora_viaje = "";
+                                fetch(`./../../data/logic/CrearViajeLogic.php?id_cliente=${id_cliente}
+                                    &id_paquete=${id_paquete}&estado=${estado}
+                                    &fecha_viaje=${fecha_viaje}&hora_viaje=${hora_viaje}
+                                    `).then(response => response.json()).then(data => {
+                                        console.log("funcionó??");
+                                    });
+                            });
                         }
 
                         )
