@@ -8,6 +8,10 @@ window.addEventListener("load", function () {
     let contenedorPaquete = document.getElementById("paquete");
     let paqcont = 1;
     let ol = document.createElement("ol");
+    let modal = document.getElementById("fecha_select");
+    let btn_aceptar = document.getElementById("button_continuar");
+    let btn_noAceptar = document.getElementById("button_noContinuar");
+    
 
     fetch("./../../data/logic/lugarLogic.php").then(response => response.json()).then(data => {
         if (data.correcto && data.lugares) {
@@ -38,6 +42,8 @@ window.addEventListener("load", function () {
                             const imgMapa = document.getElementById("imgMapa");
                             imgMapa.src = `./../../media/images/lugares/limg${data.id_lugar}.jpg`;
                             div.addEventListener("click", function(){
+                                modal.showModal();
+                                btn_Aceptar.addEventListener("click", () => {
                                 const miArray = JSON.parse(usuarioSession);
                                 let id_cliente = miArray.id_cliente; 
                                 let id_paquete = data.id_paquete; 
@@ -57,6 +63,9 @@ window.addEventListener("load", function () {
                                     }).then(response => response.json()).then(data => {
                                         console.log("funcionó??"+ data.mensaje);
                                     });
+                                modal.close();
+    });
+                                
                             });
                         }
 
@@ -83,7 +92,9 @@ window.addEventListener("load", function () {
     }).catch(error => {
         alert("Error de conexiÃ³n al servidor. No se pudieron obtener los lugares.");
     });
-
+btn_noAceptar.addEventListener("click", () => {
+        modal.close();
+    });
 
 }
 
