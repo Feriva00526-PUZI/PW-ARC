@@ -38,16 +38,24 @@ window.addEventListener("load", function () {
                             const imgMapa = document.getElementById("imgMapa");
                             imgMapa.src = `./../../media/images/lugares/limg${data.id_lugar}.jpg`;
                             div.addEventListener("click", function(){
-                                let id_cliente = usuarioSession; 
-                                let id_paquete = data.nombre_paquete; 
+                                const miArray = JSON.parse(usuarioSession);
+                                let id_cliente = miArray.id_cliente; 
+                                let id_paquete = data.id_paquete; 
                                 let estado = "pendiente"; 
-                                let fecha_viaje = ""; 
+                                let fecha_viaje = "2030-11-23"; 
                                 let hora_viaje = "";
-                                fetch(`./../../data/logic/CrearViajeLogic.php?id_cliente=${id_cliente}
-                                    &id_paquete=${id_paquete}&estado=${estado}
-                                    &fecha_viaje=${fecha_viaje}&hora_viaje=${hora_viaje}
-                                    `).then(response => response.json()).then(data => {
-                                        console.log("funcionó??");
+                                const formData = new FormData();
+                                formData.append("id_cliente",id_cliente);
+                                formData.append("id_paquete",id_paquete);
+                                formData.append("estado",estado);
+                                formData.append("fecha_viaje",fecha_viaje);
+                                formData.append("hora_viaje",hora_viaje);
+                                
+                                fetch(`./../../data/logic/CrearViajeLogic.php`, {
+                                        method: 'POST',
+                                        body: formData
+                                    }).then(response => response.json()).then(data => {
+                                        console.log("funcionó??"+ data.mensaje);
                                     });
                             });
                         }
