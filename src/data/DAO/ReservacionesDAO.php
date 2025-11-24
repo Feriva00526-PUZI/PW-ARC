@@ -29,12 +29,11 @@ class ReservacionesDAO
                         e.fecha_evento,
                         e.hora_evento,
                         e.precio_boleto,
-                        e.cupo_disponible,
                         e.descripcion,
                         l.nombre_lugar,
                         l.ciudad,
                         t.nombre_tipo_actividad AS tipo_actividad, 
-                        o.nombre_organizadora
+                        o.nombre_agencia
                     FROM reservaciones r
                     INNER JOIN eventos e ON r.id_evento = e.id_evento
                     INNER JOIN lugares l ON e.id_lugar = l.id_lugar

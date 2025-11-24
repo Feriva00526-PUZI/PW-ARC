@@ -19,6 +19,7 @@ function initHistorialTable(data) {
     // id_paquete
     const tdId = document.createElement("td");
     tdId.textContent = item.id_paquete;
+    
 
     // nombre del paquete (INNER JOIN)
     const tdPaquete = document.createElement("td");

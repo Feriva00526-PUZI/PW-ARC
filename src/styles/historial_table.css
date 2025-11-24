@@ -161,9 +161,21 @@
     box-shadow: none !important;
     transform: none !important;
   }
+
+
+
+
 }
 
 /* Estado: En curso */
 .status-en-curso {
   background: #0077b6;
+
+}
+
+.cambio_h3{
+  font-size: 5rem;
+  text-align: center;
+  color: #b51919;
+ 
 }
