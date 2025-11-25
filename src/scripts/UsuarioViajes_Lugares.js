@@ -43,13 +43,17 @@ window.addEventListener("load", function () {
                             imgMapa.src = `./../../media/images/lugares/limg${data.id_lugar}.jpg`;
                             div.addEventListener("click", function(){
                                 modal.showModal();
-                                btn_Aceptar.addEventListener("click", () => {
+                                btn_aceptar.addEventListener("click", () => {
+                                let fecha = document.getElementById("fecha");
+                                console.log(fecha.value);
+                                let hora = document.getElementById("hora");
+                                console.log(hora.value);
                                 const miArray = JSON.parse(usuarioSession);
                                 let id_cliente = miArray.id_cliente; 
                                 let id_paquete = data.id_paquete; 
                                 let estado = "pendiente"; 
-                                let fecha_viaje = "2030-11-23"; 
-                                let hora_viaje = "";
+                                let fecha_viaje = fecha.value; 
+                                let hora_viaje = hora.value;
                                 const formData = new FormData();
                                 formData.append("id_cliente",id_cliente);
                                 formData.append("id_paquete",id_paquete);
