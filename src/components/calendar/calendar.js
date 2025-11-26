@@ -19,6 +19,11 @@ const dayInfoDescription = document.getElementById("day-info-description");
 let eventos = [];
 let currentMonth = new Date().getMonth();
 let currentYear = new Date().getFullYear();
+let selectedDay = null;
+
+window.calendarState = {
+  selectedDay: null
+};
 
 // ============================================================
 // UTILIDAD: Normalizar arrays
@@ -26,6 +31,13 @@ let currentYear = new Date().getFullYear();
 function normalizeEventos(data) {
   if (!data) return [];
   return Array.isArray(data) ? data : [data];
+}
+
+// ============================================================
+// UTILIDAD: Obtener los dias seleccionados
+// ============================================================
+function obtenerDiaSeleccionado() {
+  return selectedDay;
 }
 
 // ============================================================
@@ -86,6 +98,30 @@ function renderCalendar(month, year) {
     const eventosDelDia = eventosMes.filter(
       e => e.fechaLocal.getDate() === day
     );
+
+    // ========== MODO DE SELECCIÓN DE DÍAS ==========
+    li.addEventListener("click", (e) => {
+      // Evita que abrir modales interfiera (solo seleccion)
+      e.stopPropagation();
+
+      // Quitar seleccion previa
+      const prev = document.querySelector(".selected-day");
+      if (prev) prev.classList.remove("selected-day");
+
+      // Marcar nuevo seleccionado
+      li.classList.add("selected-day");
+
+      // Guardar valores actuales
+      window.calendarState.selectedDay = {
+        day,
+        month: currentMonth + 1,
+        year: currentYear
+      };
+
+
+      console.log("Día seleccionado:", window.calendarState.selectedDay);
+    });
+
 
     // ------------------------------------------------------------
     // DÍA CON EVENTOS
@@ -232,7 +268,7 @@ async function moverEventoPorId(idEvento, monthDestino, dayDestino) {
 }
 
 // ============================================================
-// MODAL PARA SELECCIÓN DE EVENTO (visualización cuando hay varios)
+// MODAL PARA SELECCIÓN DE EVENTO 
 // ============================================================
 function showEventSelector(lista) {
   dayInfoTitle.textContent = "Eventos del día";
@@ -271,7 +307,7 @@ function showMoveSelector(lista, nuevaFecha) {
         <div>
           <h4>${ev.nombre_evento}</h4>
           <p>${ev.hora_evento}</p>
-          <p><small>${ev.nombre_lugar || ""}</small></p>
+          <p><small>${ev.id_lugar || ""}</small></p>
         </div>
         <div>
           <button class="move-now" data-id="${ev.id_evento}">Mover aquí</button>
@@ -392,6 +428,18 @@ window.addEventListener("abrirCalendario", async (e) => {
         fechaLocal: parseFechaLocal(soloFecha)
       };
     });
+
+    renderCalendar(month, year);
+    return;
+  }
+
+  // ========================================================
+  // Carga de SELECTOR de dia
+  // ========================================================
+  if (source === "selection") {
+
+    let month = new Date().getMonth();
+    let year = new Date().getFullYear();
 
     renderCalendar(month, year);
     return;

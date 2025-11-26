@@ -347,3 +347,7 @@
   transform: scale(1.2); /* Aumenta la imagen cuando se hace hover */
 }
 
+.selected-day {
+  outline: 3px solid #00aaff;
+  border-radius: 6px;
+}

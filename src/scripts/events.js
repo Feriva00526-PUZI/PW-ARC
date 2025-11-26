@@ -280,8 +280,7 @@ function mostrarModalSeleccion(titulo, lista, config, callback) {
                 const src = `${config.pathImg}/${item[config.keyImg]}`;
                 imgHTML = `<img src="${src}" class="selection-card__img" alt="Img" onerror="this.style.display='none'">`;
             } else if (config.pathImg) {
-                // Placeholder genérico si se esperaba imagen
-                imgHTML = `<div class="selection-card__img" style="display:flex;align-items:center;justify-content:center;color:#cbd5e1;font-size:1.5rem;">📷</div>`;
+
             }
 
             const descText = item[config.keyDesc] || 'Sin descripción disponible';
@@ -343,6 +342,7 @@ window.addEventListener("load", async function () {
         if (jsonTipoA.correcto) tipoActividad = jsonTipoA.data;
 
         cargarEventoEnUI();
+        footer_header(); //Crear footer y header
 
     } catch (e) {
         console.error("Error:", e);
@@ -372,7 +372,7 @@ function cargarEventoEnUI() {
         organizerEl.textContent = organizador
             ? `Organizado por: ${organizador.nombre_agencia}`
             : "Organizador desconocido";
-        
+
         if (organizador?.image_url) {
             organizerImg.style.backgroundImage = `url(../../../src/media/images/organizers/${organizador.image_url})`;
         }
@@ -397,7 +397,7 @@ function cargarEventoEnUI() {
 
 function actualizarTarjetaLugar() {
     placeEl.innerHTML = ''; // Limpiar contenido previo
-    if(lugar) {
+    if (lugar) {
         placeEl.innerHTML = `<div style="display:flex; flex-direction:column; gap:4px;">
             <span>${lugar.nombre_lugar}</span>
             <small style="font-weight:400; font-size:0.8em; opacity:0.8;">${lugar.direccion || ''}</small>
@@ -409,7 +409,7 @@ function actualizarTarjetaLugar() {
 
 function actualizarTarjetaTipo() {
     typeEl.innerHTML = '';
-    if(tipoActividad) {
+    if (tipoActividad) {
         // Icono pequeño o imagen si quieres mostrarla en la tarjeta minimizada
         typeEl.innerHTML = `<span>${tipoActividad.nombre_tipo_actividad}</span>`;
     } else {
@@ -420,18 +420,18 @@ function actualizarTarjetaTipo() {
 function actualizarEstadoUI() {
     // Inputs
     [nameInput, descInput, timeInput, priceInput, fileInput].forEach(el => el.disabled = !editMode);
-    
+
     // Punteros e interactividad
     const cursorStyle = editMode ? 'pointer' : 'default';
     const borderStyle = editMode ? '2px dashed #2563eb' : 'none'; // Indicador visual de edición
-    
+
     placeEl.style.cursor = cursorStyle;
     placeEl.style.pointerEvents = editMode ? 'auto' : 'none';
-    if(editMode) placeEl.style.border = borderStyle; else placeEl.style.border = '';
+    if (editMode) placeEl.style.border = borderStyle; else placeEl.style.border = '';
 
     typeEl.style.cursor = cursorStyle;
     typeEl.style.pointerEvents = editMode ? 'auto' : 'none';
-    if(editMode) typeEl.style.border = borderStyle; else typeEl.style.border = '';
+    if (editMode) typeEl.style.border = borderStyle; else typeEl.style.border = '';
 
     img.style.cursor = cursorStyle;
     img.style.pointerEvents = editMode ? 'auto' : 'none';
@@ -500,9 +500,9 @@ placeEl.addEventListener('click', async () => {
         // Configuración para el modal: nombre, descripción (dirección) y sin imagen
         const config = {
             keyNombre: 'nombre_lugar',
-            keyDesc: 'descripcion', 
+            keyDesc: 'descripcion',
             keyImg: 'imagen_url',         // Campo nombre de archivo imagen
-            pathImg: '../../../src/media/images/lugares/' 
+            pathImg: '../../../src/media/images/lugares/'
         };
 
         mostrarModalSeleccion('Selecciona un Lugar', json.data, config, (sel) => {
@@ -516,7 +516,7 @@ placeEl.addEventListener('click', async () => {
     }
 });
 
-// Click en TIPO DE ACTIVIDAD (Abre modal rico con imágenes)
+// Click en TIPO DE ACTIVIDAD (Abre modal rico con imagenes)
 typeEl.addEventListener('click', async () => {
     if (!editMode) return;
     try {
@@ -551,13 +551,15 @@ btnSave.addEventListener("click", async () => {
         if (!nameInput.value.trim()) return showAlert('Faltan datos', 'El nombre es obligatorio.');
 
         const formData = new FormData();
+
+        formData.append("fecha_evento", fecha)
         formData.append("accion", "actualizar");
         formData.append("idEvento", idEvento);
         formData.append("nombre_evento", nameInput.value);
         formData.append("descripcion", descInput.value);
         formData.append("hora_evento", timeInput.value);
         formData.append("precio_boleto", priceInput.value);
-        
+
         // IDs foráneos
         formData.append("id_lugar", lugar?.id_lugar ?? evento.id_lugar);
         formData.append("id_tipo_actividad", tipoActividad?.id_tipo_actividad ?? evento.id_tipo_actividad);
@@ -574,8 +576,8 @@ btnSave.addEventListener("click", async () => {
         // Actualizar objeto local con la respuesta o los inputs
         if (json.data) {
             evento = json.data;
-            if(json.data.lugar) lugar = json.data.lugar;
-            if(json.data.tipoActividad) tipoActividad = json.data.tipoActividad;
+            if (json.data.lugar) lugar = json.data.lugar;
+            if (json.data.tipoActividad) tipoActividad = json.data.tipoActividad;
         } else {
             // Fallback manual si el server no devuelve el objeto completo
             evento.nombre_evento = nameInput.value;
@@ -584,14 +586,14 @@ btnSave.addEventListener("click", async () => {
             evento.precio_boleto = priceInput.value;
             if (json.nueva_imagen_url) evento.imagen_url = json.nueva_imagen_url;
         }
-        
+
         // Refrescar imagen si cambió desde server
         if (evento.imagen_url) img.src = `../../../src/media/images/events/${evento.imagen_url}`;
 
         nuevaImagenArchivo = null;
         editMode = false;
         actualizarEstadoUI();
-        
+
         await showAlert('Éxito', 'Evento actualizado correctamente.');
 
     } catch (err) {
@@ -601,24 +603,104 @@ btnSave.addEventListener("click", async () => {
 });
 
 btnDelete.addEventListener("click", async () => {
-    const confirmar = await showConfirm('Eliminar', '¿Realmente deseas eliminar este evento? No se puede deshacer.');
-    if (!confirmar) return;
-
     try {
-        const res = await fetch("../../data/Logic/eventUpdate.php", {
+    
+        const confirmar = await showConfirm('Eliminar', '¿Realmente deseas eliminar este evento? No se puede deshacer.');
+        if (!confirmar) return;
+
+        const formData = new FormData();
+
+        formData.append("idEvento", idEvento);
+        formData.append("accion", "eliminar");
+
+        const res = await fetch("../../data/Logic/eventController.php", {
             method: "POST",
-            body: JSON.stringify({ accion: "eliminar", idEvento })
+            body: formData
         });
+                console.log(await res.text());
+
         const json = await res.json();
+        console.log(json);
 
         if (!json.correcto) return showAlert('Error', json.mensaje);
 
         await showAlert('Eliminado', 'El evento ha sido eliminado.');
         sessionStorage.removeItem("evento_seleccionado");
-        window.location.href = "../lista_eventos.html";
+        window.location.href = "./organizers.html";
     } catch (err) {
         console.error(err);
-        showAlert('Error', 'No se pudo eliminar el evento.');
+        showAlert('Error', 'No se pudo eliminar el evento, el evento ya ha sido seleccionado por los clientes.');
     }
 });
 
+
+function footer_header() {
+
+    fetch("./../../../src/components/header.html")
+        .then(response => response.text())
+        .then(data => {
+            document.body.insertAdjacentHTML("afterbegin", data);
+
+            const script = document.createElement("script");
+            script.src = "./../../../src/scripts/header_script.js";
+            document.body.appendChild(script);
+
+            /*HEADER DINAMICO */
+            /*Cambio de la imagen del header */
+            const s_header = document.getElementById("s_header");
+            s_header.style.backgroundImage = "url(./../../../src/media/images/layout/img_background_header.jpg)";
+
+            /*Cambiar el titulo del header */
+            document.getElementById("n_h2").innerText = evento.nombre_evento;
+            document.getElementById("s_icon").setAttribute("src", "./../../../src/media/images/icons/icon_arc.png");
+            const bnav = document.getElementById("underline_nav");
+
+
+            /*Primero*/
+            const a1 = document.createElement("a");
+            a1.id = "a1";
+            a1.href = "organizer.html";
+            const ai1 = document.createElement("img");
+            ai1.src = "./../../../src/media/images/icons/icon_home.png";
+            ai1.classList.add("icon_nav");
+            a1.appendChild(ai1);
+            a1.append("Pagina Principal");
+            bnav.appendChild(a1);
+
+            /*Boton de registro o iniciar sesion*/
+            const btn_is_r = document.createElement("button");
+            btn_is_r.id = "btn_is_r";
+            const btn_a = document.createElement("a");
+            const icon_user = document.createElement("img");
+            icon_user.src = "./../../../src/media/images/icons/icon_user.png";
+            icon_user.classList.add("icon_user");
+            btn_a.appendChild(icon_user);
+            btn_is_r.appendChild(btn_a);
+            bnav.appendChild(btn_is_r);
+
+
+        });
+
+    fetch("./../../../src/components/footer.html")
+        .then(response => response.text())
+        .then(data => {
+            document.body.insertAdjacentHTML("beforeend", data);
+
+            document.getElementById("f_icon").src =
+                "./../../../src/media/images/icons/icon_arc.png";
+
+            document.querySelector(".f_link").href = "#";
+
+            const f_general = document.getElementById("f_general");
+            f_general.style.backgroundImage =
+                "url(./../../../src/media/images/layout/imgLayout20.jpg)";
+            f_general.style.backgroundPosition = "50% 80%";
+        });
+
+    function img(src) {
+        const i = document.createElement("img");
+        i.src = src;
+        i.classList.add("icon_nav");
+        return i;
+    }
+}

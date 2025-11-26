@@ -194,7 +194,7 @@ class eventosDAO{
     }
 
     public function actualizarImagen($id_evento, $nuevoNombreImagen) {
-        // Validar que el nuevo nombre de la imagen no esté vacío
+        // Validar que el nuevo nombre de la imagen no este vacio
         if (empty($nuevoNombreImagen)) {
             throw new Exception("El nombre de la imagen no puede estar vacío.");
         }
@@ -210,6 +210,71 @@ class eventosDAO{
         $stmt->bindParam(':id_evento', $id_evento, PDO::PARAM_INT);
 
         // Retornar el resultado de la ejecución
+        return $stmt->execute();
+    }
+         //$id_nuevo_evento = $eventosDAO->crearEvento($nombre, $descripcion, $fecha_evento, $hora_evento, $fechaActual, $precio_boleto, "", $id_lugar, $id_tipo_actividad, $id_organizador);
+    public function crearEvento($nombre_evento, $descripcion, $fecha_evento, $hora_evento, $fecha_registro, $precio_boleto, $imagen_url, $id_lugar, $id_tipo_actividad, $id_organizadora) {
+        try {
+            $sql = "INSERT INTO eventos (
+                        nombre_evento, 
+                        descripcion, 
+                        fecha_evento, 
+                        hora_evento, 
+                        fecha_registro,
+                        precio_boleto, 
+                        imagen_url,
+                        id_lugar, 
+                        id_tipo_actividad, 
+                        id_organizadora
+                    ) VALUES (
+                        :nombre_evento, 
+                        :descripcion, 
+                        :fecha_evento, 
+                        :hora_evento, 
+                        :fecha_registro,
+                        :precio_boleto, 
+                        :imagen_url, 
+                        :id_lugar, 
+                        :id_tipo_actividad,
+                        :id_organizadora 
+                    )";
+
+            $stmt = $this->conexion->prepare($sql);
+
+            // Vinculación de parámetros
+            $stmt->bindParam(":nombre_evento", $nombre_evento);
+            $stmt->bindParam(":descripcion", $descripcion);
+            $stmt->bindParam(":fecha_evento", $fecha_evento);
+            $stmt->bindParam(":hora_evento", $hora_evento);
+            $stmt->bindParam(":fecha_registro", $fecha_registro);
+            $stmt->bindValue(":precio_boleto", (float)$precio_boleto, PDO::PARAM_STR);
+            $stmt->bindParam(":imagen_url", $imagen_url);
+            $stmt->bindParam(":id_lugar", $id_lugar);
+            $stmt->bindParam(":id_tipo_actividad", $id_tipo_actividad);
+            $stmt->bindParam(":id_organizadora", $id_organizadora); 
+
+            if ($stmt->execute()) {
+                return $this->conexion->lastInsertId();
+            } else {
+                return false;
+            }
+
+        } catch (PDOException $e) {
+            error_log("Error en EventosDAO::crearEvento: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function eliminarEvento($id_evento) {
+        // Preparar la consulta SQL para actualizar solo la imagen
+        $sql = "DELETE FROM eventos WHERE id_evento = :id_evento";
+        
+        // Preparar la conexión
+        $stmt = $this->conexion->prepare($sql);
+
+        // Ejecutar la consulta con los parámetros
+        $stmt->bindParam(':id_evento', $id_evento, PDO::PARAM_INT);
+
         return $stmt->execute();
     }
 

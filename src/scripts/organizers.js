@@ -1,4 +1,3 @@
-// import { obtenerEventosPorOrganizadora, obtenerNumeroEventosEsteMes } from "./dao/daoEventos.js";
 
 let organizadora = JSON.parse(sessionStorage.getItem("organizador_logeado"));
 
@@ -34,8 +33,6 @@ window.addEventListener("load", function () {
 
     // Cargar eventos
     let eventos = [];
-    //src\data\DAO\organizadorDAO.php
-    //src\scripts\organizers.js
     fetch(`../../data/Logic/organizerController.php?accion=eventos&id_organizadora=${idOrg}`)
         .then(res => res.json())
         .then(json => {
@@ -56,6 +53,8 @@ window.addEventListener("load", function () {
     const fechaInicio = document.getElementById("fechaInicio");
     const fechaFin = document.getElementById("fechaFin");
     const btnOrdenar = document.getElementById("btnOrdenar");
+    const btnAgregar = document.getElementById("btnAgregar");
+    const btnCalendar = document.getElementById("btnCalendar");
 
     function renderTabla(lista) {
         tbody.innerHTML = "";
@@ -68,7 +67,6 @@ window.addEventListener("load", function () {
                 <td data-label="Precio">$${ev.precio_boleto}</td>
                 <td data-label="Acciones">
                     <button class="btn-modificar" data-id="${ev.id_evento}">Modificar</button>
-                    <button class="btn-cancelar" data-id="${ev.id_evento}">Cancelar</button>
                     <button class="btn-calendario" data-id="${ev.id_evento}">📅</button>
                 </td>
             `;
@@ -118,37 +116,47 @@ window.addEventListener("load", function () {
         filtrarEventos();
     });
 
+    btnCalendar.addEventListener("click", () => {
+
+        const fecha = new Date();
+        window.dispatchEvent(new CustomEvent("abrirCalendario", {
+            detail: {
+                month: fecha.getMonth(),
+                year: fecha.getFullYear(),
+                source: "organizer" //organizer
+            }
+        }));
+
+    });
+
     // Botones de la tabla
     tbody.addEventListener("click", (e) => {
 
-        if (e.target.classList.contains("btn-cancelar")) {
-            const id = e.target.dataset.id;
-
-            if (confirm("¿Seguro que deseas cancelar este evento?")) {
-                eventos = eventos.filter(ev => ev.id_evento != id);
-                filtrarEventos();
-            }
-
-        } else if (e.target.classList.contains("btn-modificar")) {
+        if (e.target.classList.contains("btn-modificar")) {
             this.sessionStorage.setItem("evento_seleccionado", e.target.dataset.id);
             window.location.href = "events.html";
 
-        } else if (e.target.classList.contains("btn-calendario")) {
+        } else if (e.target.classList.contains("btn-calendario") && e.target.id != "btnCalendar") {
 
             const evento = eventos.find(ev => ev.id_evento == e.target.dataset.id);
             if (evento) {
                 const fecha = new Date(evento.fecha_evento);
+                sessionStorage.setItem("evento_seleccionado", evento.id_evento);
 
                 window.dispatchEvent(new CustomEvent("abrirCalendario", {
                     detail: {
                         month: fecha.getMonth(),
                         year: fecha.getFullYear(),
-                        source: "organizer"
+                        source: "event" //organizer,
                     }
                 }));
             }
         }
 
+    });
+
+    btnAgregar.addEventListener("click", function () {
+        window.location.href = "./add_events.html";
     });
 
     // Crear el footer y el header
@@ -171,7 +179,7 @@ window.addEventListener("load", function () {
                 s_header.style.backgroundImage = "url(./../../../src/media/images/layout/img_background_header.jpg)";
 
                 /*Cambiar el titulo del header */
-                document.getElementById("n_h2").innerText = "PAGINA PRINCIPAL";
+                document.getElementById("n_h2").innerText = organizadora.nombre_agencia;
                 document.getElementById("s_icon").setAttribute("src", "./../../../src/media/images/icons/icon_arc.png");
                 const bnav = document.getElementById("underline_nav");
 
@@ -188,26 +196,15 @@ window.addEventListener("load", function () {
                 a1.append("Pagina Principal");
                 bnav.appendChild(a1);
 
-                /*Segundo*/
-                const a2 = document.createElement("a");
-                a2.id = "a2";
-                a2.href = "#";
-                const ai2 = document.createElement("img");
-                ai2.src = "./../../../src/media/images/icons/icon_travel.png";
-                ai2.classList.add("icon_nav");
-                a2.appendChild(ai2);
-                a2.append("Lugares Populares");
-                bnav.appendChild(a2);
-
                 /*Tercero*/
                 const a3 = document.createElement("a");
                 a3.id = "a3";
-                a3.href = "#";
+                a3.href = "./add_events.html";
                 const ai3 = document.createElement("img");
                 ai3.src = "./../../../src/media/images/icons/icon_event.png";
                 ai3.classList.add("icon_nav");
                 a3.appendChild(ai3);
-                a3.append("Eventos Recientes");
+                a3.append("Crear evento");
                 bnav.appendChild(a3);
 
                 /*Boton de registro o iniciar sesion*/
