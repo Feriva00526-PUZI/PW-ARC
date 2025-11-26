@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="pageTitle">Panel</title>
+
+  <link rel="stylesheet" href="./../../styles/style_generico.css">
+  <link rel="stylesheet" href="../../styles/header_style.css">
+  <link rel="stylesheet" href="../../styles/footer_style.css">
+  <link rel="stylesheet" href="./../../styles/organizers.css">
+
+  <script src="../../scripts/agencies.js" type="module"></script>
+</head>
+
+<body>
+  <main>
+    <div class="banner">
+      <div class="banner-content">
+        <h1 class="slogan">Cada paquete es una oportunidad para crear recuerdos inolvidables. "Haz realidad los sueños
+          de alguien, un viaje a la vez"</h1>
+        <div id="numeroPaquetes" class="numero-eventos"></div>
+      </div>
+    </div>
+    <div class="organizers-box box">
+
+      <!-- === Columna izquierda === -->
+      <div class="organizers-info">
+        <img id="imgAgencia" alt="Agencia">
+        <p id="mensajeBienvenida" class="mensaje-bienvenida">
+          Bienvenida agencia, aquí puedes gestionar tus paquetes de viaje, modificarlos o cancelarlos.
+          <br><br>
+          Si tienes problemas contacta a nuestro equipo de <strong>soporte técnico</strong>.
+        </p>
+      </div>
+
+      <!-- === Columna derecha === -->
+      <div class="organizers-events-box">
+        <h2>Paquetes Asociados</h2>
+
+        <!-- Barra de filtros -->
+        <div class="filters">
+          <input type="text" id="buscarNombre" placeholder="Buscar por nombre...">
+          <input type="text" id="buscarLugar" placeholder="Buscar por lugar...">
+          <button id="btnOrdenar">Ordenar por precio ↑↓</button>
+        </div>
+
+        <!-- Tabla de paquetes -->
+        <table id="tablaPaquetes" class="tabla-eventos">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Lugar</th>
+              <th>Precio</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="paquetesBody"></tbody>
+        </table>
+
+        <button class="button" id="btnAgregar">Agregar paquete</button>
+      </div>
+    </div>
+  </main>
+
+</body>
+
+</html>

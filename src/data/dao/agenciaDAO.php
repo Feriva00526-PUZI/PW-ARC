@@ -30,5 +30,18 @@ class agenciaDAO{
         }
 
     }
+
+    public function getAgenciaPorID($idAgencia){
+        try{
+            $sql = "SELECT * FROM agencias WHERE id_agencia = :id";
+            $stmt = $this->conexion->prepare($sql);
+            $stmt->bindParam(":id", $idAgencia, PDO::PARAM_INT);
+            $stmt->execute();
+
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch(PDOException $e){
+            throw new Exception("Error al obtener agencia: " . $e->getMessage());
+        }
+    }
 }
 ?>
