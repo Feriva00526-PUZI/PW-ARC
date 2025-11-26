@@ -82,8 +82,8 @@ function filtrarTablaPorLugar(nombreLugar) {
 
   // Si se seleccionó un lugar específico, filtrar
   if (nombreLugar && nombreLugar !== "") {
-    viajesFiltrados = todosLosViajes.filter(viaje => 
-      viaje.nombre_lugar === nombreLugar
+    viajesFiltrados = todosLosViajes.filter(lugar => 
+      lugar.nombre_lugar === nombreLugar
     );
   }
 
