@@ -23,7 +23,7 @@ const btnSave = document.getElementById("btn-save");
 // Estado Global
 let lugarSeleccionado = null;
 let nuevaImagenArchivo = null;
-let agencia = JSON.parse(sessionStorage.getItem("agencia_logeada")) || null;
+let agencia = JSON.parse(sessionStorage.getItem("agencia_logeado")) || null;
 
 // =====================================================
 // 2. INYECCIÓN DE ESTILOS (MANTENIDO IGUAL)

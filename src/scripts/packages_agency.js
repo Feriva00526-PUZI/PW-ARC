@@ -32,7 +32,7 @@ let lugar = null;
 let agencia = null;
 let nuevaImagenArchivo = null;
 let editMode = false;
-let currentProfile = JSON.parse(sessionStorage.getItem("agencia_logeada"));
+let currentProfile = JSON.parse(sessionStorage.getItem("agencia_logeado"));
 
 // =====================================================
 // 2. INYECCIÓN DE ESTILOS (CSS EN JS)
@@ -357,7 +357,7 @@ function cargarPaqueteEnUI() {
             : "Agencia desconocida";
 
         if (agencia?.imagen_url) {
-            agencyImg.style.backgroundImage = `url(../../../src/media/images/organizers/${agencia.imagen_url})`;
+            agencyImg.style.backgroundImage = `url(../../../src/media/images/agencias/${agencia.imagen_url})`;
         }
 
         // Estado inicial UI

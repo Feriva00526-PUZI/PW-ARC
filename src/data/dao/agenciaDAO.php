@@ -13,7 +13,7 @@ class agenciaDAO{
 
     public function validarAgencia(string $user, string $password){
         try{
-            $sql = "SELECT id_agencia, user, password, nombre_agencia FROM agencias WHERE user = :user";
+            $sql = "SELECT * FROM agencias WHERE user = :user";
 
             $stmt = $this->conexion->prepare($sql);
             $stmt->bindParam(':user', $user); 

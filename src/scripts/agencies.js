@@ -1,5 +1,6 @@
 
-let agencia = JSON.parse(sessionStorage.getItem("agencia_logeada"));
+
+let agencia = JSON.parse(sessionStorage.getItem("agencia_logeado"));
 
 window.addEventListener("load", function () {
 
@@ -16,7 +17,7 @@ window.addEventListener("load", function () {
     document.title = agencia.nombre_agencia;
 
     document.getElementById("imgAgencia").src =
-        `../../../src/media/images/organizers/${agencia.imagen_url}`;
+        `../../../src/media/images/agencias/${agencia.imagen_url}`;
 
 
     // Obtener número paquetes
