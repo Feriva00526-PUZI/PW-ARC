@@ -32,6 +32,7 @@ class ReservacionesDAO
                         e.descripcion,
                         l.nombre_lugar,
                         l.ciudad,
+                        l.zona,
                         t.nombre_tipo_actividad AS tipo_actividad, 
                         o.nombre_agencia
                     FROM reservaciones r

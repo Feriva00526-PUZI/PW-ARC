@@ -20,6 +20,29 @@
   
     <section>
    <h3 class="cambio_h3" style = "font-size: 1.5rem; text-align: center; ">HISTORIAL DE VIAJES</h3>
+   
+   <!-- Filtros de búsqueda -->
+   <div class="filtros-container" style="display: flex; gap: 15px; justify-content: center; align-items: center; margin: 20px 0; flex-wrap: wrap;">
+     <span style="font-weight: 600; color: #023E8A; font-size: 0.95rem;">Filtrar por:</span>
+     <div style="display: flex; flex-direction: column; gap: 5px;">
+       <label for="cbNombre" style="font-size: 0.85rem; color: #666; font-weight: 500;">Lugar</label>
+       <select id="cbNombre" style="padding: 8px 12px; border-radius: 8px; border: 1px solid #023E8A; font-size: 0.95rem; min-width: 200px;">
+         <option value="todos">Todos</option>
+       </select>
+     </div>
+     <div style="display: flex; flex-direction: column; gap: 5px;">
+       <label for="cbCiudad" style="font-size: 0.85rem; color: #666; font-weight: 500;">Ciudad</label>
+       <select id="cbCiudad" style="padding: 8px 12px; border-radius: 8px; border: 1px solid #023E8A; font-size: 0.95rem; min-width: 200px;">
+         <option value="todos">Todos</option>
+       </select>
+     </div>
+     <div style="display: flex; flex-direction: column; gap: 5px;">
+       <label for="cbZona" style="font-size: 0.85rem; color: #666; font-weight: 500;">Zona</label>
+       <select id="cbZona" style="padding: 8px 12px; border-radius: 8px; border: 1px solid #023E8A; font-size: 0.95rem; min-width: 200px;">
+         <option value="todos">Todos</option>
+       </select>
+     </div>
+   </div>
   </section>
 
     <div id="hist-table-sample">

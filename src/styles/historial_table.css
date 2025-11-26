@@ -177,5 +177,102 @@
   font-size: 5rem;
   text-align: center;
   color: #b51919;
- 
+}
+
+/* Títulos de sección */
+.cambio_h3.historial-title {
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+/* Secciones con espaciado */
+.historial-section {
+  margin-top: 40px;
+}
+
+/* Contenedor de filtros */
+.filtros-container {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+
+.filtros-container .filtro-label {
+  font-weight: 600;
+  color: #023E8A;
+  font-size: 0.95rem;
+}
+
+/* Contenedor individual de cada filtro */
+.filtro-item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.filtro-item label {
+  font-size: 0.85rem;
+  color: #666;
+  font-weight: 500;
+}
+
+/* Estilos para los combobox */
+.filtro-item select,
+#cbNombre,
+#cbCiudad,
+#cbZona {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #023E8A;
+  font-size: 0.95rem;
+  min-width: 200px;
+  background-color: #fff;
+  color: #222;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.filtro-item select:hover,
+#cbNombre:hover,
+#cbCiudad:hover,
+#cbZona:hover {
+  border-color: #0077b6;
+  box-shadow: 0 2px 8px rgba(2, 62, 138, 0.1);
+}
+
+.filtro-item select:focus,
+#cbNombre:focus,
+#cbCiudad:focus,
+#cbZona:focus {
+  outline: none;
+  border-color: #023E8A;
+  box-shadow: 0 0 0 3px rgba(2, 62, 138, 0.1);
+}
+
+/* Responsive para filtros */
+@media (max-width: 900px) {
+  .filtros-container {
+    gap: 10px;
+    margin: 15px 0;
+  }
+
+  .filtro-item select,
+  #cbNombre,
+  #cbCiudad,
+  #cbZona {
+    min-width: 150px;
+    font-size: 0.9rem;
+    padding: 6px 10px;
+  }
+
+  .filtros-container .filtro-label {
+    font-size: 0.9rem;
+  }
+
+  .filtro-item label {
+    font-size: 0.8rem;
+  }
 }

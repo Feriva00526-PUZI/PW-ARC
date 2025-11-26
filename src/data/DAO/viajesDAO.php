@@ -48,7 +48,8 @@ class viajesDAO
                         v.hora_viaje,
                         p.nombre_paquete,
                         l.nombre_lugar,
-                        l.ciudad
+                        l.ciudad,
+                        l.zona
                     FROM viajes v
                     INNER JOIN paquetes p ON v.id_paquete = p.id_paquete
                     INNER JOIN lugares l ON p.id_lugar = l.id_lugar
