@@ -86,73 +86,88 @@ window.addEventListener("load", function () {
         btnUsuario.appendChild(aUser);
         nav.appendChild(btnUsuario);
       }
-
-      // Cargar script de filtros primero
-      const scriptFiltros = document.createElement("script");
-      scriptFiltros.src = "./../../scripts/comboBoxHistorial.js";
-      
-      scriptFiltros.onload = () => {
-        // Cargar ambos historiales en paralelo
-        Promise.all([
-          fetch("../../data/logic/HistorialLogic.php", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ id_cliente: usuario.id_cliente })
-          }).then(r => r.json()),
-          fetch("../../data/logic/ReservacionLogic.php", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ id_cliente: usuario.id_cliente })
-          }).then(r => r.json())
-        ]).then(([dataViajes, dataReservaciones]) => {
-          // Verificar respuestas
-          if (!dataViajes.correcto) {
-            console.error("Error cargando viajes:", dataViajes.mensaje);
-            return;
-          }
-          if (!dataReservaciones.correcto) {
-            console.error("Error cargando reservaciones:", dataReservaciones.mensaje);
+// cargar historial de viajes
+      fetch("../../data/logic/HistorialLogic.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id_cliente: usuario.id_cliente })
+      })
+        .then(r => r.json())
+        .then(data => {
+          if (!data.correcto) {
+            console.error("Error:", data.mensaje);
             return;
           }
 
-          // Inicializar datos en el módulo de filtros
-          if (typeof window.inicializarDatosHistorial === "function") {
-            window.inicializarDatosHistorial(dataViajes.viajes || [], dataReservaciones.reservaciones || []);
-          }
-
-          // Cargar scripts de tablas
+          // Cargar tabla de historial de viajes 
           const scriptTabla = document.createElement("script");
           scriptTabla.src = "./../../scripts/historial_table.js";
 
           scriptTabla.onload = () => {
-            const scriptReservaciones = document.createElement("script");
-            scriptReservaciones.src = "./../../scripts/reservations_table.js";
-
-            scriptReservaciones.onload = () => {
-              // Inicializar filtros después de que todo esté cargado
-              if (typeof window.inicializarFiltrosHistorial === "function") {
-                window.inicializarFiltrosHistorial();
-              }
-
-              // Renderizar tablas iniciales con todos los datos
-              if (typeof window.initHistorialTable === "function") {
-                window.initHistorialTable(dataViajes.viajes || []);
-              }
-              if (typeof window.initReservacionesTable === "function") {
-                window.initReservacionesTable(dataReservaciones.reservaciones || []);
-              }
-            };
-
-            document.body.appendChild(scriptReservaciones);
+            if (typeof window.initHistorialTable === "function") {
+              window.initHistorialTable(data.viajes);
+            } else {
+              console.error("No se encontró initHistorialTable");
+            }
           };
 
           document.body.appendChild(scriptTabla);
-        }).catch(err => {
-          console.error("Error cargando historiales:", err);
-        });
-      };
 
-      document.body.appendChild(scriptFiltros);
+        })
+        .catch(err => {
+          console.error("Error cargando historial:", err);
+        });
+
+      
+// cargar historial de reservaciones
+fetch("../../data/logic/ReservacionLogic.php", {
+ method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id_cliente: usuario.id_cliente })
+      })
+        .then(r => r.json())
+        .then(data => {
+          console.log("Respuesta de reservaciones:", data); // Debug
+          if (!data.correcto) {
+            console.error("Error:", data.mensaje);
+            return;
+          }
+
+          // Validar que existan reservaciones
+          if (!data.reservaciones || !Array.isArray(data.reservaciones)) {
+            console.warn("No se recibieron reservaciones o el formato es incorrecto");
+            return;
+          }
+
+          // Cargar tabla de historial de reservaciones
+          const scriptReservaciones = document.createElement("script");
+          scriptReservaciones.src = "./../../scripts/reservations_table.js"; 
+
+          scriptReservaciones.onload = () => {
+            console.log("Script reservations_table.js cargado"); // Debug
+            // Esperar un momento para asegurar que la función esté disponible
+            setTimeout(() => {
+              if (typeof window.initReservacionesTable === "function") {
+                console.log("Inicializando tabla con", data.reservaciones.length, "reservaciones"); // Debug
+                window.initReservacionesTable(data.reservaciones);
+              } else {
+                console.error("No se encontró initReservacionesTable en window");
+              }
+            }, 100);
+          };
+
+          scriptReservaciones.onerror = () => {
+            console.error("Error al cargar el script reservations_table.js");
+          };
+
+          document.body.appendChild(scriptReservaciones);
+
+        })
+        .catch(err => {
+          console.error("Error cargando historial de reservaciones:", err);
+        });
+
+
 
     })
     .catch(err => {
