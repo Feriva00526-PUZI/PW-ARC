@@ -123,9 +123,14 @@ window.addEventListener("load", function () {
             return;
           }
 
-          // Guardar datos de viajes para el filtrado
+          // Guardar datos de viajes para el filtrado (esto también actualizará el combo box)
           if (typeof window.setDatosViajes === "function") {
             window.setDatosViajes(data.viajes);
+          }
+
+          // Si el combo box aún no se ha inicializado, inicializarlo ahora con los datos
+          if (typeof window.initComboBoxLugares === "function") {
+            window.initComboBoxLugares();
           }
 
           // Cargar tabla de historial de viajes 

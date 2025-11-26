@@ -262,11 +262,16 @@
 
 /* Estilos para el combo box de lugares */
 #combo-lugares-container {
-  margin: 20px 0;
+  margin: 20px auto;
   text-align: center;
   padding: 15px;
   background: rgba(2, 62, 138, 0.02);
   border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 500px;
 }
 
 #combo-lugares-container label {
@@ -283,10 +288,13 @@
   border: 1px solid #023E8A;
   font-size: 0.95rem;
   min-width: 250px;
+  max-width: 100%;
   background-color: #fff;
   color: #222;
   cursor: pointer;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  margin: 0 auto;
+  display: block;
 }
 
 #cbLugares:hover {

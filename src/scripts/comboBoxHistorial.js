@@ -2,7 +2,25 @@
 let todosLosViajes = [];
 
 /**
- * Inicializa el combo box de lugares y carga los lugares desde la base de datos
+ * Extrae los lugares únicos de los viajes cargados
+ * @returns {Array} Array con los nombres de lugares únicos
+ */
+function extraerLugaresUnicos() {
+  if (!todosLosViajes || todosLosViajes.length === 0) {
+    return [];
+  }
+
+  // Obtener todos los nombres de lugares únicos
+  const lugaresUnicos = [...new Set(todosLosViajes.map(viaje => viaje.nombre_lugar))];
+  
+  // Ordenar alfabéticamente
+  lugaresUnicos.sort();
+  
+  return lugaresUnicos;
+}
+
+/**
+ * Inicializa el combo box de lugares con los lugares de los viajes cargados
  */
 function initComboBoxLugares() {
   console.log("Inicializando combo box de lugares..."); // Debug
@@ -17,37 +35,32 @@ function initComboBoxLugares() {
     return;
   }
   
-  console.log("Elemento cbLugares encontrado, cargando lugares..."); // Debug
+  console.log("Elemento cbLugares encontrado, extrayendo lugares de viajes..."); // Debug
 
-  // Cargar lugares desde la base de datos
-  fetch("../../data/logic/lugarLogic.php")
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(data => {
-      console.log("Datos recibidos de lugarLogic:", data); // Debug
-      if (data.correcto && data.lugares) {
-        // Limpiar opciones existentes (excepto "Todos los lugares")
-        cbLugares.innerHTML = '<option value="">Todos los lugares</option>';
-        
-        // Agregar cada lugar al combo box
-        data.lugares.forEach(lugar => {
-          const option = document.createElement("option");
-          option.value = lugar.nombre_lugar;
-          option.textContent = lugar.nombre_lugar;
-          cbLugares.appendChild(option);
-        });
-        console.log(`Se agregaron ${data.lugares.length} lugares al combo box`); // Debug
-      } else {
-        console.error("Error al cargar lugares:", data.mensaje || "Error desconocido", data);
-      }
-    })
-    .catch(err => {
-      console.error("Error en la petición de lugares:", err);
+  // Extraer lugares únicos de los viajes ya cargados
+  const lugaresUnicos = extraerLugaresUnicos();
+  
+  if (lugaresUnicos.length === 0) {
+    console.warn("No se encontraron lugares en los viajes. El combo box se llenará cuando se carguen los viajes.");
+    // Agregar evento de cambio para filtrar la tabla
+    cbLugares.addEventListener("change", function() {
+      filtrarTablaPorLugar(this.value);
     });
+    return;
+  }
+
+  // Limpiar opciones existentes (excepto "Todos los lugares")
+  cbLugares.innerHTML = '<option value="">Todos los lugares</option>';
+  
+  // Agregar cada lugar único al combo box
+  lugaresUnicos.forEach(nombreLugar => {
+    const option = document.createElement("option");
+    option.value = nombreLugar;
+    option.textContent = nombreLugar;
+    cbLugares.appendChild(option);
+  });
+  
+  console.log(`Se agregaron ${lugaresUnicos.length} lugares únicos al combo box`); // Debug
 
   // Agregar evento de cambio para filtrar la tabla
   cbLugares.addEventListener("change", function() {
@@ -79,11 +92,30 @@ function filtrarTablaPorLugar(nombreLugar) {
 }
 
 /**
- * Establece los datos de viajes para poder filtrarlos
+ * Establece los datos de viajes para poder filtrarlos y actualiza el combo box
  * @param {Array} viajes - Array con todos los viajes
  */
 function setDatosViajes(viajes) {
   todosLosViajes = viajes || [];
+  
+  // Si el combo box ya existe, actualizarlo con los nuevos lugares
+  const cbLugares = document.getElementById("cbLugares");
+  if (cbLugares && todosLosViajes.length > 0) {
+    const lugaresUnicos = extraerLugaresUnicos();
+    
+    // Limpiar opciones existentes (excepto "Todos los lugares")
+    cbLugares.innerHTML = '<option value="">Todos los lugares</option>';
+    
+    // Agregar cada lugar único al combo box
+    lugaresUnicos.forEach(nombreLugar => {
+      const option = document.createElement("option");
+      option.value = nombreLugar;
+      option.textContent = nombreLugar;
+      cbLugares.appendChild(option);
+    });
+    
+    console.log(`Combo box actualizado con ${lugaresUnicos.length} lugares únicos`); // Debug
+  }
 }
 
 // Exportar funciones para uso global
