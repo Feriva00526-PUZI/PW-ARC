@@ -177,7 +177,9 @@ window.addEventListener("load", function () {
                 btn_is_r.appendChild(btn_a);
                 bnav.appendChild(btn_is_r);
 
-
+                btn_is_r.addEventListener("click", () => {
+                    window.location.href = "../../../index.html";
+                });
             });
 
         fetch("./../../../src/components/footer.html")
