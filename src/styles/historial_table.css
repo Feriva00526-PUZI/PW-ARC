@@ -252,6 +252,14 @@
   box-shadow: 0 0 0 3px rgba(2, 62, 138, 0.1);
 }
 
+/* Ocultar columna de ID */
+#hist-table-sample .hist-table thead th:first-child,
+#hist-table-sample .hist-table tbody td:first-child,
+#reservaciones-table-sample .hist-table thead th:first-child,
+#reservaciones-table-sample .hist-table tbody td:first-child {
+  display: none;
+}
+
 /* Responsive para filtros */
 @media (max-width: 900px) {
   .filtros-container {
