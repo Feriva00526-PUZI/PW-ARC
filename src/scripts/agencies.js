@@ -177,6 +177,10 @@ window.addEventListener("load", function () {
                 btn_is_r.appendChild(btn_a);
                 bnav.appendChild(btn_is_r);
 
+                // Agregar funcionalidad al botón de usuario
+                btn_is_r.addEventListener("click", function() {
+                    mostrarModalUsuario();
+                });
 
             });
 
@@ -202,5 +206,136 @@ window.addEventListener("load", function () {
             i.classList.add("icon_nav");
             return i;
         }
+    }
+
+    // =====================================================
+    // MODAL DE USUARIO (Cerrar sesión / Volver al inicio)
+    // =====================================================
+    function mostrarModalUsuario() {
+        // Inyectar estilos si no existen
+        if (!document.getElementById('user-modal-styles')) {
+            const s = document.createElement('style');
+            s.id = 'user-modal-styles';
+            s.textContent = `
+                .user-modal {
+                    position: fixed; inset: 0; z-index: 9999;
+                    display: flex; align-items: center; justify-content: center;
+                    opacity: 0; visibility: hidden; transition: all 0.25s ease;
+                }
+                .user-modal.active { opacity: 1; visibility: visible; }
+                .user-modal__overlay {
+                    position: absolute; inset: 0;
+                    background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(3px);
+                }
+                .user-modal__content {
+                    position: relative; background: #fff;
+                    width: 90%; max-width: 400px;
+                    border-radius: 16px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+                    padding: 2rem; transform: scale(0.95);
+                    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+                }
+                .user-modal.active .user-modal__content { transform: scale(1); }
+                .user-modal__header {
+                    display: flex; justify-content: space-between;
+                    align-items: center; margin-bottom: 1.5rem;
+                }
+                .user-modal__header h2 {
+                    margin: 0; font-size: 1.5rem; font-weight: 700;
+                    color: #1e293b;
+                }
+                .user-modal__close {
+                    background: transparent; border: none;
+                    font-size: 1.5rem; line-height: 1;
+                    color: #64748b; cursor: pointer;
+                    width: 32px; height: 32px;
+                    display: flex; align-items: center; justify-content: center;
+                    border-radius: 50%; transition: background 0.2s;
+                }
+                .user-modal__close:hover {
+                    background: #f1f5f9; color: #ef4444;
+                }
+                .user-modal__options {
+                    display: flex; flex-direction: column; gap: 0.75rem;
+                }
+                .user-modal__option {
+                    padding: 1rem; border: 2px solid #e2e8f0;
+                    border-radius: 12px; cursor: pointer;
+                    transition: all 0.2s ease; background: #fff;
+                    display: flex; align-items: center; gap: 1rem;
+                }
+                .user-modal__option:hover {
+                    border-color: #2563eb; background-color: #eff6ff;
+                    transform: translateY(-2px);
+                }
+                .user-modal__option-icon {
+                    font-size: 1.5rem;
+                }
+                .user-modal__option-text {
+                    flex: 1;
+                }
+                .user-modal__option-title {
+                    margin: 0; font-size: 1.05rem; font-weight: 600;
+                    color: #1e293b;
+                }
+                .user-modal__option-desc {
+                    margin: 0.25rem 0 0 0; font-size: 0.875rem;
+                    color: #64748b;
+                }
+            `;
+            document.head.appendChild(s);
+        }
+
+        // Crear modal
+        const modal = document.createElement('div');
+        modal.className = 'user-modal active';
+        modal.innerHTML = `
+            <div class="user-modal__overlay"></div>
+            <div class="user-modal__content">
+                <div class="user-modal__header">
+                    <h2>Opciones de Usuario</h2>
+                    <button class="user-modal__close">×</button>
+                </div>
+                <div class="user-modal__options">
+                    <div class="user-modal__option" id="option-inicio">
+                        <span class="user-modal__option-icon">🏠</span>
+                        <div class="user-modal__option-text">
+                            <h3 class="user-modal__option-title">Volver al Inicio</h3>
+                            <p class="user-modal__option-desc">Regresar a la página principal</p>
+                        </div>
+                    </div>
+                    <div class="user-modal__option" id="option-cerrar">
+                        <span class="user-modal__option-icon">🚪</span>
+                        <div class="user-modal__option-text">
+                            <h3 class="user-modal__option-title">Cerrar Sesión</h3>
+                            <p class="user-modal__option-desc">Salir de tu cuenta</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+
+        const closeModal = () => {
+            modal.classList.remove('active');
+            setTimeout(() => modal.remove(), 250);
+        };
+
+        // Event listeners
+        modal.querySelector('.user-modal__close').addEventListener('click', closeModal);
+        modal.querySelector('.user-modal__overlay').addEventListener('click', closeModal);
+
+        // Opción: Volver al inicio
+        modal.querySelector('#option-inicio').addEventListener('click', () => {
+            closeModal();
+            window.location.href = "../../../index.html";
+        });
+
+        // Opción: Cerrar sesión
+        modal.querySelector('#option-cerrar').addEventListener('click', () => {
+            sessionStorage.removeItem("agencia_logeado");
+            sessionStorage.removeItem("paquete_seleccionado");
+            closeModal();
+            window.location.href = "../../../index.html";
+        });
     }
 });
