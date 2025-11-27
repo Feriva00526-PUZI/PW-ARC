@@ -47,6 +47,16 @@ class Conexion
             return null;
         }
     }
+    public function __destruct()
+    {
+        $this->conexion = NULL;
+    }
 
-    // ... el resto de la clase (destruct y getConexion) es igual.
+    public function getConexion()
+    {
+        if ($this->conexion === NULL) {
+            $this->conexion = $this->conectar();
+        }
+        return $this->conexion;
+    }
 }
