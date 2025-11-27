@@ -65,7 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                     $nombre_imagen_anterior = $lugar_antiguo['imagen_url'] ?? '';
 
                     $extension = "jpg";
-                    $nombre_img_db = 'lim' . $id_actual . '.' . $extension;
+                    $nombre_img_db = 'limg' . $id_actual . '.' . $extension;
                     $ruta_almacenamiento_fisica = $RUTA_FISICA_GUARDADO . $nombre_img_db;
 
                     if (move_uploaded_file($imagen["tmp_name"], $ruta_almacenamiento_fisica)) {
@@ -103,7 +103,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                 $id_lugar = $lugarDAO->crearLugar($nombre, $descripcion, $direccion, $ciudad, $zona, $id_admin);
                 if ($id_lugar > 0) {
                     $extension = "jpg";
-                    $nombre_img_db = 'lim' . $id_lugar . '.' . $extension;
+                    $nombre_img_db = 'limg' . $id_lugar . '.' . $extension;
                     $ruta_almacenamiento_fisica = $RUTA_FISICA_GUARDADO . $nombre_img_db;
 
                     if (move_uploaded_file($imagen["tmp_name"], $ruta_almacenamiento_fisica)) {
