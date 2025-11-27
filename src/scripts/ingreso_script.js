@@ -54,6 +54,7 @@ window.addEventListener("load", function () {
             metodosBusqueda.buscarAgencias(usuario, contra).then(validacion => {
                 if (validacion) {
                     sessionStorage.setItem("agencia_logeado", JSON.stringify(validacion));
+                    window.location.href = "./agencies/agency.html"
                 } else {
                     datos_incorrectos.showModal();
                 }

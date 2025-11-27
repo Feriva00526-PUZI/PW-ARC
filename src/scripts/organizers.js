@@ -1,33 +1,22 @@
-// import { obtenerEventosPorOrganizadora, obtenerNumeroEventosEsteMes } from "./dao/daoEventos.js";
+
+let organizadora = JSON.parse(sessionStorage.getItem("organizador_logeado"));
 
 window.addEventListener("load", function () {
 
-    let organizadora = JSON.parse(sessionStorage.getItem("organizador_logeado"));
     console.log(organizadora)
-
     const idOrg = organizadora.id_organizadora;
 
     if (!organizadora) {
-        // Si no hay sesión, redirigir
         window.location.href = "../../../index.html";
-        return;
-    } else {
-        organizadora = fetch(`../../data/Logic/organizerController.php?accion=organizador&id_organizadora=${idOrg}`)
-            .then(res => res.json())
-            .then(json => {
-                if (json.correcto) {
-                    document.getElementById("numeroEventos")
-                        .innerText = `Numero de eventos este mes: ${json.total}`;
-                } else {
-                    console.error(json.mensaje);
-                }
-            });
     }
 
+
+    console.log(organizadora.imagen_url);
     // Configuracion inicial
     document.title = organizadora.nombre_agencia;
+
     document.getElementById("imgAgencia").src =
-        `../../media/images/organizers/${organizadora.image_url}`;
+        `../../../src/media/images/organizers/${organizadora.imagen_url}`;
 
 
     // Obtener número eventos mes
@@ -44,14 +33,11 @@ window.addEventListener("load", function () {
 
     // Cargar eventos
     let eventos = [];
-    //src\data\DAO\organizadorDAO.php
-    //src\scripts\organizers.js
     fetch(`../../data/Logic/organizerController.php?accion=eventos&id_organizadora=${idOrg}`)
         .then(res => res.json())
         .then(json => {
             if (json.correcto) {
                 eventos = json.data;
-                window.eventosCalendario = eventos;
                 filtrarEventos();
             } else {
                 console.error(json.mensaje);
@@ -67,25 +53,27 @@ window.addEventListener("load", function () {
     const fechaInicio = document.getElementById("fechaInicio");
     const fechaFin = document.getElementById("fechaFin");
     const btnOrdenar = document.getElementById("btnOrdenar");
+    const btnAgregar = document.getElementById("btnAgregar");
+    const btnCalendar = document.getElementById("btnCalendar");
 
     function renderTabla(lista) {
         tbody.innerHTML = "";
         lista.forEach(ev => {
             const tr = document.createElement("tr");
             tr.innerHTML = `
-                <td>${ev.fecha_evento}</td>
-                <td>${ev.nombre_evento}</td>
-                <td>${ev.lugar || "N/A"}</td>
-                <td>$${ev.precio_boleto}</td>
-                <td>
+                <td data-label="Fecha">${ev.fecha_evento}</td>
+                <td data-label="Nombre">${ev.nombre_evento}</td>
+                <td data-label="Lugar">${ev.lugar || "N/A"}</td>
+                <td data-label="Precio">$${ev.precio_boleto}</td>
+                <td data-label="Acciones">
                     <button class="btn-modificar" data-id="${ev.id_evento}">Modificar</button>
-                    <button class="btn-cancelar" data-id="${ev.id_evento}">Cancelar</button>
                     <button class="btn-calendario" data-id="${ev.id_evento}">📅</button>
                 </td>
             `;
             tbody.appendChild(tr);
         });
     }
+
 
     // Filtrar 
     function filtrarEventos() {
@@ -128,31 +116,47 @@ window.addEventListener("load", function () {
         filtrarEventos();
     });
 
+    btnCalendar.addEventListener("click", () => {
+
+        const fecha = new Date();
+        window.dispatchEvent(new CustomEvent("abrirCalendario", {
+            detail: {
+                month: fecha.getMonth(),
+                year: fecha.getFullYear(),
+                source: "organizer" //organizer
+            }
+        }));
+
+    });
+
     // Botones de la tabla
     tbody.addEventListener("click", (e) => {
 
-        if (e.target.classList.contains("btn-cancelar")) {
-            const id = e.target.dataset.id;
+        if (e.target.classList.contains("btn-modificar")) {
+            this.sessionStorage.setItem("evento_seleccionado", e.target.dataset.id);
+            window.location.href = "events.html";
 
-            if (confirm("¿Seguro que deseas cancelar este evento?")) {
-                eventos = eventos.filter(ev => ev.id_evento != id);
-                filtrarEventos();
-            }
-
-        } else if (e.target.classList.contains("btn-modificar")) {
-
-            alert(`Función para modificar evento ID: ${e.target.dataset.id}`);
-
-        } else if (e.target.classList.contains("btn-calendario")) {
+        } else if (e.target.classList.contains("btn-calendario") && e.target.id != "btnCalendar") {
 
             const evento = eventos.find(ev => ev.id_evento == e.target.dataset.id);
             if (evento) {
                 const fecha = new Date(evento.fecha_evento);
+                sessionStorage.setItem("evento_seleccionado", evento.id_evento);
+
                 window.dispatchEvent(new CustomEvent("abrirCalendario", {
-                    detail: { month: fecha.getMonth(), year: fecha.getFullYear() }
+                    detail: {
+                        month: fecha.getMonth(),
+                        year: fecha.getFullYear(),
+                        source: "event" //organizer,
+                    }
                 }));
             }
         }
+
+    });
+
+    btnAgregar.addEventListener("click", function () {
+        window.location.href = "./add_events.html";
     });
 
     // Crear el footer y el header
@@ -175,7 +179,7 @@ window.addEventListener("load", function () {
                 s_header.style.backgroundImage = "url(./../../../src/media/images/layout/img_background_header.jpg)";
 
                 /*Cambiar el titulo del header */
-                document.getElementById("n_h2").innerText = "PAGINA PRINCIPAL";
+                document.getElementById("n_h2").innerText = organizadora.nombre_agencia;
                 document.getElementById("s_icon").setAttribute("src", "./../../../src/media/images/icons/icon_arc.png");
                 const bnav = document.getElementById("underline_nav");
 
@@ -192,26 +196,15 @@ window.addEventListener("load", function () {
                 a1.append("Pagina Principal");
                 bnav.appendChild(a1);
 
-                /*Segundo*/
-                const a2 = document.createElement("a");
-                a2.id = "a2";
-                a2.href = "#";
-                const ai2 = document.createElement("img");
-                ai2.src = "./../../../src/media/images/icons/icon_travel.png";
-                ai2.classList.add("icon_nav");
-                a2.appendChild(ai2);
-                a2.append("Lugares Populares");
-                bnav.appendChild(a2);
-
                 /*Tercero*/
                 const a3 = document.createElement("a");
                 a3.id = "a3";
-                a3.href = "#";
+                a3.href = "./add_events.html";
                 const ai3 = document.createElement("img");
                 ai3.src = "./../../../src/media/images/icons/icon_event.png";
                 ai3.classList.add("icon_nav");
                 a3.appendChild(ai3);
-                a3.append("Eventos Recientes");
+                a3.append("Crear evento");
                 bnav.appendChild(a3);
 
                 /*Boton de registro o iniciar sesion*/
@@ -225,6 +218,9 @@ window.addEventListener("load", function () {
                 btn_is_r.appendChild(btn_a);
                 bnav.appendChild(btn_is_r);
 
+                btn_is_r.addEventListener("click", () => {
+                window.location.href = "../../../index.html";
+                });
 
             });
 

@@ -2,7 +2,7 @@
     /*height: 200px;
     max-height: 200px;*/
     background-color: #caccd4;
-    border-left: 5px solid #023E8A;
+    border-left: 5px solid #03045E;
     border-radius: 8px;
     padding: 12px;
     display: grid;
@@ -107,7 +107,7 @@
 }
 
 .overlay1 .minicard {
-    border-left-color: #00B4D8;
+    border-left-color: #001233;
 }
 
 .overlay3 .minicard {

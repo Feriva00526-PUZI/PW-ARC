@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="pageTitle">Panel</title>
+
+  <link rel="stylesheet" href="../../styles/events.css">
+  <link rel="stylesheet" href="../../styles/style_generico.css">
+  <link rel="stylesheet" href="../../styles/header_style.css">
+  <link rel="stylesheet" href="../../styles/footer_style.css">
+
+  <script src="../../scripts/add_packages_agency.js" type="module"></script>
+</head>
+
+<body>
+  <main>
+
+    <form class="box box-events">
+      <!-- Col 1: Imagen y descripción -->
+      <div class="event-image-desc">
+        <img src="../../media/images/background-events-organizers.jpg" alt="" id="package-img">
+        <input type="file" id="file_package_img" accept="image/*" style="display:none;">
+        <label for="package-desc">Descripción:</label>
+        <textarea name="package_desc" id="package-desc"></textarea>
+      </div>
+
+      <!-- Col 2: Nombre, precio -->
+      <div class="event-details">
+        <label for="package-name">Nombre del paquete:</label>
+        <input type="text" id="package-name" name="package_name" />
+
+        <label for="package-price">Precio:</label>
+        <input type="number" id="package-price" name="package_price" step="0.01" min="0" />
+
+        <div class="event-map">
+          <div class="map-placeholder">
+            <p>Aquí se mostrará el mapa del lugar</p>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Fila 2: Tarjetas -->
+      <div class="event-cards">
+        <div class="event-card" id="package-place">Lugar</div>
+        <div class="event-card" id="package-agency-img">
+          <p id="package-agency">Agencia</p>
+        </div>
+        <div class="event-card fill"> </div>
+        <div class="event-card fill"> </div>
+      </div>
+
+      <!-- Fila 3: Botón guardar -->
+      <div class="calendar-row">
+        <button type="button" id="btn-save" disabled class="button">Guardar paquete</button>
+      </div>
+
+    </form>
+
+    </div>
+  </main>
+</body>
+
+</html>
+

@@ -4,61 +4,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Usuario Viajes</title>
-    <link rel="stylesheet" href="../../styles/UsuarioViajesCSS.css">
+    <title>Usuario Eventos</title>
     <link rel="stylesheet" href="../../styles/style_generico.css">
     <link rel="stylesheet" href="../../styles/header_style.css">
+    <link rel="stylesheet" href="../../styles/footer_style.css">
+    <link rel="stylesheet" href="../../styles/UsuarioViajesCSS.css">
     <script src="./../../scripts/Script_usuario_viajes.js"></script>
+    <script src="./../../scripts/Script_UsuarioEventos.js"></script>
 
 </head>
 
 <body>
-    <div class="container box">
+    <main class="box">
         <div id="viajes">Eventos</div>
-        <div id="titulo">Titulo del evento seleccionado</div>
+       <!-- <div id="titulo">Titulo del Lugar seleccionado</div>-->
 
-        <div id="ImgMapa">
-            <img src="../../media/images/ImgLugar.jpeg" id="img1">
-
-            <!-- <iframe src="#" frameborder="1" width="200" height="200"></iframe>
-    -->
+        <div id="containerImgMapa">
+            <img src="./../../media/images/layout/imgLayout4.jpg" id="imgMapa">
+            
         </div>
         <div id="paquete">
-            <div id="paq1" class="cards">paquete1</div>
-            <div id="paq2" class="cards">paquete2</div>
-            <div id="paq3" class="cards">paquete3</div>
+           
         </div>
-        <div id="comentar">
-            <label for="comentario">Deja tu comentario</label>
-            <input type="text" id="comentario">
-        </div>
+        
         <div id="buscador">
             <div>
-                <label for="Txt_Buscar">txt a buscar</label>
-                <input type="text" id="Txt_Buscar">
+                
+                <!--<input type="text" id="Txt_Buscar" placeholder="Busca por el nombre del lugar">-->
             </div>
             <div id="selecciones">
-                <ol>
-                    <li class="cards">opcion1☆</li>
-                    <li class="cards">opcion2 ☆</li>
-                    <li class="cards">opcion3 ☆</li>
-                    <li class="cards">opcion4 ☆</li>
-                    <li class="cards">opcion5 ☆</li>
-                    <li class="cards">opcion6 ☆</li>
-                    <li class="cards">opcion7 ☆</li>
-                    <li class="cards">opcion8 ☆</li>
-                    <li class="cards">opcion9 ☆</li>
-                    <li class="cards">opcion10 ☆</li>
-                    <li class="cards">opcion11 ☆</li>
-                    <li class="cards">opcion12 ☆</li>
-                    <li class="cards">opcion13 ☆</li>
-                    <li class="cards">opcion14 ☆</li>
-                    <li class="cards">opcion15 ☆</li>
-                </ol>
+            
             </div>
 
         </div>
-    </div>
+        <dialog class="dialog_select" id="fecha_select">
+            <h3 class="dialog_h3">Confirma tu reservacion</h3>
+            <p id="Fecha"></p>
+            <p id="Hora"></p>
+            <br>
+        <!--<input type="date" value="2025-12-23" id="fecha"><br>
+            <input type="time" name="" id="hora">-->
+            <button class="button_ls_close" id="button_continuar">
+                <p class="dialog_text_btn_close">Aceptar</p>
+            </button><br>
+            <button class="button_ls_close" id="button_noContinuar">
+                <p class="dialog_text_btn_close">Cancelar</p>
+            </button><br>
+        </dialog>
+    </main>
+    
 </body>
 
 </html>
