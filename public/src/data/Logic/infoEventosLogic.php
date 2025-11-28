@@ -32,6 +32,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             case 'query4':
                 $resultados = $lugarDAO->getEventosMenosPopulares();
                 break;
+            case 'query9':
+                $resultados = $lugarDAO->getViajesMasPopulares();
+                break;
+            case 'query10':
+                $resultados = $lugarDAO->getViajesMenosPopulares();
+                break;
             case 'query5':
                 $count = $lugarDAO->getAsistenciasCompletadas();
                 $percentage = ($count / $totalGeneral) * 100;
@@ -80,6 +86,15 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                 $respuesta = ['correcto' => true, 'lugares' => $resultados];
             } else {
                 $respuesta = ['correcto' => false, 'lugares' => []];
+            }
+        } else if ("query9" === $query || "query10" === $query) {
+            if ($resultados !== null && !empty($resultados)) {
+                foreach ($resultados as &$item) {
+                    $item['imagen_url'] = $RUTA_IMG_ESTANDAR3 . $item['imagen_url'];
+                }
+                $respuesta = ['correcto' => true, 'viajes' => $resultados];
+            } else {
+                $respuesta = ['correcto' => false, 'viajes' => []];
             }
         }
         echo json_encode($respuesta);
