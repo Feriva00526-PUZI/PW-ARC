@@ -98,6 +98,9 @@
   margin-right: 6px;
   box-shadow: 0 4px 10px rgba(2, 62, 138, 0.08);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
+  min-width: 110px;
+  text-align: center;
+  white-space: nowrap;
 }
 
 .hist-btn:hover:not(:disabled) {
@@ -151,6 +154,7 @@
   .hist-btn {
     padding: 6px 10px;
     font-size: 0.85rem;
+    min-width: 100px;
   }
 
   /* Botones deshabilitados (gris) */
@@ -258,6 +262,16 @@
 #reservaciones-table-sample .hist-table thead th:first-child,
 #reservaciones-table-sample .hist-table tbody td:first-child {
   display: none;
+}
+
+/* Ancho específico para la columna de Fecha (4ta columna después de ID oculto) */
+#hist-table-sample .hist-table thead th:nth-child(4),
+#hist-table-sample .hist-table tbody td:nth-child(4),
+#reservaciones-table-sample .hist-table thead th:nth-child(4),
+#reservaciones-table-sample .hist-table tbody td:nth-child(4) {
+  min-width: 140px;
+  width: 140px;
+  white-space: nowrap;
 }
 
 /* Estilos para el combo box de lugares */
