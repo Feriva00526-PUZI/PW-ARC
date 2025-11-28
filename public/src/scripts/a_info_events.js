@@ -145,7 +145,22 @@ window.addEventListener("load", function () {
         });
     });
     est4.addEventListener("click", () => {
-        titulo_overlay2.textContent = "Tamaño de los eventos";
+        titulo_overlay2.textContent = "Popularidad de Viajes";
+        overlay3.innerHTML = `<div class="minicard">Cargando viajes...</div>`;
+        overlay4.innerHTML = `<div class="minicard">Detalles</div>`;
+        overlayEx.innerHTML = `
+        <select id="filtroViajes">
+            <option value="query9">Más Populares</option>
+            <option value="query10">Menos Populares</option>
+        </select>
+    `;
+
+        cargarDatos('query9');
+        const filtroViajes = document.getElementById("filtroViajes");
+        filtroViajes.addEventListener("change", () => {
+            const filtroSelected = filtroViajes.value;
+            cargarDatos(filtroSelected);
+        });
     });
     est5.addEventListener("click", () => {
         titulo_overlay2.textContent = "Informacion de las Organizadoras";
@@ -159,6 +174,10 @@ window.addEventListener("load", function () {
             return "query3";
         } else if (valorFiltro === "query4") {
             return "query4";
+        } else if (valorFiltro === "query9") {
+            return "query9";
+        } else if (valorFiltro === "query10") {
+            return "query10";
         }
     }
     const cargarDatos = (query) => {
@@ -288,6 +307,60 @@ window.addEventListener("load", function () {
                     }
                     else {
                         overlay3.innerHTML = `<div class="minicard">No se encontraron eventos...</div>`;
+                    }
+                })
+                .catch(error => {
+                    overlay3.innerHTML = `<div class="minicard">Error al cargar datos: ${error.message}</div>`;
+                });
+        } else if (query === 'query9' || query === 'query10') {
+            overlay3.innerHTML = `<div class="minicard">Cargando viajes...</div>`;
+            fetch(`./../../data/logic/infoEventosLogic.php?query=${query}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.correcto && data.viajes) {
+                        const viajes = data.viajes;
+                        overlay3.innerHTML = "";
+
+                        viajes.forEach(viaje => {
+                            const card = document.createElement("div");
+                            card.innerHTML = `
+                            <div class="cards">
+                                <div class="div-info-card">
+                                    <h2>${viaje.nombre_paquete}</h2>
+                                    <span class="info-card-ciudad">Lugar: ${viaje.nombre_lugar}</span>
+                                    <span class="info-card-direccion">Total Viajes: ${viaje.total_viajes}</span>
+                                    <button class="btn-revisar" id="br-${viaje.id_paquete}">Revisar Paquete</button>
+                                </div>
+                                <div class="div-image-card">
+                                    <img class="image-card" src="${viaje.imagen_url}" alt="Imagen del paquete de viaje">
+                                </div>
+                            </div>`;
+                            overlay3.appendChild(card);
+
+                            const reviewButton = card.querySelector(`#br-${viaje.id_paquete}`);
+                            reviewButton.addEventListener('click', function () {
+                                overlay4.innerHTML = `
+                                <div class="maxicard">
+                                    <h4 class="maxicard-titulo">${viaje.nombre_paquete}</h4>
+                                    <div class="maxicard-imagen">
+                                        <img src="${viaje.imagen_url}" alt="Imagen de ${viaje.nombre_paquete}">
+                                    </div>
+                                    <div class="maxicard-descripcion">
+                                        <p>Descripción:</p>
+                                        <span>${viaje.descripcion_paquete}</span>
+                                    </div>
+                                    <div class="maxicard-info-grid">
+                                        <p class="maxicard-dato">Lugar: <span>${viaje.nombre_lugar}</span></p>
+                                        <p class="maxicard-dato">Costo: <span>$${viaje.costo_base}</span></p> 
+                                        <p class="maxicard-dato">Agencia: <span>${viaje.nombre_agencia}</span></p> 
+                                        <p class="maxicard-dato dato-full">Total Viajes Completados: <span>${viaje.total_viajes}</span></p>
+                                        <p class="maxicard-dato">ID Paquete: <span>${viaje.id_paquete}</span></p>
+                                    </div>
+                                </div>`;
+                            });
+                        });
+                    } else {
+                        overlay3.innerHTML = `<div class="minicard">No se encontraron viajes...</div>`;
                     }
                 })
                 .catch(error => {
