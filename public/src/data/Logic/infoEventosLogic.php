@@ -4,6 +4,7 @@ header('Content-Type: application/json');
 $lugarDAO = new infoEventosDAO();
 $RUTA_IMG_ESTANDAR = "./../../media/images/lugares/";
 $RUTA_IMG_ESTANDAR2 = "./../../media/images/events/";
+$RUTA_IMG_ESTANDAR3 = "./../../media/images/paquetes/";
 $RUTA_FISICA_GUARDADO = __DIR__ . "/../../media/images/lugares/";
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
