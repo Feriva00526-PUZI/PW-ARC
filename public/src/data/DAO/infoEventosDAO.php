@@ -158,7 +158,7 @@ class infoEventosDAO
     {
         try {
             $sql = "SELECT 
-                        p.id_paquete, p.nombre_paquete, p.descripcion_paquete, p.costo_base, p.imagen_url,
+                        p.id_paquete, p.nombre_paquete, p.descripcion_paquete, p.precio, p.imagen_url,
                         l.nombre_lugar, 
                         a.nombre_agencia,
                         COUNT(v.id_viaje) AS total_viajes
@@ -183,7 +183,7 @@ class infoEventosDAO
     {
         try {
             $sql = "SELECT 
-                        p.id_paquete, p.nombre_paquete, p.descripcion_paquete, p.costo_base, p.imagen_url,
+                        p.id_paquete, p.nombre_paquete, p.descripcion_paquete, p.precio, p.imagen_url,
                         l.nombre_lugar, 
                         a.nombre_agencia,
                         COUNT(v.id_viaje) AS total_viajes

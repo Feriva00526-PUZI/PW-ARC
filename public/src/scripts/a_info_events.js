@@ -351,7 +351,7 @@ window.addEventListener("load", function () {
                                     </div>
                                     <div class="maxicard-info-grid">
                                         <p class="maxicard-dato">Lugar: <span>${viaje.nombre_lugar}</span></p>
-                                        <p class="maxicard-dato">Costo: <span>$${viaje.costo_base}</span></p> 
+                                        <p class="maxicard-dato">Costo: <span>$${viaje.precio}</span></p> 
                                         <p class="maxicard-dato">Agencia: <span>${viaje.nombre_agencia}</span></p> 
                                         <p class="maxicard-dato dato-full">Total Viajes Completados: <span>${viaje.total_viajes}</span></p>
                                         <p class="maxicard-dato">ID Paquete: <span>${viaje.id_paquete}</span></p>
