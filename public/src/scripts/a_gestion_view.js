@@ -36,15 +36,7 @@ window.addEventListener("load", function () {
             a1.append("Gestion de lugares");
             bnav.appendChild(a1);
             /*Segundo*/
-            const a2 = document.createElement("a");
-            a2.id = "a2";
-            a2.href = "./a_info_agency.html";
-            const ai2 = document.createElement("img");
-            ai2.src = "./../../media/images/icons/iconAnav2.png";
-            ai2.classList.add("icon_nav");
-            a2.appendChild(ai2);
-            a2.append("Estadisticas de los Viajes");
-            bnav.appendChild(a2);
+
             /*Tercero*/
             const a3 = document.createElement("a");
             a3.id = "a3";
