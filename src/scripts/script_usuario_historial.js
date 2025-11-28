@@ -86,29 +86,29 @@ window.addEventListener("load", function () {
         btnUsuario.appendChild(aUser);
         nav.appendChild(btnUsuario);
       }
-// Cargar script del combo box de lugares
-      const scriptComboBox = document.createElement("script");
-      scriptComboBox.src = "./../../scripts/comboBoxHistorial.js";
+// Cargar script del combo box de lugares (comentado porque el combo box está deshabilitado en el HTML)
+      // const scriptComboBox = document.createElement("script");
+      // scriptComboBox.src = "./../../scripts/comboBoxHistorial.js";
       
-      scriptComboBox.onload = () => {
-        // Esperar a que el DOM esté completamente listo antes de inicializar
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', () => {
-            if (typeof window.initComboBoxLugares === "function") {
-              window.initComboBoxLugares();
-            }
-          });
-        } else {
-          // DOM ya está listo
-          setTimeout(() => {
-            if (typeof window.initComboBoxLugares === "function") {
-              window.initComboBoxLugares();
-            }
-          }, 100);
-        }
-      };
+      // scriptComboBox.onload = () => {
+      //   // Esperar a que el DOM esté completamente listo antes de inicializar
+      //   if (document.readyState === 'loading') {
+      //     document.addEventListener('DOMContentLoaded', () => {
+      //       if (typeof window.initComboBoxLugares === "function") {
+      //         window.initComboBoxLugares();
+      //       }
+      //     });
+      //   } else {
+      //     // DOM ya está listo
+      //     setTimeout(() => {
+      //       if (typeof window.initComboBoxLugares === "function") {
+      //         window.initComboBoxLugares();
+      //       }
+      //     }, 100);
+      //   }
+      // };
       
-      document.body.appendChild(scriptComboBox);
+      // document.body.appendChild(scriptComboBox);
 
 // cargar historial de viajes
       fetch("../../data/logic/HistorialLogic.php", {
@@ -123,15 +123,15 @@ window.addEventListener("load", function () {
             return;
           }
 
-          // Guardar datos de viajes para el filtrado (esto también actualizará el combo box)
-          if (typeof window.setDatosViajes === "function") {
-            window.setDatosViajes(data.viajes);
-          }
+          // Guardar datos de viajes para el filtrado (comentado porque el combo box está deshabilitado)
+          // if (typeof window.setDatosViajes === "function") {
+          //   window.setDatosViajes(data.viajes);
+          // }
 
           // Si el combo box aún no se ha inicializado, inicializarlo ahora con los datos
-          if (typeof window.initComboBoxLugares === "function") {
-            window.initComboBoxLugares();
-          }
+          // if (typeof window.initComboBoxLugares === "function") {
+          //   window.initComboBoxLugares();
+          // }
 
           // Cargar tabla de historial de viajes 
           const scriptTabla = document.createElement("script");

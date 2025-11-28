@@ -78,7 +78,7 @@ function initReservacionesTable(data) {
         "Evento: " + item.nombre_evento + "\n" +
         "Lugar: " + item.nombre_lugar + ", " + item.ciudad + "\n" +
         "Tipo de Actividad: " + item.tipo_actividad + "\n" +
-        "Organizador: " + item.nombre_organizadora + "\n" +
+        "Organizador: " + item.nombre_agencia + "\n" +
         "Descripción: " + item.descripcion + "\n\n" +
         "Costo: " + tdPrecio.textContent + "\n" +
         "Fecha/Hora: " + item.fecha_evento + " a las " + item.hora_evento + "\n" +
