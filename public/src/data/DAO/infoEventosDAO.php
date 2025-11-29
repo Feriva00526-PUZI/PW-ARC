@@ -299,4 +299,46 @@ class infoEventosDAO
             throw new Exception("Error al obtener las agencias peor remuneradas: " . $e->getMessage());
         }
     }
+    public function getOrganizadorasMejorRemuneradas()
+    {
+        try {
+            $sql = "SELECT 
+                        o.id_organizadora, o.nombre_agencia, o.direccion, o.telefono, o.correo, o.imagen_url,
+                        SUM(CASE WHEN r.estado = 'completado' THEN e.precio_boleto ELSE 0 END) AS remuneracion_total
+                    FROM organizadoras o
+                    LEFT JOIN eventos e ON o.id_organizadora = e.id_organizadora
+                    LEFT JOIN reservaciones r ON e.id_evento = r.id_evento
+                    GROUP BY o.id_organizadora
+                    ORDER BY remuneracion_total DESC, o.nombre_agencia ASC
+                    LIMIT 5";
+
+            $stmt = $this->conexion->prepare($sql);
+            $stmt->execute();
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            throw new Exception("Error al obtener las organizadoras mejor remuneradas por eventos: " . $e->getMessage());
+        }
+    }
+    public function getOrganizadorasPeorRemuneradas()
+    {
+        try {
+            $sql = "SELECT 
+                        o.id_organizadora, o.nombre_agencia, o.direccion, o.telefono, o.correo, o.imagen_url,
+                        SUM(CASE WHEN r.estado = 'completado' THEN e.precio_boleto ELSE 0 END) AS remuneracion_total
+                    FROM organizadoras o
+                    LEFT JOIN eventos e ON o.id_organizadora = e.id_organizadora
+                    LEFT JOIN reservaciones r ON e.id_evento = r.id_evento
+                    GROUP BY o.id_organizadora
+                    ORDER BY remuneracion_total ASC, o.nombre_agencia ASC
+                    LIMIT 5";
+
+            $stmt = $this->conexion->prepare($sql);
+            $stmt->execute();
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            throw new Exception("Error al obtener las organizadoras peor remuneradas por eventos: " . $e->getMessage());
+        }
+    }
 }

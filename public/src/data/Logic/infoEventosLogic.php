@@ -6,6 +6,7 @@ $RUTA_IMG_ESTANDAR = "./../../media/images/lugares/";
 $RUTA_IMG_ESTANDAR2 = "./../../media/images/events/";
 $RUTA_IMG_ESTANDAR3 = "./../../media/images/paquetes/";
 $RUTA_IMG_ESTANDAR4 = "./../../media/images/agencias/";
+$RUTA_IMG_ESTANDAR5 = "./../../media/images/organizerz/";
 $RUTA_FISICA_GUARDADO = __DIR__ . "/../../media/images/lugares/";
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
@@ -50,6 +51,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                 break;
             case 'query14':
                 $resultados = $lugarDAO->getAgenciasPeorRemuneradas();
+                break;
+            case 'query15':
+                $resultados = $lugarDAO->getOrganizadorasMejorRemuneradas();
+                break;
+            case 'query16':
+                $resultados = $lugarDAO->getOrganizadorasPeorRemuneradas();
                 break;
             case 'query5':
                 $count = $lugarDAO->getAsistenciasCompletadas();
@@ -117,6 +124,15 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                 $respuesta = ['correcto' => true, 'agencias' => $resultados];
             } else {
                 $respuesta = ['correcto' => false, 'agencias' => []];
+            }
+        } else if ("query15" === $query || "query16" === $query) {
+            if ($resultados !== null && !empty($resultados)) {
+                foreach ($resultados as &$item) {
+                    $item['imagen_url'] = $RUTA_IMG_ESTANDAR5 . $item['imagen_url'];
+                }
+                $respuesta = ['correcto' => true, 'organizadoras' => $resultados];
+            } else {
+                $respuesta = ['correcto' => false, 'organizadoras' => []];
             }
         }
         echo json_encode($respuesta);
