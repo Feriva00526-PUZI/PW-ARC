@@ -99,3 +99,43 @@
     object-fit: cover;
     overflow: hidden;
 }
+
+@media (max-width: 500px) {
+    .div-card {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .div-zone h2 {
+        font-size: 1.5rem;
+        text-align: center;
+    }
+
+    .cards {
+        height: auto;
+        min-height: 150px;
+        grid-template-columns: 1fr 1.5fr;
+        grid-template-areas: "image-card info-card";
+    }
+
+    .div-image-card {
+        min-width: 120px;
+        max-width: 150px;
+    }
+
+    .div-info-card {
+        padding-left: 5px;
+        grid-template-rows: auto auto auto 1fr;
+    }
+
+    .cards .div-info-card h2 {
+        white-space: normal;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .cards .div-info-card button {
+        width: 100%;
+        margin-top: 5px;
+    }
+}

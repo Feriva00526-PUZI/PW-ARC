@@ -290,3 +290,60 @@ option {
     width: calc(33.33% - 10px);
     padding: 8px;
 }
+
+@media (max-width: 500px) {
+    .cuadricula {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto auto auto;
+        grid-template-areas:
+            "overlay1"
+            "overlay2"
+            "overlayEx"
+            "overlay3"
+            "overlay4";
+        gap: 10px;
+    }
+
+    .overlay1 {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .minicard {
+        text-align: center;
+        margin-bottom: 0;
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+
+    .cards {
+        min-height: 150px;
+        grid-template-columns: 1fr 1.5fr;
+        gap: 10px;
+    }
+
+    .cards .div-info-card h2 {
+        font-size: 1.1rem;
+    }
+
+    .filter-container {
+        flex-direction: column;
+        gap: 5px;
+        padding: 0;
+    }
+
+    .small-select {
+        width: 100%;
+        margin-bottom: 0;
+    }
+
+    .maxicard-info-grid {
+        grid-template-columns: 1fr;
+        gap: 5px;
+    }
+
+    .maxicard-dato.dato-full {
+        grid-column: 1 / 1;
+    }
+}
