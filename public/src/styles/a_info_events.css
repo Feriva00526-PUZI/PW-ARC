@@ -76,6 +76,7 @@
 }
 
 .minicard {
+    cursor: pointer;
     background-color: #caccd4;
     border-left: 5px solid #023E8A;
     border-radius: 8px;
@@ -269,4 +270,9 @@ option {
 
 .maxicard-dato.dato-full {
     grid-column: 1 / -1;
+}
+
+.overlay4 .maxicard {
+    position: sticky;
+    top: 150px;
 }
