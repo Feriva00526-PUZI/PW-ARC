@@ -6,7 +6,7 @@ $RUTA_IMG_ESTANDAR = "./../../media/images/lugares/";
 $RUTA_IMG_ESTANDAR2 = "./../../media/images/events/";
 $RUTA_IMG_ESTANDAR3 = "./../../media/images/paquetes/";
 $RUTA_IMG_ESTANDAR4 = "./../../media/images/agencias/";
-$RUTA_IMG_ESTANDAR5 = "./../../media/images/organizerz/";
+$RUTA_IMG_ESTANDAR5 = "./../../media/images/organizers/";
 $RUTA_FISICA_GUARDADO = __DIR__ . "/../../media/images/lugares/";
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {

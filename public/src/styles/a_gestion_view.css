@@ -72,6 +72,9 @@
 
 .cards .div-info-card .info-card-direccion {
     grid-area: info-card-direccion;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     font-size: 0.95rem;
     color: #333;
 }
