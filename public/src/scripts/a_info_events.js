@@ -46,7 +46,7 @@ window.addEventListener("load", function () {
             ai3.src = "./../../media/images/icons/iconAnav3.png";
             ai3.classList.add("icon_nav");
             a3.appendChild(ai3);
-            a3.append("Estadisticas de los Eventos");
+            a3.append("Estadisticas");
             bnav.appendChild(a3);
         });
 
