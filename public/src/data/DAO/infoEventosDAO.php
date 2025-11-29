@@ -341,4 +341,52 @@ class infoEventosDAO
             throw new Exception("Error al obtener las organizadoras peor remuneradas por eventos: " . $e->getMessage());
         }
     }
+    public function getEventosMejorRemunerados()
+    {
+        try {
+            $sql = "SELECT 
+                        e.id_evento, e.nombre_evento, e.descripcion, e.fecha_evento, e.hora_evento, e.imagen_url,
+                        l.nombre_lugar,
+                        COUNT(r.id_reservacion) AS total_asistencias,
+                        (SUM(CASE WHEN r.estado = 'completado' THEN 1 ELSE 0 END) * e.precio_boleto) AS recaudacion_total
+                    FROM eventos e 
+                    LEFT JOIN lugares l ON e.id_lugar = l.id_lugar 
+                    LEFT JOIN reservaciones r ON e.id_evento = r.id_evento
+                    GROUP BY e.id_evento, e.nombre_evento, e.precio_boleto, l.nombre_lugar
+                    ORDER BY recaudacion_total DESC, e.nombre_evento ASC 
+                    LIMIT 5";
+
+            $stmt = $this->conexion->prepare($sql);
+            $stmt->execute();
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            throw new Exception("Error al obtener los eventos mejor remunerados: " . $e->getMessage());
+        }
+    }
+
+    // NUEVA FUNCIÓN para query18: Eventos Peor Remunerados
+    public function getEventosPeorRemunerados()
+    {
+        try {
+            $sql = "SELECT 
+                        e.id_evento, e.nombre_evento, e.descripcion, e.fecha_evento, e.hora_evento, e.imagen_url,
+                        l.nombre_lugar,
+                        COUNT(r.id_reservacion) AS total_asistencias,
+                        (SUM(CASE WHEN r.estado = 'completado' THEN 1 ELSE 0 END) * e.precio_boleto) AS recaudacion_total
+                    FROM eventos e 
+                    LEFT JOIN lugares l ON e.id_lugar = l.id_lugar 
+                    LEFT JOIN reservaciones r ON e.id_evento = r.id_evento
+                    GROUP BY e.id_evento, e.nombre_evento, e.precio_boleto, l.nombre_lugar
+                    ORDER BY recaudacion_total ASC, e.nombre_evento ASC 
+                    LIMIT 5";
+
+            $stmt = $this->conexion->prepare($sql);
+            $stmt->execute();
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            throw new Exception("Error al obtener los eventos peor remunerados: " . $e->getMessage());
+        }
+    }
 }

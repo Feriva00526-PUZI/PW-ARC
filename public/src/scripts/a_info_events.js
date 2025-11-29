@@ -186,6 +186,24 @@ window.addEventListener("load", function () {
             cargarDatos(filtroSelected);
         });
     });
+    est8.addEventListener("click", () => {
+        titulo_overlay2.textContent = "Eventos por su Remuneración";
+        overlay3.innerHTML = `<div class="minicard">Cargando eventos...</div>`;
+        overlay4.innerHTML = `<div class="minicard">Detalles</div>`;
+        overlayEx.innerHTML = `
+        <select id="filtroRemuneracionEventos">
+            <option value="query17">Más Remunerables</option>
+            <option value="query18">Menos Remunerables</option>
+        </select>
+    `;
+
+        cargarDatos('query17');
+        const filtroRemuneracionEventos = document.getElementById("filtroRemuneracionEventos");
+        filtroRemuneracionEventos.addEventListener("change", () => {
+            const filtroSelected = filtroRemuneracionEventos.value;
+            cargarDatos(filtroSelected);
+        });
+    });
 
     /*NUEVO NUEVO NUEVO */
     est5.addEventListener("click", () => {
@@ -341,7 +359,6 @@ window.addEventListener("load", function () {
                     if (data.correcto && data.lugares) {
                         const eventos = data.lugares;
                         overlay3.innerHTML = "";
-
                         eventos.forEach(evento => {
                             const card = document.createElement("div");
                             card.innerHTML = `
@@ -555,8 +572,7 @@ window.addEventListener("load", function () {
                 .catch(error => {
                     overlay3.innerHTML = `<div class="minicard">Error al cargar datos: ${error.message}</div>`;
                 });
-        }
-        else if (query === 'query5' || query === 'query6' || query === 'query7' || query === 'query8') {
+        } else if (query === 'query5' || query === 'query6' || query === 'query7' || query === 'query8') {
             overlay4.innerHTML = `<div class="maxicard">Cargando detalle de asistencia...</div>`;
             fetch(`./../../data/logic/infoEventosLogic.php?query=${query}`)
                 .then(handleResponse)

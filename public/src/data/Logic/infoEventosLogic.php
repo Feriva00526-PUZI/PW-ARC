@@ -58,6 +58,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             case 'query16':
                 $resultados = $lugarDAO->getOrganizadorasPeorRemuneradas();
                 break;
+            case 'query17':
+                $resultados = $lugarDAO->getEventosMejorRemunerados();
+                break;
+            case 'query18':
+                $resultados = $lugarDAO->getEventosPeorRemunerados();
+                break;
             case 'query5':
                 $count = $lugarDAO->getAsistenciasCompletadas();
                 $percentage = ($count / $totalGeneral) * 100;
@@ -98,7 +104,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             } else {
                 $respuesta = ['correcto' => false, 'lugares' => []];
             }
-        } else if ("query3" === $query || "query4" === $query) {
+        } else if ("query3" === $query || "query4" === $query || "query17" === $query || "query18" === $query) {
             if ($resultados !== null && !empty($resultados)) {
                 foreach ($resultados as &$item) {
                     $item['imagen_url'] = $RUTA_IMG_ESTANDAR2 . $item['imagen_url'];
