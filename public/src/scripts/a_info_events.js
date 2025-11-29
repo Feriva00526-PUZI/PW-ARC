@@ -461,6 +461,92 @@ window.addEventListener("load", function () {
                 .catch(error => {
                     overlay3.innerHTML = `<div class="minicard">Error al cargar datos: ${error.message}</div>`;
                 });
+            // ...
+            // BLOQUE 2: REMUNERACIÓN DE EVENTOS (query17 y query18) - 🌟 Estandarizado y Corregido
+        } else if (query === 'query17' || query === 'query18') {
+
+            fetch(`./../../data/logic/infoEventosLogic.php?query=${query}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.correcto && data.lugares) {
+                        const eventos = data.lugares;
+                        const promedioGeneral = data.promedio_general_boleto;
+                        overlay3.innerHTML = "";
+
+                        if (promedioGeneral) {
+                            overlay3.insertAdjacentHTML('afterbegin', `
+                        <div class="minicard promedio-info">
+                            Promedio general de boletos: <strong>$${parseFloat(promedioGeneral).toFixed(2)}</strong>
+                        </div>
+                    `);
+                        }
+
+                        eventos.forEach(evento => {
+                            const card = document.createElement("div");
+                            card.innerHTML = `
+                    <div class="cards">
+                        <div class="div-info-card">
+                            <h2>${evento.nombre_evento}</h2>
+                            <span class="info-card-fecha">Fecha: ${evento.fecha_evento}</span>
+                            <span class="info-card-lugar">Lugar: ${evento.nombre_lugar}</span>
+                            <span class="info-card-recaudacion">Recaudación Total: <strong>$${parseFloat(evento.recaudacion_total || 0).toFixed(2)}</strong></span>
+                            <button class="btn-revisar" data-evento-id="${evento.id_evento}">Revisar Evento</button>
+                        </div>
+                        <div class="div-image-card">
+                            <img class="image-card" src="${evento.imagen_url}" alt="Imagen del evento">
+                        </div>
+                    </div>`;
+                            overlay3.appendChild(card);
+                        });
+
+                        document.querySelectorAll(".btn-revisar").forEach(button => {
+                            button.addEventListener("click", (event) => {
+                                const id = event.target.getAttribute("data-evento-id");
+                                const eventoSeleccionado = eventos.find(e => String(e.id_evento) === id);
+
+                                if (!eventoSeleccionado) {
+                                    overlay4.innerHTML = `<div class="maxicard">Error: No se encontró la información del evento.</div>`;
+                                    return;
+                                }
+
+                                // Variables necesarias
+                                const recaudacion = parseFloat(eventoSeleccionado.recaudacion_total || 0).toFixed(2);
+                                const precioBoleto = parseFloat(eventoSeleccionado.precio_boleto || 0).toFixed(2);
+
+                                // 🌟 ESTRUCTURA ESTANDARIZADA (similar a query3/4) 🌟
+                                overlay4.innerHTML = `
+                            <div class="maxicard">
+                                <h4 class="maxicard-titulo">${eventoSeleccionado.nombre_evento}</h4>
+                                <div class="maxicard-imagen">
+                                    <img src="${eventoSeleccionado.imagen_url}" alt="Imagen de ${eventoSeleccionado.nombre_evento}">
+                                </div>
+                                <div class="maxicard-descripcion">
+                                    <p>Descripción:</p>
+                                    <span>${eventoSeleccionado.descripcion || 'Sin descripción disponible.'}</span>
+                                </div>
+                                <div class="maxicard-info-grid">
+                                    <p class="maxicard-dato">Lugar: <span>${eventoSeleccionado.nombre_lugar}</span></p>
+                                    <p class="maxicard-dato">Fecha: <span>${eventoSeleccionado.fecha_evento}</span></p>
+                                    <p class="maxicard-dato">Hora: <span>${eventoSeleccionado.hora_evento}</span></p>
+                                    <p class="maxicard-dato">Precio Boleto: <span>$${precioBoleto}</span></p>
+                                    
+                                    <p class="maxicard-dato dato-full">Recaudación Total: <strong>$${recaudacion}</strong></p>
+                                    <p class="maxicard-dato">ID Evento: <span>${eventoSeleccionado.id_evento}</span></p>
+                                </div>
+                            </div>
+                        `;
+                                // 🌟 FIN de ESTRUCTURA ESTANDARIZADA 🌟
+                            });
+                        });
+
+                    } else {
+                        overlay3.innerHTML = `<div class="minicard">No se encontraron eventos. Mensaje: ${data.mensaje || 'N/A'}</div>`;
+                    }
+                })
+                .catch(error => {
+                    overlay3.innerHTML = `<div class="minicard">Error al cargar datos de Remuneración: ${error.message}</div>`;
+                });
+
         } else if (query === 'query13' || query === 'query14') {
             overlay3.innerHTML = `<div class="minicard">Cargando agencias...</div>`;
             fetch(`./../../data/logic/infoEventosLogic.php?query=${query}`)

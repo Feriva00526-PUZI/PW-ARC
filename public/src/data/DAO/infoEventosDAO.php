@@ -345,7 +345,7 @@ class infoEventosDAO
     {
         try {
             $sql = "SELECT 
-                        e.id_evento, e.nombre_evento, e.descripcion, e.fecha_evento, e.hora_evento, e.imagen_url,
+                        e.id_evento, e.nombre_evento, e.precio_boleto, e.descripcion, e.fecha_evento, e.hora_evento, e.imagen_url,
                         l.nombre_lugar,
                         COUNT(r.id_reservacion) AS total_asistencias,
                         (SUM(CASE WHEN r.estado = 'completado' THEN 1 ELSE 0 END) * e.precio_boleto) AS recaudacion_total
@@ -365,12 +365,11 @@ class infoEventosDAO
         }
     }
 
-    // NUEVA FUNCIÓN para query18: Eventos Peor Remunerados
     public function getEventosPeorRemunerados()
     {
         try {
             $sql = "SELECT 
-                        e.id_evento, e.nombre_evento, e.descripcion, e.fecha_evento, e.hora_evento, e.imagen_url,
+                        e.id_evento, e.nombre_evento,  e.precio_boleto,  e.descripcion, e.fecha_evento, e.hora_evento, e.imagen_url,
                         l.nombre_lugar,
                         COUNT(r.id_reservacion) AS total_asistencias,
                         (SUM(CASE WHEN r.estado = 'completado' THEN 1 ELSE 0 END) * e.precio_boleto) AS recaudacion_total
