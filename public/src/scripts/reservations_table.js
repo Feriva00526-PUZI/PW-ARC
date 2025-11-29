@@ -83,6 +83,11 @@ function initReservacionesTable(data) {
       const contenido = document.getElementById("descripcion_reservacion_contenido");
       const titulo = document.getElementById("descripcion_reservacion_titulo");
       
+      if (!descripcionDialog || !contenido || !titulo) {
+        console.error("Elementos del diálogo de descripción no encontrados");
+        return;
+      }
+      
       titulo.textContent = "Descripción de la Reservación";
       contenido.innerHTML = 
         "<strong>Evento:</strong> " + item.nombre_evento + "<br>" +
@@ -93,6 +98,18 @@ function initReservacionesTable(data) {
         "<strong>Costo:</strong> " + tdPrecio.textContent + "<br>" +
         "<strong>Fecha/Hora:</strong> " + item.fecha_evento + " a las " + item.hora_evento + "<br>" +
         "<strong>Estado de la Reserva:</strong> " + item.estado_reservacion;
+      
+      // Configurar el botón de cerrar cada vez que se abre el diálogo
+      const buttonClose = document.getElementById("button_descripcion_reservacion_close");
+      if (buttonClose) {
+        // Remover listeners anteriores
+        const newButtonClose = buttonClose.cloneNode(true);
+        buttonClose.parentNode.replaceChild(newButtonClose, buttonClose);
+        
+        newButtonClose.addEventListener("click", () => {
+          descripcionDialog.close();
+        });
+      }
       
       descripcionDialog.showModal();
     });
@@ -106,6 +123,110 @@ function initReservacionesTable(data) {
             currentReservacionBtnCancelar = btnCancelar;
             
             const confirmDialog = document.getElementById("confirm_cancel_reservacion");
+            if (!confirmDialog) {
+                console.error("Diálogo de confirmación no encontrado");
+                return;
+            }
+            
+            // Configurar los botones cada vez que se abre el diálogo
+            const buttonRevert = document.getElementById("button_cancel_reservacion_revert");
+            const buttonProceder = document.getElementById("button_cancel_reservacion_proceder");
+            
+            if (buttonRevert) {
+                // Remover listeners anteriores
+                const newButtonRevert = buttonRevert.cloneNode(true);
+                buttonRevert.parentNode.replaceChild(newButtonRevert, buttonRevert);
+                
+                newButtonRevert.addEventListener("click", () => {
+                    confirmDialog.close();
+                });
+            }
+            
+            if (buttonProceder) {
+                // Remover listeners anteriores
+                const newButtonProceder = buttonProceder.cloneNode(true);
+                buttonProceder.parentNode.replaceChild(newButtonProceder, buttonProceder);
+                
+                newButtonProceder.addEventListener("click", () => {
+                    confirmDialog.close();
+                    
+                    if (!currentReservacionItem) return;
+                    
+                    fetch("../../data/logic/ReservacionLogic.php", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            accion: "cancelar_reservacion",
+                            id_reservacion: currentReservacionItem.id_reservacion
+                        })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.correcto) {
+                            const successDialog = document.getElementById("success_cancel_reservacion");
+                            if (successDialog) {
+                                // Configurar botón de cerrar éxito
+                                const buttonSuccessClose = document.getElementById("button_success_cancel_reservacion_close");
+                                if (buttonSuccessClose) {
+                                    const newButtonSuccessClose = buttonSuccessClose.cloneNode(true);
+                                    buttonSuccessClose.parentNode.replaceChild(newButtonSuccessClose, buttonSuccessClose);
+                                    
+                                    newButtonSuccessClose.addEventListener("click", () => {
+                                        successDialog.close();
+                                        // Actualizar el DOM sin recargar
+                                        if (currentReservacionItem && currentReservacionDivEstado && currentReservacionBtnCancelar) {
+                                            currentReservacionItem.estado_reservacion = "cancelado";
+                                            currentReservacionDivEstado.textContent = "cancelado";
+                                            currentReservacionDivEstado.className = getStatusClass("cancelado");
+                                            currentReservacionBtnCancelar.disabled = true;
+                                            currentReservacionBtnCancelar.classList.add("disabled-btn");
+                                            currentReservacionBtnCancelar.textContent = "Cancelado";
+                                        }
+                                    });
+                                }
+                                successDialog.showModal();
+                            }
+                        } else {
+                            const errorDialog = document.getElementById("error_cancel_reservacion");
+                            const errorMensaje = document.getElementById("error_cancel_reservacion_mensaje");
+                            if (errorDialog && errorMensaje) {
+                                errorMensaje.textContent = "Error: " + (data.mensaje || "Se produjo un error al cancelar la reservación");
+                                // Configurar botón de cerrar error
+                                const buttonErrorClose = document.getElementById("button_error_cancel_reservacion_close");
+                                if (buttonErrorClose) {
+                                    const newButtonErrorClose = buttonErrorClose.cloneNode(true);
+                                    buttonErrorClose.parentNode.replaceChild(newButtonErrorClose, buttonErrorClose);
+                                    
+                                    newButtonErrorClose.addEventListener("click", () => {
+                                        errorDialog.close();
+                                    });
+                                }
+                                errorDialog.showModal();
+                            }
+                        }
+                    })
+                    .catch(err => {
+                        console.error("Error en fetch:", err);
+                        const errorDialog = document.getElementById("error_cancel_reservacion");
+                        const errorMensaje = document.getElementById("error_cancel_reservacion_mensaje");
+                        if (errorDialog && errorMensaje) {
+                            errorMensaje.textContent = "Error de conexión al cancelar la reservación";
+                            // Configurar botón de cerrar error
+                            const buttonErrorClose = document.getElementById("button_error_cancel_reservacion_close");
+                            if (buttonErrorClose) {
+                                const newButtonErrorClose = buttonErrorClose.cloneNode(true);
+                                buttonErrorClose.parentNode.replaceChild(newButtonErrorClose, buttonErrorClose);
+                                
+                                newButtonErrorClose.addEventListener("click", () => {
+                                    errorDialog.close();
+                                });
+                            }
+                            errorDialog.showModal();
+                        }
+                    });
+                });
+            }
+            
             confirmDialog.showModal();
         });
     }
@@ -128,95 +249,3 @@ function initReservacionesTable(data) {
 }
 
 window.initReservacionesTable = initReservacionesTable;
-
-// Event listeners para los diálogos de reservaciones (se configuran una vez)
-document.addEventListener("DOMContentLoaded", function() {
-    // Diálogo de descripción
-    const descripcionDialog = document.getElementById("descripcion_reservacion");
-    if (descripcionDialog) {
-        const buttonClose = document.getElementById("button_descripcion_reservacion_close");
-        if (buttonClose) {
-            buttonClose.addEventListener("click", () => {
-                descripcionDialog.close();
-            });
-        }
-    }
-    
-    // Diálogo de confirmación de cancelación
-    const confirmDialog = document.getElementById("confirm_cancel_reservacion");
-    const buttonRevert = document.getElementById("button_cancel_reservacion_revert");
-    const buttonProceder = document.getElementById("button_cancel_reservacion_proceder");
-    
-    if (buttonRevert) {
-        buttonRevert.addEventListener("click", () => {
-            if (confirmDialog) confirmDialog.close();
-        });
-    }
-    
-    if (buttonProceder) {
-        buttonProceder.addEventListener("click", () => {
-            if (confirmDialog) confirmDialog.close();
-            
-            if (!currentReservacionItem) return;
-            
-            fetch("../../data/logic/ReservacionLogic.php", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    accion: "cancelar_reservacion",
-                    id_reservacion: currentReservacionItem.id_reservacion
-                })
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.correcto) {
-                    const successDialog = document.getElementById("success_cancel_reservacion");
-                    if (successDialog) successDialog.showModal();
-                } else {
-                    const errorDialog = document.getElementById("error_cancel_reservacion");
-                    const errorMensaje = document.getElementById("error_cancel_reservacion_mensaje");
-                    if (errorDialog && errorMensaje) {
-                        errorMensaje.textContent = "Error: " + (data.mensaje || "Se produjo un error al cancelar la reservación");
-                        errorDialog.showModal();
-                    }
-                }
-            })
-            .catch(err => {
-                console.error("Error en fetch:", err);
-                const errorDialog = document.getElementById("error_cancel_reservacion");
-                const errorMensaje = document.getElementById("error_cancel_reservacion_mensaje");
-                if (errorDialog && errorMensaje) {
-                    errorMensaje.textContent = "Error de conexión al cancelar la reservación";
-                    errorDialog.showModal();
-                }
-            });
-        });
-    }
-    
-    // Diálogo de éxito
-    const successDialog = document.getElementById("success_cancel_reservacion");
-    const buttonSuccessClose = document.getElementById("button_success_cancel_reservacion_close");
-    if (buttonSuccessClose) {
-        buttonSuccessClose.addEventListener("click", () => {
-            if (successDialog) successDialog.close();
-            // Actualizar el DOM sin recargar
-            if (currentReservacionItem && currentReservacionDivEstado && currentReservacionBtnCancelar) {
-                currentReservacionItem.estado_reservacion = "cancelado";
-                currentReservacionDivEstado.textContent = "cancelado";
-                currentReservacionDivEstado.className = getStatusClass("cancelado");
-                currentReservacionBtnCancelar.disabled = true;
-                currentReservacionBtnCancelar.classList.add("disabled-btn");
-                currentReservacionBtnCancelar.textContent = "Cancelado";
-            }
-        });
-    }
-    
-    // Diálogo de error
-    const errorDialog = document.getElementById("error_cancel_reservacion");
-    const buttonErrorClose = document.getElementById("button_error_cancel_reservacion_close");
-    if (buttonErrorClose) {
-        buttonErrorClose.addEventListener("click", () => {
-            if (errorDialog) errorDialog.close();
-        });
-    }
-});

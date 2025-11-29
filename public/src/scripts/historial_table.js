@@ -70,6 +70,11 @@ function initHistorialTable(data) {
       const contenido = document.getElementById("descripcion_viaje_contenido");
       const titulo = document.getElementById("descripcion_viaje_titulo");
       
+      if (!descripcionDialog || !contenido || !titulo) {
+        console.error("Elementos del diálogo de descripción no encontrados");
+        return;
+      }
+      
       titulo.textContent = "Descripción del Viaje";
       contenido.innerHTML = 
         "<strong>Paquete:</strong> " + item.nombre_paquete + "<br>" +
@@ -78,6 +83,18 @@ function initHistorialTable(data) {
         "<strong>Estado:</strong> " + item.estado + "<br>" +
         "<strong>Fecha:</strong> " + item.fecha_viaje + "<br>" +
         "<strong>Hora:</strong> " + item.hora_viaje;
+      
+      // Configurar el botón de cerrar cada vez que se abre el diálogo
+      const buttonClose = document.getElementById("button_descripcion_viaje_close");
+      if (buttonClose) {
+        // Remover listeners anteriores
+        const newButtonClose = buttonClose.cloneNode(true);
+        buttonClose.parentNode.replaceChild(newButtonClose, buttonClose);
+        
+        newButtonClose.addEventListener("click", () => {
+          descripcionDialog.close();
+        });
+      }
       
       descripcionDialog.showModal();
     });
@@ -91,6 +108,110 @@ function initHistorialTable(data) {
             currentViajeBtnCancelar = btnCancelar;
             
             const confirmDialog = document.getElementById("confirm_cancel_viaje");
+            if (!confirmDialog) {
+                console.error("Diálogo de confirmación no encontrado");
+                return;
+            }
+            
+            // Configurar los botones cada vez que se abre el diálogo
+            const buttonRevert = document.getElementById("button_cancel_viaje_revert");
+            const buttonProceder = document.getElementById("button_cancel_viaje_proceder");
+            
+            if (buttonRevert) {
+                // Remover listeners anteriores
+                const newButtonRevert = buttonRevert.cloneNode(true);
+                buttonRevert.parentNode.replaceChild(newButtonRevert, buttonRevert);
+                
+                newButtonRevert.addEventListener("click", () => {
+                    confirmDialog.close();
+                });
+            }
+            
+            if (buttonProceder) {
+                // Remover listeners anteriores
+                const newButtonProceder = buttonProceder.cloneNode(true);
+                buttonProceder.parentNode.replaceChild(newButtonProceder, buttonProceder);
+                
+                newButtonProceder.addEventListener("click", () => {
+                    confirmDialog.close();
+                    
+                    if (!currentViajeItem) return;
+                    
+                    fetch("../../data/logic/HistorialLogic.php", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            accion: "cancelar",
+                            id_viaje: currentViajeItem.id_viaje
+                        })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.correcto) {
+                            const successDialog = document.getElementById("success_cancel_viaje");
+                            if (successDialog) {
+                                // Configurar botón de cerrar éxito
+                                const buttonSuccessClose = document.getElementById("button_success_cancel_viaje_close");
+                                if (buttonSuccessClose) {
+                                    const newButtonSuccessClose = buttonSuccessClose.cloneNode(true);
+                                    buttonSuccessClose.parentNode.replaceChild(newButtonSuccessClose, buttonSuccessClose);
+                                    
+                                    newButtonSuccessClose.addEventListener("click", () => {
+                                        successDialog.close();
+                                        // Actualizar el DOM sin recargar
+                                        if (currentViajeItem && currentViajeDivEstado && currentViajeBtnCancelar) {
+                                            currentViajeItem.estado = "cancelado";
+                                            currentViajeDivEstado.textContent = "cancelado";
+                                            currentViajeDivEstado.className = getStatusClass("cancelado");
+                                            currentViajeBtnCancelar.disabled = true;
+                                            currentViajeBtnCancelar.classList.add("disabled-btn");
+                                            currentViajeBtnCancelar.textContent = "Cancelado";
+                                        }
+                                    });
+                                }
+                                successDialog.showModal();
+                            }
+                        } else {
+                            const errorDialog = document.getElementById("error_cancel_viaje");
+                            const errorMensaje = document.getElementById("error_cancel_viaje_mensaje");
+                            if (errorDialog && errorMensaje) {
+                                errorMensaje.textContent = "Error: " + (data.mensaje || "Se produjo un error al cancelar el viaje");
+                                // Configurar botón de cerrar error
+                                const buttonErrorClose = document.getElementById("button_error_cancel_viaje_close");
+                                if (buttonErrorClose) {
+                                    const newButtonErrorClose = buttonErrorClose.cloneNode(true);
+                                    buttonErrorClose.parentNode.replaceChild(newButtonErrorClose, buttonErrorClose);
+                                    
+                                    newButtonErrorClose.addEventListener("click", () => {
+                                        errorDialog.close();
+                                    });
+                                }
+                                errorDialog.showModal();
+                            }
+                        }
+                    })
+                    .catch(err => {
+                        console.error("Error en fetch:", err);
+                        const errorDialog = document.getElementById("error_cancel_viaje");
+                        const errorMensaje = document.getElementById("error_cancel_viaje_mensaje");
+                        if (errorDialog && errorMensaje) {
+                            errorMensaje.textContent = "Error de conexión al cancelar el viaje";
+                            // Configurar botón de cerrar error
+                            const buttonErrorClose = document.getElementById("button_error_cancel_viaje_close");
+                            if (buttonErrorClose) {
+                                const newButtonErrorClose = buttonErrorClose.cloneNode(true);
+                                buttonErrorClose.parentNode.replaceChild(newButtonErrorClose, buttonErrorClose);
+                                
+                                newButtonErrorClose.addEventListener("click", () => {
+                                    errorDialog.close();
+                                });
+                            }
+                            errorDialog.showModal();
+                        }
+                    });
+                });
+            }
+            
             confirmDialog.showModal();
         });
     }
@@ -113,94 +234,3 @@ function initHistorialTable(data) {
 
 window.initHistorialTable = initHistorialTable;
 
-// Event listeners para los diálogos de viajes (se configuran una vez)
-document.addEventListener("DOMContentLoaded", function() {
-    // Diálogo de descripción
-    const descripcionDialog = document.getElementById("descripcion_viaje");
-    if (descripcionDialog) {
-        const buttonClose = document.getElementById("button_descripcion_viaje_close");
-        if (buttonClose) {
-            buttonClose.addEventListener("click", () => {
-                descripcionDialog.close();
-            });
-        }
-    }
-    
-    // Diálogo de confirmación de cancelación
-    const confirmDialog = document.getElementById("confirm_cancel_viaje");
-    const buttonRevert = document.getElementById("button_cancel_viaje_revert");
-    const buttonProceder = document.getElementById("button_cancel_viaje_proceder");
-    
-    if (buttonRevert) {
-        buttonRevert.addEventListener("click", () => {
-            if (confirmDialog) confirmDialog.close();
-        });
-    }
-    
-    if (buttonProceder) {
-        buttonProceder.addEventListener("click", () => {
-            if (confirmDialog) confirmDialog.close();
-            
-            if (!currentViajeItem) return;
-            
-            fetch("../../data/logic/HistorialLogic.php", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    accion: "cancelar",
-                    id_viaje: currentViajeItem.id_viaje
-                })
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.correcto) {
-                    const successDialog = document.getElementById("success_cancel_viaje");
-                    if (successDialog) successDialog.showModal();
-                } else {
-                    const errorDialog = document.getElementById("error_cancel_viaje");
-                    const errorMensaje = document.getElementById("error_cancel_viaje_mensaje");
-                    if (errorDialog && errorMensaje) {
-                        errorMensaje.textContent = "Error: " + (data.mensaje || "Se produjo un error al cancelar el viaje");
-                        errorDialog.showModal();
-                    }
-                }
-            })
-            .catch(err => {
-                console.error("Error en fetch:", err);
-                const errorDialog = document.getElementById("error_cancel_viaje");
-                const errorMensaje = document.getElementById("error_cancel_viaje_mensaje");
-                if (errorDialog && errorMensaje) {
-                    errorMensaje.textContent = "Error de conexión al cancelar el viaje";
-                    errorDialog.showModal();
-                }
-            });
-        });
-    }
-    
-    // Diálogo de éxito
-    const successDialog = document.getElementById("success_cancel_viaje");
-    const buttonSuccessClose = document.getElementById("button_success_cancel_viaje_close");
-    if (buttonSuccessClose) {
-        buttonSuccessClose.addEventListener("click", () => {
-            if (successDialog) successDialog.close();
-            // Actualizar el DOM sin recargar
-            if (currentViajeItem && currentViajeDivEstado && currentViajeBtnCancelar) {
-                currentViajeItem.estado = "cancelado";
-                currentViajeDivEstado.textContent = "cancelado";
-                currentViajeDivEstado.className = getStatusClass("cancelado");
-                currentViajeBtnCancelar.disabled = true;
-                currentViajeBtnCancelar.classList.add("disabled-btn");
-                currentViajeBtnCancelar.textContent = "Cancelado";
-            }
-        });
-    }
-    
-    // Diálogo de error
-    const errorDialog = document.getElementById("error_cancel_viaje");
-    const buttonErrorClose = document.getElementById("button_error_cancel_viaje_close");
-    if (buttonErrorClose) {
-        buttonErrorClose.addEventListener("click", () => {
-            if (errorDialog) errorDialog.close();
-        });
-    }
-});

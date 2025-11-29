@@ -10,10 +10,10 @@
 
 /* Estilos de diálogos personalizados (iguales a los de administradores) */
 .dialog_select {
-    background-color: rgba(255, 255, 255, 0.7);
+    background-color: rgba(255, 255, 255, 0.95);
     border: 0px solid rgba(255, 255, 255, 0.4);
     transform: translate(-50%, -50%);
-    backdrop-filter: blur(2px);
+    backdrop-filter: blur(4px);
     border-radius: 10px;
     position: fixed;
     padding: 20px;
@@ -21,6 +21,7 @@
     left: 50%;
     top: 50%;
     text-align: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .dialog_h3 {
