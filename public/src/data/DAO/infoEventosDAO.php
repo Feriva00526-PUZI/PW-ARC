@@ -203,4 +203,100 @@ class infoEventosDAO
             throw new Exception("Error al obtener los viajes menos populares: " . $e->getMessage());
         }
     }
+    public function getViajesMejorRemunerados()
+    {
+        try {
+            $sql = "SELECT 
+                        p.id_paquete, p.nombre_paquete, p.descripcion_paquete, p.precio, p.imagen_url,
+                        l.nombre_lugar, 
+                        a.nombre_agencia,
+                        COUNT(v.id_viaje) AS total_viajes,
+                        (COUNT(v.id_viaje) * p.precio) AS remuneracion_total
+                    FROM paquetes p 
+                    LEFT JOIN lugares l ON p.id_lugar = l.id_lugar 
+                    LEFT JOIN agencias a ON p.id_agencia = a.id_agencia
+                    LEFT JOIN viajes v ON p.id_paquete = v.id_paquete AND v.estado = 'completado' 
+                    GROUP BY p.id_paquete, l.nombre_lugar, a.nombre_agencia
+                    ORDER BY remuneracion_total DESC, p.nombre_paquete ASC 
+                    LIMIT 5";
+
+            $stmt = $this->conexion->prepare($sql);
+            $stmt->execute();
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            throw new Exception("Error al obtener los viajes mejor remunerados: " . $e->getMessage());
+        }
+    }
+
+    public function getViajesPeorRemunerados()
+    {
+        try {
+            $sql = "SELECT 
+                        p.id_paquete, p.nombre_paquete, p.descripcion_paquete, p.precio, p.imagen_url,
+                        l.nombre_lugar, 
+                        a.nombre_agencia,
+                        COUNT(v.id_viaje) AS total_viajes,
+                        (COUNT(v.id_viaje) * p.precio) AS remuneracion_total
+                    FROM paquetes p 
+                    LEFT JOIN lugares l ON p.id_lugar = l.id_lugar 
+                    LEFT JOIN agencias a ON p.id_agencia = a.id_agencia
+                    LEFT JOIN viajes v ON p.id_paquete = v.id_paquete AND v.estado = 'completado' 
+                    GROUP BY p.id_paquete, l.nombre_lugar, a.nombre_agencia
+                    ORDER BY remuneracion_total ASC, p.nombre_paquete ASC 
+                    LIMIT 5";
+
+            $stmt = $this->conexion->prepare($sql);
+            $stmt->execute();
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            throw new Exception("Error al obtener los viajes peor remunerados: " . $e->getMessage());
+        }
+    }
+    public function getAgenciasMejorRemuneradas()
+    {
+        try {
+            $sql = "SELECT 
+                    a.id_agencia, a.nombre_agencia, a.direccion, a.telefono, a.correo, a.imagen_url,
+                    COUNT(DISTINCT p.id_paquete) AS total_paquetes,
+                    SUM(CASE WHEN v.estado = 'completado' THEN p.precio ELSE 0 END) AS remuneracion_total
+                FROM agencias a
+                LEFT JOIN paquetes p ON a.id_agencia = p.id_agencia
+                LEFT JOIN viajes v ON p.id_paquete = v.id_paquete
+                GROUP BY a.id_agencia
+                ORDER BY remuneracion_total DESC, a.nombre_agencia ASC
+                LIMIT 5";
+
+            $stmt = $this->conexion->prepare($sql);
+            $stmt->execute();
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            throw new Exception("Error al obtener las agencias mejor remuneradas: " . $e->getMessage());
+        }
+    }
+
+    public function getAgenciasPeorRemuneradas()
+    {
+        try {
+            $sql = "SELECT 
+                    a.id_agencia, a.nombre_agencia, a.direccion, a.telefono, a.correo, a.imagen_url,
+                    COUNT(DISTINCT p.id_paquete) AS total_paquetes,
+                    SUM(CASE WHEN v.estado = 'completado' THEN p.precio ELSE 0 END) AS remuneracion_total
+                FROM agencias a
+                LEFT JOIN paquetes p ON a.id_agencia = p.id_agencia
+                LEFT JOIN viajes v ON p.id_paquete = v.id_paquete
+                GROUP BY a.id_agencia
+                ORDER BY remuneracion_total ASC, a.nombre_agencia ASC
+                LIMIT 5";
+
+            $stmt = $this->conexion->prepare($sql);
+            $stmt->execute();
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            throw new Exception("Error al obtener las agencias peor remuneradas: " . $e->getMessage());
+        }
+    }
 }

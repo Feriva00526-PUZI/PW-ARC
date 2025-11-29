@@ -5,6 +5,7 @@ $lugarDAO = new infoEventosDAO();
 $RUTA_IMG_ESTANDAR = "./../../media/images/lugares/";
 $RUTA_IMG_ESTANDAR2 = "./../../media/images/events/";
 $RUTA_IMG_ESTANDAR3 = "./../../media/images/paquetes/";
+$RUTA_IMG_ESTANDAR4 = "./../../media/images/agencias/";
 $RUTA_FISICA_GUARDADO = __DIR__ . "/../../media/images/lugares/";
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
@@ -37,6 +38,18 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                 break;
             case 'query10':
                 $resultados = $lugarDAO->getViajesMenosPopulares();
+                break;
+            case 'query11':
+                $resultados = $lugarDAO->getViajesMejorRemunerados();
+                break;
+            case 'query12':
+                $resultados = $lugarDAO->getViajesPeorRemunerados();
+                break;
+            case 'query13':
+                $resultados = $lugarDAO->getAgenciasMejorRemuneradas();
+                break;
+            case 'query14':
+                $resultados = $lugarDAO->getAgenciasPeorRemuneradas();
                 break;
             case 'query5':
                 $count = $lugarDAO->getAsistenciasCompletadas();
@@ -87,7 +100,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             } else {
                 $respuesta = ['correcto' => false, 'lugares' => []];
             }
-        } else if ("query9" === $query || "query10" === $query) {
+        } else if ("query9" === $query || "query10" === $query || "query11" === $query || "query12" === $query) {
             if ($resultados !== null && !empty($resultados)) {
                 foreach ($resultados as &$item) {
                     $item['imagen_url'] = $RUTA_IMG_ESTANDAR3 . $item['imagen_url'];
@@ -95,6 +108,15 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                 $respuesta = ['correcto' => true, 'viajes' => $resultados];
             } else {
                 $respuesta = ['correcto' => false, 'viajes' => []];
+            }
+        } else if ("query13" === $query || "query14" === $query) {
+            if ($resultados !== null && !empty($resultados)) {
+                foreach ($resultados as &$item) {
+                    $item['imagen_url'] = $RUTA_IMG_ESTANDAR4 . $item['imagen_url'];
+                }
+                $respuesta = ['correcto' => true, 'agencias' => $resultados];
+            } else {
+                $respuesta = ['correcto' => false, 'agencias' => []];
             }
         }
         echo json_encode($respuesta);

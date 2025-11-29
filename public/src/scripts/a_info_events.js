@@ -75,6 +75,11 @@ window.addEventListener("load", function () {
     const est3 = document.getElementById("est3");
     const est4 = document.getElementById("est4");
     const est5 = document.getElementById("est5");
+    const est6 = document.getElementById("est6");
+    const est7 = document.getElementById("est7");
+    const est8 = document.getElementById("est8");
+    const est9 = document.getElementById("est9");
+    const est10 = document.getElementById("est10");
     const overlay3 = document.getElementById("overlay3");
     const overlay4 = document.getElementById("overlay4");
     const overlayEx = document.getElementById("overlayEx");
@@ -162,9 +167,51 @@ window.addEventListener("load", function () {
             cargarDatos(filtroSelected);
         });
     });
+
+    /*NUEVO NUEVO NUEVO */
     est5.addEventListener("click", () => {
-        titulo_overlay2.textContent = "Informacion de las Organizadoras";
+        titulo_overlay2.textContent = "Remunerabilidad de Viajes";
+        overlay3.innerHTML = `<div class="minicard">Cargando viajes...</div>`;
+        overlay4.innerHTML = `<div class="minicard">Detalles</div>`;
+        overlayEx.innerHTML = `
+        <select id="filtroViajes">
+            <option value="query11">Más Remunerables</option>
+            <option value="query12">Menos Remunerables</option>
+        </select>
+    `;
+
+        cargarDatos('query11');
+        const filtroViajes = document.getElementById("filtroViajes");
+        filtroViajes.addEventListener("change", () => {
+            const filtroSelected = filtroViajes.value;
+            cargarDatos(filtroSelected);
+        });
     });
+
+    est6.addEventListener("click", () => {
+        titulo_overlay2.textContent = "Remunerabilidad de Agencias";
+        overlay3.innerHTML = `<div class="minicard">Cargando agencias...</div>`;
+        overlay4.innerHTML = `<div class="minicard">Detalles</div>`;
+        overlayEx.innerHTML = `
+        <select id="filtroAgencias">
+            <option value="query13">Más Remunerables</option>
+            <option value="query14">Menos Remunerables</option>
+        </select>
+    `;
+
+        cargarDatos('query13');
+        const filtroAgencias = document.getElementById("filtroAgencias");
+        filtroAgencias.addEventListener("change", () => {
+            const filtroSelected = filtroAgencias.value;
+            cargarDatos(filtroSelected);
+        });
+    });
+
+
+
+
+
+
     function tipoQuery(valorFiltro) {
         if (valorFiltro === "query1") {
             return "query1";
@@ -178,6 +225,14 @@ window.addEventListener("load", function () {
             return "query9";
         } else if (valorFiltro === "query10") {
             return "query10";
+        } else if (valorFiltro === "query11") {
+            return "query11";
+        } else if (valorFiltro === "query12") {
+            return "query12";
+        } else if (valorFiltro === "query13") {
+            return "query13";
+        } else if (valorFiltro === "query14") {
+            return "query14";
         }
     }
     const cargarDatos = (query) => {
@@ -312,7 +367,7 @@ window.addEventListener("load", function () {
                 .catch(error => {
                     overlay3.innerHTML = `<div class="minicard">Error al cargar datos: ${error.message}</div>`;
                 });
-        } else if (query === 'query9' || query === 'query10') {
+        } else if (query === 'query9' || query === 'query10' || query === 'query11' || query === 'query12') {
             overlay3.innerHTML = `<div class="minicard">Cargando viajes...</div>`;
             fetch(`./../../data/logic/infoEventosLogic.php?query=${query}`)
                 .then(response => response.json())
@@ -366,7 +421,63 @@ window.addEventListener("load", function () {
                 .catch(error => {
                     overlay3.innerHTML = `<div class="minicard">Error al cargar datos: ${error.message}</div>`;
                 });
-        } else if (query === 'query5' || query === 'query6' || query === 'query7' || query === 'query8') {
+        } else if (query === 'query13' || query === 'query14') {
+            overlay3.innerHTML = `<div class="minicard">Cargando agencias...</div>`;
+            fetch(`./../../data/logic/infoEventosLogic.php?query=${query}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    console.log(data.agencias);
+                    console.log(data.correcto);
+                    if (data.correcto && data.agencias) {
+                        const agencias = data.agencias;
+                        overlay3.innerHTML = "";
+
+                        agencias.forEach(agencia => {
+                            const card = document.createElement("div");
+                            card.innerHTML = `
+                        <div class="cards">
+                            <div class="div-info-card">
+                                <h2>${agencia.nombre_agencia}</h2>
+                                <span class="info-card-ciudad">Total Paquetes: ${agencia.total_paquetes}</span>
+                                <span class="info-card-direccion">Remuneración Total: $${parseFloat(agencia.remuneracion_total).toFixed(2)}</span>
+                                <button class="btn-revisar" id="br-ag-${agencia.id_agencia}">Revisar Agencia</button>
+                            </div>
+                            <div class="div-image-card">
+                                <img class="image-card" src="${agencia.imagen_url}" alt="Logo de la agencia">
+                            </div>
+                        </div>`;
+                            overlay3.appendChild(card);
+
+                            const reviewButton = card.querySelector(`#br-ag-${agencia.id_agencia}`);
+                            reviewButton.addEventListener('click', function () {
+                                overlay4.innerHTML = `
+                            <div class="maxicard">
+                                <h4 class="maxicard-titulo">${agencia.nombre_agencia}</h4>
+                                <div class="maxicard-imagen">
+                                    <img src="${agencia.imagen_url}" alt="Logo de ${agencia.nombre_agencia}">
+                                </div>
+                                
+                                <div class="maxicard-info-grid">
+                                    <p class="maxicard-dato">Teléfono: <span>${agencia.telefono || 'N/A'}</span></p>
+                                    <p class="maxicard-dato">Correo: <span>${agencia.correo || 'N/A'}</span></p> 
+                                    <p class="maxicard-dato">Dirección: <span>${agencia.direccion || 'N/A'}</span></p> 
+                                    <p class="maxicard-dato">Paquetes Registrados: <span>${agencia.total_paquetes}</span></p> 
+                                    <p class="maxicard-dato dato-full">Remuneración Global: <span>$${parseFloat(agencia.remuneracion_total).toFixed(2)}</span></p>
+                                    <p class="maxicard-dato">ID Agencia: <span>${agencia.id_agencia}</span></p>
+                                </div>
+                            </div>`;
+                            });
+                        });
+                    } else {
+                        overlay3.innerHTML = `<div class="minicard">No se encontraron agencias...</div>`;
+                    }
+                })
+                .catch(error => {
+                    overlay3.innerHTML = `<div class="minicard">Error al cargar datos: ${error.message}</div>`;
+                });
+        }
+        else if (query === 'query5' || query === 'query6' || query === 'query7' || query === 'query8') {
             overlay4.innerHTML = `<div class="maxicard">Cargando detalle de asistencia...</div>`;
             fetch(`./../../data/logic/infoEventosLogic.php?query=${query}`)
                 .then(handleResponse)
