@@ -8,6 +8,41 @@
   white-space: nowrap;
 }
 
+/* Estilos de diálogos personalizados (iguales a los de administradores) */
+.dialog_select {
+    background-color: rgba(255, 255, 255, 0.7);
+    border: 0px solid rgba(255, 255, 255, 0.4);
+    transform: translate(-50%, -50%);
+    backdrop-filter: blur(2px);
+    border-radius: 10px;
+    position: fixed;
+    padding: 20px;
+    margin: 0;
+    left: 50%;
+    top: 50%;
+    text-align: center;
+}
+
+.dialog_h3 {
+    font-size: 1.5rem;
+}
+
+.button_ls_close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin: 0 auto;
+    width: 80%;
+    gap: 10px;
+}
+
+.dialog_text_btn_close {
+    display: inline-block;
+    margin: 0;
+    line-height: 1;
+}
+
 /* Contenedor general */
 #hist-table-sample,
 #reservaciones-table-sample {
