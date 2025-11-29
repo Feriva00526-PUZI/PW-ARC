@@ -79,7 +79,6 @@ window.addEventListener("load", function () {
     const est7 = document.getElementById("est7");
     const est8 = document.getElementById("est8");
     const est9 = document.getElementById("est9");
-    const est10 = document.getElementById("est10");
     const overlay3 = document.getElementById("overlay3");
     const overlay4 = document.getElementById("overlay4");
     const overlayEx = document.getElementById("overlayEx");
@@ -244,7 +243,27 @@ window.addEventListener("load", function () {
         });
     });
 
+    est9.addEventListener("click", () => {
+        titulo_overlay2.textContent = "Búsqueda de Organizadoras";
+        overlay3.innerHTML = `<div class="minicard">Cargando organizadoras...</div>`;
+        overlay4.innerHTML = `<div class="minicard">Detalles de Organizadora</div>`;
 
+        overlayEx.innerHTML = `
+        <div class="query9-filters">
+            <select id="select-lugar" class="filter-select small-select">
+                <option value="">Lugar</option>
+            </select>
+            <select id="select-evento" class="filter-select small-select" disabled>
+                <option value="">Evento</option>
+            </select>
+            <select id="select-organizadora" class="filter-select small-select" disabled>
+                <option value="">Organizadora</option>
+            </select>
+        </div>
+    `;
+
+        inicializarFiltrosQuery9();
+    });
 
 
 
@@ -278,7 +297,6 @@ window.addEventListener("load", function () {
     }
     const cargarDatos = (query) => {
         if (!query) return;
-        /* Manejo de errores */
         const handleResponse = (response) => {
             if (!response.ok) {
                 return response.text().then(text => {
@@ -461,8 +479,6 @@ window.addEventListener("load", function () {
                 .catch(error => {
                     overlay3.innerHTML = `<div class="minicard">Error al cargar datos: ${error.message}</div>`;
                 });
-            // ...
-            // BLOQUE 2: REMUNERACIÓN DE EVENTOS (query17 y query18) - 🌟 Estandarizado y Corregido
         } else if (query === 'query17' || query === 'query18') {
 
             fetch(`./../../data/logic/infoEventosLogic.php?query=${query}`)
@@ -508,12 +524,9 @@ window.addEventListener("load", function () {
                                     overlay4.innerHTML = `<div class="maxicard">Error: No se encontró la información del evento.</div>`;
                                     return;
                                 }
-
-                                // Variables necesarias
                                 const recaudacion = parseFloat(eventoSeleccionado.recaudacion_total || 0).toFixed(2);
                                 const precioBoleto = parseFloat(eventoSeleccionado.precio_boleto || 0).toFixed(2);
 
-                                // 🌟 ESTRUCTURA ESTANDARIZADA (similar a query3/4) 🌟
                                 overlay4.innerHTML = `
                             <div class="maxicard">
                                 <h4 class="maxicard-titulo">${eventoSeleccionado.nombre_evento}</h4>
@@ -535,7 +548,6 @@ window.addEventListener("load", function () {
                                 </div>
                             </div>
                         `;
-                                // 🌟 FIN de ESTRUCTURA ESTANDARIZADA 🌟
                             });
                         });
 
@@ -618,7 +630,6 @@ window.addEventListener("load", function () {
                             <div class="cards">
                                 <div class="div-info-card">
                                     <h2>${organizadora.nombre_agencia}</h2>
-                                    <span class="info-card-ciudad">Total Eventos: ${organizadora.total_eventos}</span>
                                     <span class="info-card-direccion">Remuneración Total: $${parseFloat(organizadora.remuneracion_total).toFixed(2)}</span>
                                     <button class="btn-revisar" id="br-org-${organizadora.id_organizadora}">Revisar Organizadora</button>
                                 </div>
@@ -636,15 +647,10 @@ window.addEventListener("load", function () {
                                     <div class="maxicard-imagen">
                                         <img src="${organizadora.imagen_url}" alt="Logo de ${organizadora.nombre_agencia}">
                                     </div>
-                                    <div class="maxicard-descripcion">
-                                        <p>Descripción:</p>
-                                        <span>${organizadora.descripcion_agencia}</span>
-                                    </div>
                                     <div class="maxicard-info-grid">
                                         <p class="maxicard-dato">Teléfono: <span>${organizadora.telefono || 'N/A'}</span></p>
                                         <p class="maxicard-dato">Correo: <span>${organizadora.correo || 'N/A'}</span></p> 
-                                        <p class="maxicard-dato">Dirección: <span>${organizadora.direccion || 'N/A'}</span></p> 
-                                        <p class="maxicard-dato">Eventos Registrados: <span>${organizadora.total_eventos}</span></p> 
+                                        <p class="maxicard-dato">Dirección: <span>${organizadora.direccion || 'N/A'}</span></p>
                                         <p class="maxicard-dato dato-full">Remuneración Global: <span>$${parseFloat(organizadora.remuneracion_total).toFixed(2)}</span></p>
                                         <p class="maxicard-dato">ID Organizadora: <span>${organizadora.id_organizadora}</span></p>
                                     </div>
@@ -681,6 +687,201 @@ window.addEventListener("load", function () {
                 .catch(error => {
                     overlay4.innerHTML = `<div class="maxicard">Error al cargar el detalle: ${error.message}</div>`;
                 });
+        } else if (query === 'query9') {
+            overlay3.innerHTML = `<div class="minicard">Cargando filtros y organizadoras...</div>`;
+
+            overlayEx.innerHTML = `
+        <div class="query9-filters">
+            <select id="select-lugar" class="filter-select">
+                <option value="">Lugar</option>
+            </select>
+            <select id="select-evento" class="filter-select" disabled>
+                <option value="">Evento</option>
+            </select>
+            <select id="select-organizadora" class="filter-select" disabled>
+                <option value="">Organizadora</option>
+            </select>
+        </div>
+    `;
+
+            inicializarFiltrosQuery9();
+
         }
     };
 });
+
+
+const mostrarDetalleOrganizadora = (id_organizadora) => {
+    const overlay4 = document.getElementById('overlay4');
+    overlay4.innerHTML = `<h4>Cargando detalle de la organizadora ${id_organizadora}...</h4>`;
+
+    fetch(`./../../data/logic/infoEventosLogic.php?query=queryX5&id_organizadora=${id_organizadora}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.correcto && data.organizadora) {
+                const org = data.organizadora;
+                const totalRemuneracion = parseFloat(org.remuneracion_total || 0).toFixed(2);
+                overlay4.innerHTML = `
+                    <div class="maxicard">
+                        <h4 class="maxicard-titulo">${org.nombre_agencia} (Organizadora)</h4>
+                        <div class="maxicard-imagen">
+                            <img src="${org.imagen_url}" alt="Logo de ${org.nombre_agencia}">
+                        </div>
+                        <div class="maxicard-descripcion">
+                            <p>Descripción:</p>
+                            <span>${org.descripcion_agencia || 'Sin descripción disponible.'}</span>
+                        </div>
+                        <div class="maxicard-info-grid">
+                            <p class="maxicard-dato">Contacto: <span>${org.correo || 'N/A'}</span></p>
+                            <p class="maxicard-dato">Teléfono: <span>${org.telefono || 'N/A'}</span></p>
+                            <p class="maxicard-dato">Dirección: <span>${org.direccion || 'N/A'}</span></p>
+                            <p class="maxicard-dato">Eventos Registrados: <span>${org.total_eventos || 0}</span></p>
+
+                            <p class="maxicard-dato dato-full">Remuneración Total: <span>$${totalRemuneracion}</span></p>
+                            <p class="maxicard-dato dato-full">ID Organizadora: <span>${org.id_organizadora}</span></p>
+                        </div>
+                    </div>
+                `;
+            } else {
+                overlay4.innerHTML = `<h4>Detalle no encontrado</h4><p>${data.mensaje || 'No se pudo obtener la información de la organizadora.'}</p>`;
+            }
+        })
+        .catch(error => {
+            overlay4.innerHTML = `<h4>Error de conexión</h4><p>No se pudo cargar el detalle: ${error.message}</p>`;
+        });
+}
+
+
+const inicializarFiltrosQuery9 = () => {
+    const selectLugar = document.getElementById('select-lugar');
+    const selectEvento = document.getElementById('select-evento');
+    const selectOrganizadora = document.getElementById('select-organizadora');
+
+    const cargarOrganizadoras = (filtroOrganizadoraId = '') => {
+        let url = `./../../data/logic/infoEventosLogic.php?query=query15`;
+
+        if (filtroOrganizadoraId) {
+            url = `./../../data/logic/infoEventosLogic.php?query=queryX4&id_organizadora=${filtroOrganizadoraId}`;
+        }
+
+        overlay3.innerHTML = `<div class="minicard">Cargando organizadoras...</div>`;
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                if (data.correcto && data.organizadoras) {
+                    const organizadoras = data.organizadoras;
+                    overlay3.innerHTML = "";
+
+                    organizadoras.forEach(organizadora => {
+                        const card = document.createElement("div");
+                        card.innerHTML = `
+    <div class="cards">
+        <div class="div-info-card">
+            <h2>${organizadora.nombre_agencia}</h2>
+            <span class="info-card-direccion">Remuneración Total: $${parseFloat(organizadora.remuneracion_total || 0).toFixed(2)}</span>
+            <button class="btn-revisar" data-id-organizadora="${organizadora.id_organizadora}">Revisar Organizadora</button> 
+        </div>
+        <div class="div-image-card">
+            <img class="image-card" src="${organizadora.imagen_url}" alt="Logo de la organizadora">
+        </div>
+    </div>`;
+                        overlay3.appendChild(card);
+                    });
+                    document.querySelectorAll('.btn-revisar').forEach(button => {
+                        button.addEventListener('click', (e) => {
+                            const idOrg = e.currentTarget.getAttribute('data-id-organizadora');
+                            console.log("ID de Organizadora:", idOrg);
+                            if (idOrg) {
+                                mostrarDetalleOrganizadora(idOrg);
+                            } else {
+                                console.log("Error: No se detectó el ID de la organizadora.");
+                            }
+                        });
+                    });
+                } else {
+                    overlay3.innerHTML = `<div class="minicard">No se encontraron organizadoras con este filtro.</div>`;
+                }
+            })
+            .catch(error => {
+                overlay3.innerHTML = `<div class="minicard">Error al cargar organizadoras: ${error.message}</div>`;
+            });
+    };
+
+    fetch(`./../../data/logic/infoEventosLogic.php?query=queryX1`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.correcto && data.lugares) {
+                data.lugares.forEach(lugar => {
+                    const option = document.createElement('option');
+                    option.value = lugar.id_lugar;
+                    option.textContent = lugar.nombre_lugar;
+                    selectLugar.appendChild(option);
+                });
+            }
+        })
+        .catch(error => console.error("Error al cargar Lugares:", error));
+
+    cargarOrganizadoras();
+    selectLugar.addEventListener('change', () => {
+        const idLugar = selectLugar.value;
+        selectEvento.innerHTML = '<option value="">Evento</option>';
+        selectOrganizadora.innerHTML = '<option value="">Organizadora</option>';
+        selectEvento.disabled = true;
+        selectOrganizadora.disabled = true;
+
+        if (idLugar) {
+            fetch(`./../../data/logic/infoEventosLogic.php?query=queryX2&id_lugar=${idLugar}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.correcto && data.eventos) {
+                        data.eventos.forEach(evento => {
+                            const option = document.createElement('option');
+                            option.value = evento.id_evento;
+                            option.textContent = evento.nombre_evento;
+                            selectEvento.appendChild(option);
+                        });
+                        selectEvento.disabled = false;
+                    }
+                })
+                .catch(error => console.error("Error al cargar Eventos:", error));
+        }
+        cargarOrganizadoras();
+    });
+
+    selectEvento.addEventListener('change', () => {
+        const idEvento = selectEvento.value;
+        selectOrganizadora.innerHTML = '<option value="">Organizadora</option>';
+        selectOrganizadora.disabled = true;
+
+        if (idEvento) {
+            fetch(`./../../data/logic/infoEventosLogic.php?query=queryX3&id_evento=${idEvento}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.correcto && data.organizadora) {
+                        const organizadora = data.organizadora;
+                        const option = document.createElement('option');
+                        option.value = organizadora.id_organizadora;
+                        option.textContent = organizadora.nombre_agencia;
+                        selectOrganizadora.appendChild(option);
+                        selectOrganizadora.disabled = false;
+
+                        cargarOrganizadoras(organizadora.id_organizadora);
+
+                    }
+                })
+                .catch(error => console.error("Error al cargar Organizadora:", error));
+        } else {
+            cargarOrganizadoras();
+        }
+    });
+
+    selectOrganizadora.addEventListener('change', () => {
+        const idOrganizadora = selectOrganizadora.value;
+        if (idOrganizadora) {
+            cargarOrganizadoras(idOrganizadora);
+        } else {
+            cargarOrganizadoras();
+        }
+    });
+};

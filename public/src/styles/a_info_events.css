@@ -276,3 +276,17 @@ option {
     position: sticky;
     top: 150px;
 }
+
+.filter-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 5px;
+    width: 100%;
+}
+
+.small-select {
+    width: calc(33.33% - 10px);
+    padding: 8px;
+}

@@ -64,6 +64,25 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             case 'query18':
                 $resultados = $lugarDAO->getEventosPeorRemunerados();
                 break;
+            case 'queryX1':
+                $resultados = $lugarDAO->getLugares();
+                break;
+            case 'queryX2':
+                $id_lugar = isset($_GET['id_lugar']) ? (int)$_GET['id_lugar'] : 0;
+                $resultados = $lugarDAO->getEventosPorLugar($id_lugar);
+                break;
+            case 'queryX3':
+                $id_evento = isset($_GET['id_evento']) ? (int)$_GET['id_evento'] : 0;
+                $resultados = $lugarDAO->getOrganizadoraPorEvento($id_evento);
+                break;
+            case 'queryX4':
+                $id_organizadora = isset($_GET['id_organizadora']) ? (int)$_GET['id_organizadora'] : 0;
+                $resultados = $lugarDAO->getOrganizadoraFiltrada($id_organizadora);
+                break;
+            case 'queryX5':
+                $id_organizadora = isset($_GET['id_organizadora']) ? (int)$_GET['id_organizadora'] : 0;
+                $resultados = $lugarDAO->getDetalleOrganizadora($id_organizadora);
+                break;
             case 'query5':
                 $count = $lugarDAO->getAsistenciasCompletadas();
                 $percentage = ($count / $totalGeneral) * 100;
@@ -139,6 +158,40 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                 $respuesta = ['correcto' => true, 'organizadoras' => $resultados];
             } else {
                 $respuesta = ['correcto' => false, 'organizadoras' => []];
+            }
+        } else if ("queryX1" === $query) {
+            if ($resultados !== null && !empty($resultados)) {
+                $respuesta = ['correcto' => true, 'lugares' => $resultados];
+            } else {
+                $respuesta = ['correcto' => false, 'lugares' => []];
+            }
+        } else if ("queryX2" === $query) {
+            if ($resultados !== null && !empty($resultados)) {
+                $respuesta = ['correcto' => true, 'eventos' => $resultados];
+            } else {
+                $respuesta = ['correcto' => false, 'eventos' => []];
+            }
+        } else if ("queryX3" === $query) {
+            if ($resultados !== null && !empty($resultados)) {
+                $respuesta = ['correcto' => true, 'organizadora' => $resultados];
+            } else {
+                $respuesta = ['correcto' => false, 'organizadora' => null, 'mensaje' => 'Organizadora no encontrada.'];
+            }
+        } else if ("queryX4" === $query) {
+            if ($resultados !== null && !empty($resultados)) {
+                foreach ($resultados as &$item) {
+                    $item['imagen_url'] = $RUTA_IMG_ESTANDAR5 . $item['imagen_url'];
+                }
+                $respuesta = ['correcto' => true, 'organizadoras' => $resultados];
+            } else {
+                $respuesta = ['correcto' => false, 'organizadoras' => []];
+            }
+        } else if ("queryX5" === $query) {
+            if ($resultados !== null && !empty($resultados)) {
+                $resultados['imagen_url'] = $RUTA_IMG_ESTANDAR5 . $resultados['imagen_url'];
+                $respuesta = ['correcto' => true, 'organizadora' => $resultados];
+            } else {
+                $respuesta = ['correcto' => false, 'organizadora' => null, 'mensaje' => 'Detalle de organizadora no encontrado.'];
             }
         }
         echo json_encode($respuesta);

@@ -388,4 +388,103 @@ class infoEventosDAO
             throw new Exception("Error al obtener los eventos peor remunerados: " . $e->getMessage());
         }
     }
+
+    public function getLugares()
+    {
+        try {
+            $sql = "SELECT id_lugar, nombre_lugar FROM lugares ORDER BY nombre_lugar ASC";
+
+            $stmt = $this->conexion->prepare($sql);
+            $stmt->execute();
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            throw new Exception("Error al obtener la lista de lugares: " . $e->getMessage());
+        }
+    }
+
+    public function getEventosPorLugar($id_lugar)
+    {
+        try {
+            $sql = "SELECT 
+                        e.id_evento, 
+                        e.nombre_evento, 
+                        e.id_organizadora 
+                    FROM eventos e
+                    WHERE e.id_lugar = :id_lugar
+                    ORDER BY e.nombre_evento ASC";
+
+            $stmt = $this->conexion->prepare($sql);
+            $stmt->bindParam(':id_lugar', $id_lugar, PDO::PARAM_INT);
+            $stmt->execute();
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            throw new Exception("Error al obtener eventos por lugar: " . $e->getMessage());
+        }
+    }
+
+    public function getOrganizadoraPorEvento($id_evento)
+    {
+        try {
+            $sql = "SELECT 
+                        o.id_organizadora, 
+                        o.nombre_agencia 
+                    FROM organizadoras o
+                    INNER JOIN eventos e ON o.id_organizadora = e.id_organizadora
+                    WHERE e.id_evento = :id_evento";
+
+            $stmt = $this->conexion->prepare($sql);
+            $stmt->bindParam(':id_evento', $id_evento, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            throw new Exception("Error al obtener organizadora por evento: " . $e->getMessage());
+        }
+    }
+
+    public function getOrganizadoraFiltrada($id_organizadora)
+    {
+        try {
+            $sql = "SELECT 
+                        o.id_organizadora, o.nombre_agencia, o.direccion, o.telefono, o.correo, o.imagen_url,
+                        SUM(CASE WHEN r.estado = 'completado' THEN e.precio_boleto ELSE 0 END) AS remuneracion_total
+                    FROM organizadoras o
+                    LEFT JOIN eventos e ON o.id_organizadora = e.id_organizadora
+                    LEFT JOIN reservaciones r ON e.id_evento = r.id_evento
+                    WHERE o.id_organizadora = :id_organizadora 
+                    GROUP BY o.id_organizadora";
+
+            $stmt = $this->conexion->prepare($sql);
+            $stmt->bindParam(':id_organizadora', $id_organizadora, PDO::PARAM_INT);
+            $stmt->execute();
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            throw new Exception("Error al obtener la organizadora filtrada: " . $e->getMessage());
+        }
+    }
+
+    public function getDetalleOrganizadora($id_organizadora)
+    {
+        try {
+            $sql = "SELECT 
+                        o.id_organizadora, o.nombre_agencia, o.descripcion_agencia, o.direccion, o.telefono, o.correo, o.imagen_url,
+                        COUNT(e.id_evento) AS total_eventos,
+                        SUM(CASE WHEN r.estado = 'completado' THEN e.precio_boleto ELSE 0 END) AS remuneracion_total
+                    FROM organizadoras o
+                    LEFT JOIN eventos e ON o.id_organizadora = e.id_organizadora
+                    LEFT JOIN reservaciones r ON e.id_evento = r.id_evento
+                    WHERE o.id_organizadora = :id_organizadora 
+                    GROUP BY o.id_organizadora";
+
+            $stmt = $this->conexion->prepare($sql);
+            $stmt->bindParam(':id_organizadora', $id_organizadora, PDO::PARAM_INT);
+            $stmt->execute();
+
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            throw new Exception("Error al obtener el detalle de la organizadora: " . $e->getMessage());
+        }
+    }
 }
