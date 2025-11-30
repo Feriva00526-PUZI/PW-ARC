@@ -25,7 +25,7 @@ window.addEventListener("load", function () {
 
                 let li = document.createElement("li");
 
-                let liTxt = document.createTextNode(data.nombre_evento + ", " + data.descripcion);
+                let liTxt = document.createTextNode(data.nombre_evento);
                 console.log(data.nombre_evento);
                 li.appendChild(liTxt);
                 li.setAttribute("class", "minicard");
