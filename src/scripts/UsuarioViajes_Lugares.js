@@ -11,13 +11,11 @@ window.addEventListener("load", function () {
     let modal = document.getElementById("fecha_select");
     let btn_aceptar = document.getElementById("button_continuar");
     let btn_noAceptar = document.getElementById("button_noContinuar");
-    
 
     fetch("./../../data/logic/lugarLogic.php").then(response => response.json()).then(data => {
         if (data.correcto && data.lugares) {
 
             const lugares = data.lugares;
-
             lugares.forEach(data => {
                 let li = document.createElement("li");
 
@@ -34,7 +32,7 @@ window.addEventListener("load", function () {
                         contenedorPaquete.innerHTML = "";
                         paquetes.forEach(data => {
                             let div = document.createElement("div");
-                            let divTxt = document.createTextNode(data.nombre_paquete);
+                            let divTxt = document.createTextNode(data.nombre_paquete + " Precio: " + data.precio);
                             div.appendChild(divTxt);
                             div.setAttribute("id", "paq" + paqcont);
                             paqcont++;

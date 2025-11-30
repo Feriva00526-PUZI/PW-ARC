@@ -35,7 +35,7 @@ window.addEventListener("load", function () {
                         contenedorPaquete.innerHTML = "";
                         //paquetes.forEach(data => {
                             let div = document.createElement("div");
-                            let divTxt = document.createTextNode("Reservar");
+                            let divTxt = document.createTextNode("Reservar,"  + " Precio: " + data.precio_boleto);
                             div.appendChild(divTxt);
                             div.setAttribute("id", "paq" + paqcont);
                             paqcont++;
@@ -43,12 +43,15 @@ window.addEventListener("load", function () {
                             contenedorPaquete.appendChild(div);
                             const imgMapa = document.getElementById("imgMapa");
                             imgMapa.src = `./../../media/images/events/${data.id_evento}.jpg`;
+                            let con = 0;
                             div.addEventListener("click", function(){
                                 fecha.innerText = "Fecha del evento: " + data.fecha_evento;
                                 hora.innerText = "Hora del evento: " + data.hora_evento;
                                 modal.showModal();
-                                btn_aceptar.addEventListener("click", () => {
                                 
+                                btn_aceptar.addEventListener("click", () => {
+                                    console.log(con);
+                                if(con == 0){
                                 const miArray = JSON.parse(usuarioSession);
                                 let id_evento = data.id_evento;
                                 let id_cliente = miArray.id_cliente; 
@@ -67,7 +70,8 @@ window.addEventListener("load", function () {
                                     }).then(response => response.json()).then(data => {
                                         console.log("funcionó??"+ data.mensaje);
                                     });
-                                modal.close();
+                                    con++;
+                                modal.close();}
     //});
                                 
                             //});
