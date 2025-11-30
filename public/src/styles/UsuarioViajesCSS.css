@@ -2,15 +2,19 @@
     display: grid;
     grid-template-columns: 1.2fr 2fr;
     grid-template-rows: auto 300px auto;
-    grid-template-areas: "viajes        titulo"
-        "buscador      ImgMapa"
-        "buscador      paquete";
+    grid-template-areas: "viajes        titulo  titulo"
+                         "buscador      ImgMapa desc"
+                         "buscador      paquete .";
     grid-gap: 5px;
     width: 95%;
 }
 
 #imgMapa {
     height: 100%;
+}
+#desc{
+    grid-area: desc;
+    
 }
 
 #viajes {

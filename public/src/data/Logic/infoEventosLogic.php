@@ -5,6 +5,8 @@ $lugarDAO = new infoEventosDAO();
 $RUTA_IMG_ESTANDAR = "./../../media/images/lugares/";
 $RUTA_IMG_ESTANDAR2 = "./../../media/images/events/";
 $RUTA_IMG_ESTANDAR3 = "./../../media/images/paquetes/";
+$RUTA_IMG_ESTANDAR4 = "./../../media/images/agencias/";
+$RUTA_IMG_ESTANDAR5 = "./../../media/images/organizers/";
 $RUTA_FISICA_GUARDADO = __DIR__ . "/../../media/images/lugares/";
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
@@ -37,6 +39,49 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                 break;
             case 'query10':
                 $resultados = $lugarDAO->getViajesMenosPopulares();
+                break;
+            case 'query11':
+                $resultados = $lugarDAO->getViajesMejorRemunerados();
+                break;
+            case 'query12':
+                $resultados = $lugarDAO->getViajesPeorRemunerados();
+                break;
+            case 'query13':
+                $resultados = $lugarDAO->getAgenciasMejorRemuneradas();
+                break;
+            case 'query14':
+                $resultados = $lugarDAO->getAgenciasPeorRemuneradas();
+                break;
+            case 'query15':
+                $resultados = $lugarDAO->getOrganizadorasMejorRemuneradas();
+                break;
+            case 'query16':
+                $resultados = $lugarDAO->getOrganizadorasPeorRemuneradas();
+                break;
+            case 'query17':
+                $resultados = $lugarDAO->getEventosMejorRemunerados();
+                break;
+            case 'query18':
+                $resultados = $lugarDAO->getEventosPeorRemunerados();
+                break;
+            case 'queryX1':
+                $resultados = $lugarDAO->getLugares();
+                break;
+            case 'queryX2':
+                $id_lugar = isset($_GET['id_lugar']) ? (int)$_GET['id_lugar'] : 0;
+                $resultados = $lugarDAO->getEventosPorLugar($id_lugar);
+                break;
+            case 'queryX3':
+                $id_evento = isset($_GET['id_evento']) ? (int)$_GET['id_evento'] : 0;
+                $resultados = $lugarDAO->getOrganizadoraPorEvento($id_evento);
+                break;
+            case 'queryX4':
+                $id_organizadora = isset($_GET['id_organizadora']) ? (int)$_GET['id_organizadora'] : 0;
+                $resultados = $lugarDAO->getOrganizadoraFiltrada($id_organizadora);
+                break;
+            case 'queryX5':
+                $id_organizadora = isset($_GET['id_organizadora']) ? (int)$_GET['id_organizadora'] : 0;
+                $resultados = $lugarDAO->getDetalleOrganizadora($id_organizadora);
                 break;
             case 'query5':
                 $count = $lugarDAO->getAsistenciasCompletadas();
@@ -78,7 +123,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             } else {
                 $respuesta = ['correcto' => false, 'lugares' => []];
             }
-        } else if ("query3" === $query || "query4" === $query) {
+        } else if ("query3" === $query || "query4" === $query || "query17" === $query || "query18" === $query) {
             if ($resultados !== null && !empty($resultados)) {
                 foreach ($resultados as &$item) {
                     $item['imagen_url'] = $RUTA_IMG_ESTANDAR2 . $item['imagen_url'];
@@ -87,7 +132,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             } else {
                 $respuesta = ['correcto' => false, 'lugares' => []];
             }
-        } else if ("query9" === $query || "query10" === $query) {
+        } else if ("query9" === $query || "query10" === $query || "query11" === $query || "query12" === $query) {
             if ($resultados !== null && !empty($resultados)) {
                 foreach ($resultados as &$item) {
                     $item['imagen_url'] = $RUTA_IMG_ESTANDAR3 . $item['imagen_url'];
@@ -95,6 +140,58 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                 $respuesta = ['correcto' => true, 'viajes' => $resultados];
             } else {
                 $respuesta = ['correcto' => false, 'viajes' => []];
+            }
+        } else if ("query13" === $query || "query14" === $query) {
+            if ($resultados !== null && !empty($resultados)) {
+                foreach ($resultados as &$item) {
+                    $item['imagen_url'] = $RUTA_IMG_ESTANDAR4 . $item['imagen_url'];
+                }
+                $respuesta = ['correcto' => true, 'agencias' => $resultados];
+            } else {
+                $respuesta = ['correcto' => false, 'agencias' => []];
+            }
+        } else if ("query15" === $query || "query16" === $query) {
+            if ($resultados !== null && !empty($resultados)) {
+                foreach ($resultados as &$item) {
+                    $item['imagen_url'] = $RUTA_IMG_ESTANDAR5 . $item['imagen_url'];
+                }
+                $respuesta = ['correcto' => true, 'organizadoras' => $resultados];
+            } else {
+                $respuesta = ['correcto' => false, 'organizadoras' => []];
+            }
+        } else if ("queryX1" === $query) {
+            if ($resultados !== null && !empty($resultados)) {
+                $respuesta = ['correcto' => true, 'lugares' => $resultados];
+            } else {
+                $respuesta = ['correcto' => false, 'lugares' => []];
+            }
+        } else if ("queryX2" === $query) {
+            if ($resultados !== null && !empty($resultados)) {
+                $respuesta = ['correcto' => true, 'eventos' => $resultados];
+            } else {
+                $respuesta = ['correcto' => false, 'eventos' => []];
+            }
+        } else if ("queryX3" === $query) {
+            if ($resultados !== null && !empty($resultados)) {
+                $respuesta = ['correcto' => true, 'organizadora' => $resultados];
+            } else {
+                $respuesta = ['correcto' => false, 'organizadora' => null, 'mensaje' => 'Organizadora no encontrada.'];
+            }
+        } else if ("queryX4" === $query) {
+            if ($resultados !== null && !empty($resultados)) {
+                foreach ($resultados as &$item) {
+                    $item['imagen_url'] = $RUTA_IMG_ESTANDAR5 . $item['imagen_url'];
+                }
+                $respuesta = ['correcto' => true, 'organizadoras' => $resultados];
+            } else {
+                $respuesta = ['correcto' => false, 'organizadoras' => []];
+            }
+        } else if ("queryX5" === $query) {
+            if ($resultados !== null && !empty($resultados)) {
+                $resultados['imagen_url'] = $RUTA_IMG_ESTANDAR5 . $resultados['imagen_url'];
+                $respuesta = ['correcto' => true, 'organizadora' => $resultados];
+            } else {
+                $respuesta = ['correcto' => false, 'organizadora' => null, 'mensaje' => 'Detalle de organizadora no encontrado.'];
             }
         }
         echo json_encode($respuesta);

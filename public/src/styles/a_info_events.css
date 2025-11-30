@@ -76,6 +76,7 @@
 }
 
 .minicard {
+    cursor: pointer;
     background-color: #caccd4;
     border-left: 5px solid #023E8A;
     border-radius: 8px;
@@ -269,4 +270,80 @@ option {
 
 .maxicard-dato.dato-full {
     grid-column: 1 / -1;
+}
+
+.overlay4 .maxicard {
+    position: sticky;
+    top: 150px;
+}
+
+.filter-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 5px;
+    width: 100%;
+}
+
+.small-select {
+    width: calc(33.33% - 10px);
+    padding: 8px;
+}
+
+@media (max-width: 500px) {
+    .cuadricula {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto auto auto;
+        grid-template-areas:
+            "overlay1"
+            "overlay2"
+            "overlayEx"
+            "overlay3"
+            "overlay4";
+        gap: 10px;
+    }
+
+    .overlay1 {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .minicard {
+        text-align: center;
+        margin-bottom: 0;
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+
+    .cards {
+        min-height: 150px;
+        grid-template-columns: 1fr 1.5fr;
+        gap: 10px;
+    }
+
+    .cards .div-info-card h2 {
+        font-size: 1.1rem;
+    }
+
+    .filter-container {
+        flex-direction: column;
+        gap: 5px;
+        padding: 0;
+    }
+
+    .small-select {
+        width: 100%;
+        margin-bottom: 0;
+    }
+
+    .maxicard-info-grid {
+        grid-template-columns: 1fr;
+        gap: 5px;
+    }
+
+    .maxicard-dato.dato-full {
+        grid-column: 1 / 1;
+    }
 }

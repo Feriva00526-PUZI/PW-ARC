@@ -18,12 +18,15 @@
 <body>
     <main class="box">
         <div id="viajes">Lugares</div>
-        <!--<div id="titulo">Titulo del Lugar seleccionado</div>-->
+        <div id="titulo">Titulo del Lugar seleccionado</div>
 
         <div id="containerImgMapa">
             <img src="./../../media/images/layout/imgLayout4.jpg" id="imgMapa">
             <!-- <iframe src="#" frameborder="1" width="200" height="200"></iframe>-->
+             <div id="desc">.</div>
         </div>
+        
+        
         <div id="paquete">
             <!-- <div id="paq1" class="cards">paquete1</div>
             <div id="paq2" class="cards">paquete2</div>
@@ -67,8 +70,9 @@
         <dialog class="dialog_select" id="fecha_select">
             <h3 class="dialog_h3">Confirma tu reservacion</h3>
             <br>
+            <p id="descripcion"></p>
             <input type="date" value="2025-12-23" id="fecha"><br>
-            <input type="time" name="" id="hora">
+            <input type="time" name="" id="hora" value="00:00">
             <button class="button_ls_close" id="button_continuar">
                 <p class="dialog_text_btn_close">Aceptar</p>
             </button><br>
