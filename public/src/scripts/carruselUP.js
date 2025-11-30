@@ -1,6 +1,7 @@
 export async function crearCarrusel({
     containerSelector,
-    dataFile,
+    dataFile = null,
+    dataArray = null,
     type = "paquete",
     title = "Recomendados",
     filtro = null,
@@ -12,12 +13,26 @@ export async function crearCarrusel({
     }
 
     // --- Cargar datos ---
-    //let baseDataPath = window.location.pathname.includes("/html/") ? "./../data/" : "./data/";
-    let baseDataPath = "./../../data/";
-    const res = await fetch(`${baseDataPath}${dataFile}`);
-    if (!res.ok) throw new Error(`Error cargando JSON: ${dataFile}`);
-    let data = await res.json();
-    if (!Array.isArray(data)) data = data.paquetes || data.eventos || [];
+    let data = [];
+    
+    // Si se proporciona un array directamente, usarlo
+    if (dataArray && Array.isArray(dataArray)) {
+        data = dataArray;
+    } 
+    // Si se proporciona un archivo, cargarlo
+    else if (dataFile) {
+        let baseDataPath = "./../../data/";
+        const res = await fetch(`${baseDataPath}${dataFile}`);
+        if (!res.ok) throw new Error(`Error cargando JSON: ${dataFile}`);
+        let jsonData = await res.json();
+        if (!Array.isArray(jsonData)) jsonData = jsonData.paquetes || jsonData.eventos || [];
+        data = jsonData;
+    } 
+    // Si no hay ni array ni archivo, error
+    else {
+        throw new Error("Debe proporcionar 'dataFile' o 'dataArray'");
+    }
+    
     if (filtro) data = data.filter(item => Object.entries(filtro).every(([k, v]) => item[k] === v));
 
     // --- Crear tarjetas ---
@@ -26,7 +41,22 @@ export async function crearCarrusel({
         let rutaImagen, nombre, descripcion;
 
         if (type === "paquete") {
-            rutaImagen = `./../../media/images/lugares/${getRandomImage(imagenes)}`;
+            // Si imagen_url ya es una ruta completa (viene de la BD), usarla directamente
+            if (imagenes && typeof imagenes === 'string' && (imagenes.startsWith('./') || imagenes.startsWith('../'))) {
+                rutaImagen = imagenes;
+            } 
+            // Si es un array de imágenes (formato JSON antiguo)
+            else if (Array.isArray(imagenes) && imagenes.length > 0) {
+                rutaImagen = `./../../media/images/lugares/${getRandomImage(imagenes)}`;
+            }
+            // Si es un string simple (nombre de archivo)
+            else if (typeof imagenes === 'string' && imagenes.length > 0) {
+                rutaImagen = `./../../media/images/lugares/${imagenes}`;
+            }
+            // Fallback a imagen por defecto
+            else {
+                rutaImagen = './../../media/images/error.jpg';
+            }
             nombre = item.nombre_paquete;
             descripcion = item.descripcion_paquete;
         }
