@@ -27,6 +27,7 @@ window.addEventListener("load", function () {
                 li.addEventListener("click", function () {
                     let id_lugar = data.id_lugar;
                     console.log(id_lugar);
+                    
                     fetch(`./../../data/logic/PaquetesLogic.php?id_lugar=${id_lugar}`).then(response => response.json()).then(data => {
                         //if (data.correcto && data.paquete) {
                         const paquetes = data.paquetes;
@@ -41,9 +42,12 @@ window.addEventListener("load", function () {
                             contenedorPaquete.appendChild(div);
                             const imgMapa = document.getElementById("imgMapa");
                             imgMapa.src = `./../../media/images/lugares/limg${data.id_lugar}.jpg`;
+                            let con = 0;
                             div.addEventListener("click", function(){
                                 modal.showModal();
                                 btn_aceptar.addEventListener("click", () => {
+                                    console.log(con);
+                                    if(con == 0){
                                 let fecha = document.getElementById("fecha");
                                 console.log(fecha.value);
                                 let hora = document.getElementById("hora");
@@ -67,7 +71,8 @@ window.addEventListener("load", function () {
                                     }).then(response => response.json()).then(data => {
                                         console.log("funcionó??"+ data.mensaje);
                                     });
-                                modal.close();
+                                    con++;
+                                modal.close();}
     });
                                 
                             });
