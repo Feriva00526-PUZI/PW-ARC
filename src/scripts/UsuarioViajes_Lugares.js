@@ -11,6 +11,7 @@ window.addEventListener("load", function () {
     let modal = document.getElementById("fecha_select");
     let btn_aceptar = document.getElementById("button_continuar");
     let btn_noAceptar = document.getElementById("button_noContinuar");
+    let descripcion = document.getElementById("descripcion");
 
     fetch("./../../data/logic/lugarLogic.php").then(response => response.json()).then(data => {
         if (data.correcto && data.lugares) {
@@ -33,9 +34,9 @@ window.addEventListener("load", function () {
                         paquetes.forEach(data => {
                             let div = document.createElement("div");
                             let divTxt = document.createTextNode(data.nombre_paquete + " Precio: " + data.precio);
-                            let divTxt2 = document.createTextNode(" \nDescripcion: " + data.descripcion_paquete);
+                            //let divTxt2 = document.createTextNode(" \nDescripcion: " + data.descripcion_paquete);
                             div.appendChild(divTxt);
-                            div.appendChild(divTxt2);
+                            //div.appendChild(divTxt2);
                             div.setAttribute("id", "paq" + paqcont);
                             paqcont++;
                             div.setAttribute("class", "minicard");
@@ -44,6 +45,7 @@ window.addEventListener("load", function () {
                             imgMapa.src = `./../../media/images/lugares/limg${data.id_lugar}.jpg`;
                             let con = 0;
                             div.addEventListener("click", function(){
+                                descripcion.innerText = data.descripcion_paquete;
                                 modal.showModal();
                                 btn_aceptar.addEventListener("click", () => {
                                     console.log(con);
