@@ -33,10 +33,10 @@ window.addEventListener("load", function () {
                         contenedorPaquete.innerHTML = "";
                         paquetes.forEach(data => {
                             let div = document.createElement("div");
-                            let divTxt = document.createTextNode(data.nombre_paquete + " Precio: " + data.precio);
-                            //let divTxt2 = document.createTextNode(" \nDescripcion: " + data.descripcion_paquete);
+                            let divTxt = document.createTextNode(data.nombre_paquete);
+                            let divTxt2 = document.createTextNode(" Precio: " + data.precio);
                             div.appendChild(divTxt);
-                            //div.appendChild(divTxt2);
+                            div.appendChild(divTxt2);
                             div.setAttribute("id", "paq" + paqcont);
                             paqcont++;
                             div.setAttribute("class", "minicard");
