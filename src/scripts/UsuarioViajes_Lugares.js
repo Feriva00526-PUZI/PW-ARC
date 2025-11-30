@@ -19,7 +19,7 @@ window.addEventListener("load", function () {
             lugares.forEach(data => {
                 let li = document.createElement("li");
 
-                let liTxt = document.createTextNode(data.nombre_lugar);
+                let liTxt = document.createTextNode(data.nombre_lugar + ", " + data.descripcion);
                 li.appendChild(liTxt);
                 li.setAttribute("class", "minicard");
                 li.addEventListener("click", function () {
@@ -33,7 +33,9 @@ window.addEventListener("load", function () {
                         paquetes.forEach(data => {
                             let div = document.createElement("div");
                             let divTxt = document.createTextNode(data.nombre_paquete + " Precio: " + data.precio);
+                            let divTxt2 = document.createTextNode(" \nDescripcion: " + data.descripcion_paquete);
                             div.appendChild(divTxt);
+                            div.appendChild(divTxt2);
                             div.setAttribute("id", "paq" + paqcont);
                             paqcont++;
                             div.setAttribute("class", "minicard");
