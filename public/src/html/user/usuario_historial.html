@@ -66,6 +66,75 @@
   </div>
     
  </main>
+
+ <!-- Diálogos para Historial de Viajes -->
+ <dialog class="dialog_select" id="confirm_cancel_viaje">
+     <h3 class="dialog_h3">¿Seguro que deseas cancelar este viaje?</h3>
+     <br>
+     <button class="button_ls_close" id="button_cancel_viaje_revert">
+         <p class="dialog_text_btn_close">Cancelar</p>
+     </button><br>
+     <button class="button_ls_close" id="button_cancel_viaje_proceder">
+         <p class="dialog_text_btn_close">Confirmar</p>
+     </button>
+ </dialog>
+ <dialog class="dialog_select" id="descripcion_viaje">
+     <h3 class="dialog_h3" id="descripcion_viaje_titulo">Descripción del Viaje</h3>
+     <p id="descripcion_viaje_contenido" style="text-align: left; margin: 15px 0; line-height: 1.6;"></p>
+     <br>
+     <button class="button_ls_close" id="button_descripcion_viaje_close">
+         <p class="dialog_text_btn_close">Cerrar</p>
+     </button><br>
+ </dialog>
+ <dialog class="dialog_select" id="error_cancel_viaje">
+     <h3 class="dialog_h3" id="error_cancel_viaje_mensaje">Se produjo un error al cancelar el viaje</h3>
+     <br>
+     <button class="button_ls_close" id="button_error_cancel_viaje_close">
+         <p class="dialog_text_btn_close">Aceptar</p>
+     </button><br>
+ </dialog>
+ <dialog class="dialog_select" id="success_cancel_viaje">
+     <h3 class="dialog_h3">El viaje ha sido cancelado correctamente.</h3>
+     <br>
+     <button class="button_ls_close" id="button_success_cancel_viaje_close">
+         <p class="dialog_text_btn_close">Aceptar</p>
+     </button><br>
+ </dialog>
+
+ <!-- Diálogos para Historial de Reservaciones -->
+ <dialog class="dialog_select" id="confirm_cancel_reservacion">
+     <h3 class="dialog_h3">¿Seguro que deseas cancelar esta reservación?</h3>
+     <br>
+     <button class="button_ls_close" id="button_cancel_reservacion_revert">
+         <p class="dialog_text_btn_close">Cancelar</p>
+     </button><br>
+     <button class="button_ls_close" id="button_cancel_reservacion_proceder">
+         <p class="dialog_text_btn_close">Confirmar</p>
+     </button>
+ </dialog>
+ <dialog class="dialog_select" id="descripcion_reservacion">
+     <h3 class="dialog_h3" id="descripcion_reservacion_titulo">Descripción de la Reservación</h3>
+     <p id="descripcion_reservacion_contenido" style="text-align: left; margin: 15px 0; line-height: 1.6;"></p>
+     <br>
+     <button class="button_ls_close" id="button_descripcion_reservacion_close">
+         <p class="dialog_text_btn_close">Cerrar</p>
+     </button><br>
+ </dialog>
+ <dialog class="dialog_select" id="error_cancel_reservacion">
+     <h3 class="dialog_h3" id="error_cancel_reservacion_mensaje">Se produjo un error al cancelar la reservación</h3>
+     <br>
+     <button class="button_ls_close" id="button_error_cancel_reservacion_close">
+         <p class="dialog_text_btn_close">Aceptar</p>
+     </button><br>
+ </dialog>
+ <dialog class="dialog_select" id="success_cancel_reservacion">
+     <h3 class="dialog_h3">La reservación ha sido cancelada correctamente.</h3>
+     <br>
+     <button class="button_ls_close" id="button_success_cancel_reservacion_close">
+         <p class="dialog_text_btn_close">Aceptar</p>
+     </button><br>
+ </dialog>
+
 </body>
 
 </html>
