@@ -12,19 +12,21 @@ window.addEventListener("load", function () {
     let btn_aceptar = document.getElementById("button_continuar");
     let btn_noAceptar = document.getElementById("button_noContinuar");
     let descripcion = document.getElementById("descripcion");
+    let tit = document.getElementById("titulo");
+    let desc = document.getElementById("desc");
 
-    fetch("./../../data/logic/lugarLogic.php").then(response => response.json()).then(data => {
-        if (data.correcto && data.lugares) {
+    fetch("./../../data/logic/lugarLogic.php").then(response => response.json()).then(data1 => {
+        if (data1.correcto && data1.lugares) {
 
-            const lugares = data.lugares;
-            lugares.forEach(data => {
+            const lugares = data1.lugares;
+            lugares.forEach(data1 => {
                 let li = document.createElement("li");
 
-                let liTxt = document.createTextNode(data.nombre_lugar + ", " + data.descripcion);
+                let liTxt = document.createTextNode(data1.nombre_lugar);
                 li.appendChild(liTxt);
                 li.setAttribute("class", "minicard");
                 li.addEventListener("click", function () {
-                    let id_lugar = data.id_lugar;
+                    let id_lugar = data1.id_lugar;
                     console.log(id_lugar);
                     
                     fetch(`./../../data/logic/PaquetesLogic.php?id_lugar=${id_lugar}`).then(response => response.json()).then(data => {
@@ -32,20 +34,26 @@ window.addEventListener("load", function () {
                         const paquetes = data.paquetes;
                         contenedorPaquete.innerHTML = "";
                         paquetes.forEach(data => {
-                            let div = document.createElement("div");
+                            tit.innerText = data1.nombre_lugar;
+                                desc.innerText = data1.descripcion;
+                                console.log(tit.innerText);
+                            let div = document.createElement("div"); /*
                             let divTxt = document.createTextNode(data.nombre_paquete);
                             let divTxt2 = document.createTextNode(" Precio: " + data.precio);
                             div.appendChild(divTxt);
                             div.appendChild(divTxt2);
-                            div.setAttribute("id", "paq" + paqcont);
+                            div.setAttribute("id", "paq" + paqcont);*/
                             paqcont++;
-                            div.setAttribute("class", "minicard");
+                            //div.setAttribute("class", "minicard");
+                            div.innerHTML = `<div class="minicard"> <p style="font-size: 20px">${data.nombre_paquete}</p>
+                            <br> <p style="font-style: italic">Precio: $${data.precio}</p> </div>`;
                             contenedorPaquete.appendChild(div);
                             const imgMapa = document.getElementById("imgMapa");
                             imgMapa.src = `./../../media/images/lugares/limg${data.id_lugar}.jpg`;
                             let con = 0;
                             div.addEventListener("click", function(){
                                 descripcion.innerText = data.descripcion_paquete;
+                                
                                 modal.showModal();
                                 btn_aceptar.addEventListener("click", () => {
                                     console.log(con);

@@ -13,6 +13,8 @@ window.addEventListener("load", function () {
     let btn_noAceptar = document.getElementById("button_noContinuar");
     let fecha = document.getElementById("Fecha");
     let hora = document.getElementById("Hora");
+    let tit = document.getElementById("titulo");
+    let desc = document.getElementById("desc");
 
     fetch("./../../data/logic/eventoLogic.php").then(response => response.json()).then(data => {
         if (data.correcto && data.eventos) {
@@ -20,6 +22,7 @@ window.addEventListener("load", function () {
             const eventos = data.eventos;
 
             eventos.forEach(data => {
+
                 let li = document.createElement("li");
 
                 let liTxt = document.createTextNode(data.nombre_evento + ", " + data.descripcion);
@@ -27,6 +30,8 @@ window.addEventListener("load", function () {
                 li.appendChild(liTxt);
                 li.setAttribute("class", "minicard");
                 li.addEventListener("click", function () {
+                    tit.innerText = data.nombre_evento;
+                    desc.innerText = data.descripcion;
                     //let id_evento = data.id_evento;
                     //console.log(id_lugar);
                     //fetch(`./../../data/logic/PaquetesLogic.php?id_lugar=${id_lugar}`).then(response => response.json()).then(data => {
@@ -35,11 +40,13 @@ window.addEventListener("load", function () {
                         contenedorPaquete.innerHTML = "";
                         //paquetes.forEach(data => {
                             let div = document.createElement("div");
-                            let divTxt = document.createTextNode("Reservar,"  + " Precio: " + data.precio_boleto);
-                            div.appendChild(divTxt);
-                            div.setAttribute("id", "paq" + paqcont);
+                            //let divTxt = document.createTextNode("Reservar,"  + " Precio: " + data.precio_boleto);
+                            //div.appendChild(divTxt);
+                            //div.setAttribute("id", "paq" + paqcont);
                             paqcont++;
-                            div.setAttribute("class", "minicard");
+                            //div.setAttribute("class", "minicard");
+                            div.innerHTML = `<div class="minicard"> <p style="font-size: 20px">Reservar</p>
+                            <br> <p style="font-style: italic">Precio: $${data.precio_boleto}</p> </div>`;
                             contenedorPaquete.appendChild(div);
                             const imgMapa = document.getElementById("imgMapa");
                             imgMapa.src = `./../../media/images/events/${data.id_evento}.jpg`;
