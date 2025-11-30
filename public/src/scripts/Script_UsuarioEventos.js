@@ -49,7 +49,7 @@ window.addEventListener("load", function () {
                             <br> <p style="font-style: italic">Precio: $${data.precio_boleto}</p> </div>`;
                     contenedorPaquete.appendChild(div);
                     const imgMapa = document.getElementById("imgMapa");
-                    imgMapa.src = `./../../media/images/events/${data.id_evento}.jpg`;
+                    imgMapa.src = `./../../media/images/events/eimg${data.id_evento}.png`;
                     let con = 0;
                     div.addEventListener("click", function () {
                         fecha.innerText = "Fecha del evento: " + data.fecha_evento;
