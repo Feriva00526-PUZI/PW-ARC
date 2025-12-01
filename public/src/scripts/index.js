@@ -66,6 +66,36 @@ window.addEventListener("load", function () {
             btn_is_r.addEventListener("click", function () {
                 select_login.showModal();
             });
+
+            const close_select_login = document.getElementById("close_select_login");
+            close_select_login.addEventListener("click", function () {
+                select_login.close();
+            });
+
+            const btnUsuario = document.getElementById("btn_usuario");
+            const btnAdmin = document.getElementById("btn_admin");
+            const btnOrganizador = document.getElementById("btn_organizador");
+            const btnAgencia = document.getElementById("btn_agencia");
+
+            btnUsuario.addEventListener("click", function () {
+                sessionStorage.setItem("tipo_usuario", "1");
+                window.location.href = "./src/html/ingreso.html";
+            });
+
+            btnAdmin.addEventListener("click", function () {
+                sessionStorage.setItem("tipo_usuario", "2");
+                window.location.href = "./src/html/ingreso.html";
+            });
+
+            btnOrganizador.addEventListener("click", function () {
+                sessionStorage.setItem("tipo_usuario", "3");
+                window.location.href = "./src/html/ingreso.html";
+            });
+
+            btnAgencia.addEventListener("click", function () {
+                sessionStorage.setItem("tipo_usuario", "4");
+                window.location.href = "./src/html/ingreso.html";
+            });
         });
 
     /*Copiar y pegar eso para añadir el footer en la pagina que sea */
@@ -88,42 +118,46 @@ window.addEventListener("load", function () {
             f_general.style.backgroundPosition = "50% 80%";
         });
 
-    const select_login = document.getElementById("select_login");
-    const close_select_login = document.getElementById("close_select_login");
-    close_select_login.addEventListener("click", function () {
-        select_login.close();
-    });
 
-    const btnUsuario = document.getElementById("btn_usuario");
-    const btnAdmin = document.getElementById("btn_admin");
-    const btnOrganizador = document.getElementById("btn_organizador");
-    const btnAgencia = document.getElementById("btn_agencia");
 
-    btnUsuario.addEventListener("click", function () {
-        sessionStorage.setItem("tipo_usuario", "1");
-        window.location.href = "./src/html/ingreso.html";
-    });
-
-    btnAdmin.addEventListener("click", function () {
-        sessionStorage.setItem("tipo_usuario", "2");
-        window.location.href = "./src/html/ingreso.html";
-    });
-
-    btnOrganizador.addEventListener("click", function () {
-        sessionStorage.setItem("tipo_usuario", "3");
-        window.location.href = "./src/html/ingreso.html";
-    });
-
-    btnAgencia.addEventListener("click", function () {
-        sessionStorage.setItem("tipo_usuario", "4");
-        window.location.href = "./src/html/ingreso.html";
-    });
-
+    /*
     crearCarrusel({
         containerSelector: "#carrusel-paquetes",
         dataFile: "paquetes.json",
         type: "paquete",
         title: "Paquetes destacados"
     });
+    */
 
+    // Cargar lugares más populares desde la base de datos
+    fetch("./src/data/Logic/CarruselLogic.php")
+        .then(response => response.json())
+        .then(data => {
+            if (data.correcto && data.lugares && data.lugares.length > 0) {
+                // Convertir los lugares al formato que espera el carrusel
+                const lugaresFormateados = data.lugares.map(lugar => ({
+                    nombre_paquete: lugar.nombre_lugar,
+                    descripcion_paquete: lugar.descripcion || "Lugar destacado",
+                    imagen_url: lugar.imagen_url
+                }));
+
+                // Crear el carrusel con los datos de la base de datos
+                crearCarrusel({
+                    containerSelector: "#carrusel-paquetes",
+                    dataArray: lugaresFormateados,
+                    type: "paquete",
+                    title: "Lugares más populares"
+                });
+            } else {
+                console.error("Error al cargar lugares populares:", data.mensaje || "No se encontraron lugares");
+                // Fallback: mostrar mensaje o carrusel vacío
+                document.getElementById("carrusel-paquetes").innerHTML =
+                    "<p style='text-align: center; padding: 20px;'>No hay lugares populares disponibles en este momento.</p>";
+            }
+        })
+        .catch(error => {
+            console.error("Error al cargar el carrusel:", error);
+            document.getElementById("carrusel-paquetes").innerHTML =
+                "<p style='text-align: center; padding: 20px;'>Error al cargar los lugares populares.</p>";
+        });
 });
