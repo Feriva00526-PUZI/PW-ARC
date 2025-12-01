@@ -11,7 +11,7 @@ class IndexCarruselDAO
         $this->conexion = $conn->getConexion();
     }
 
-    public function getLugaresMasPopulares($limite = 10)
+    public function getLugaresMasPopulares($limite = 30)
     {
         try {
             $sql = "SELECT 

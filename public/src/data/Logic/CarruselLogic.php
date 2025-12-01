@@ -7,8 +7,8 @@ $RUTA_IMG_ESTANDAR = "./../../media/images/lugares/";
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     try {
-        // Obtener los 10 lugares más populares
-        $lugares = $carruselDAO->getLugaresMasPopulares(10);
+        // Obtener los 30 lugares más populares
+        $lugares = $carruselDAO->getLugaresMasPopulares(30);
         
         if ($lugares != null && !empty($lugares)) {
             // Formatear las URLs de las imágenes
