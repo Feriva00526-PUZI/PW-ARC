@@ -23,15 +23,33 @@
   border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
+img {
+  max-height: 550px;
+}
+
 /* ---------- ANIMACIONES ---------- */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes popIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 /* ---------- FORMULARIO ---------- */
@@ -53,11 +71,12 @@ form {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  height: 100%;
 }
 
 .event-image-desc img {
   width: 100%;
-  max-height: 320px;
+  height: 100%;
   object-fit: cover;
   border-radius: var(--radius);
   box-shadow: var(--shadow);
@@ -68,6 +87,18 @@ form {
 .event-image-desc img:hover {
   transform: scale(1.03);
   filter: brightness(0.9);
+}
+
+#package-desc {
+  height: 100%;
+}
+
+#event-desc {
+  height: 100%;
+}
+
+#event-img {
+  height: 100%;
 }
 
 /* ---------- SECCIÓN DERECHA: DETALLES ---------- */
@@ -243,7 +274,8 @@ textarea:focus {
   background: var(--primary);
   color: var(--white);
   border-radius: var(--radius);
-  height: 180px;
+  height: 100%;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -267,12 +299,11 @@ textarea:focus {
   main {
     padding: 1rem;
   }
+
   .box {
     padding: 2rem;
   }
-  .event-image-desc img {
-    max-height: 260px;
-  }
+
 }
 
 /* Tablets verticales y móviles grandes */
@@ -280,9 +311,11 @@ textarea:focus {
   .box-events {
     grid-template-columns: 1fr;
   }
+
   .calendar-row {
     grid-column: 1;
   }
+
   .event-cards {
     grid-column: 1;
   }
@@ -334,5 +367,350 @@ textarea:focus {
 
   .open-calendar {
     font-size: 0.95rem;
+  }
+}
+
+/* =========================================
+   1. ESTILOS DEL MODAL (Antes inyectados por JS)
+   ========================================= */
+:root {
+  --modal-bg: #ffffff;
+  --modal-overlay: rgba(15, 23, 42, 0.65);
+  --modal-border: #e2e8f0;
+  --modal-radius: 16px;
+  --modal-primary: #2563eb;
+  --modal-text: #1e293b;
+  --modal-text-light: #64748b;
+}
+
+.app-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.25s ease;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.app-modal.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.app-modal__overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--modal-overlay);
+  backdrop-filter: blur(5px);
+}
+
+.app-modal__content {
+  position: relative;
+  background: var(--modal-bg);
+  width: 90%;
+  max-width: 600px;
+  max-height: 85vh;
+  border-radius: var(--modal-radius);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  transform: scale(0.95);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.app-modal.active .app-modal__content {
+  transform: scale(1);
+}
+
+.app-modal__header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--modal-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+}
+
+.app-modal__header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--modal-text);
+}
+
+.app-modal__close {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--modal-text-light);
+  cursor: pointer;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.app-modal__close:hover {
+  background: #f1f5f9;
+  color: #ef4444;
+}
+
+.app-modal__body {
+  padding: 1.5rem;
+  overflow-y: auto;
+}
+
+.modal-search {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--modal-border);
+  border-radius: 10px;
+  font-size: 1rem;
+  background-color: #f8fafc;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.modal-search:focus {
+  border-color: var(--modal-primary);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.selection-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.selection-card {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--modal-border);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: #fff;
+  align-items: flex-start;
+}
+
+.selection-card:hover {
+  border-color: var(--modal-primary);
+  background-color: #eff6ff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.selection-card__img {
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  object-fit: cover;
+  background-color: #f1f5f9;
+  border: 1px solid #e2e8f0;
+}
+
+.selection-card__info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.selection-card__title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--modal-text);
+}
+
+.selection-card__desc {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--modal-text-light);
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.app-modal__actions {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--modal-border);
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  background: #fafafa;
+}
+
+.btn-modal {
+  padding: 0.6rem 1.25rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: 0.2s;
+}
+
+.btn-modal--primary {
+  background: var(--modal-primary);
+  color: white;
+}
+
+.btn-modal--primary:hover {
+  background: #1d4ed8;
+}
+
+.btn-modal--secondary {
+  background: white;
+  border: 1px solid var(--modal-border);
+  color: var(--modal-text);
+}
+
+.btn-modal--secondary:hover {
+  background: #f1f5f9;
+}
+
+/* =========================================
+   2. ESTILOS OVERLAY IMAGEN (Hover)
+   ========================================= */
+.img-wrapper-event {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  border-radius: 8px;
+  cursor: pointer;
+  height: 100%;
+}
+
+.img-hover-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  color: white;
+  font-weight: 600;
+  text-align: center;
+  pointer-events: none;
+  padding: 10px;
+}
+
+.img-wrapper-event:hover .img-hover-overlay {
+  opacity: 1;
+}
+
+/* =========================================
+   ESTILOS TOOLTIPS CORREGIDOS (Wrapper)
+   ========================================= */
+
+/* El contenedor que JS creó alrededor del input */
+.tooltip-container {
+  position: relative;
+  /* Necesario para posicionar el tooltip */
+  display: block;
+  /* Ocupa el espacio como bloque */
+  width: 100%;
+  /* Asegura que no rompa tu diseño */
+  height: 100%;
+}
+
+/* --- LÓGICA DEL TOOLTIP (CAJA NEGRA) --- */
+.tooltip-container[data-tooltip]:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+
+  /* Ubicación: Arriba del input */
+  bottom: 100%;
+  left: 50%;
+  /* Centrado */
+
+  /* Diseño Visual */
+  background-color: var(--primary-dark);
+  backdrop-filter: blur(4px);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  /* Texto */
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 500;
+  white-space: pre-wrap;
+  line-height: 1.4;
+
+  /* Tamaño */
+  min-width: 180px;
+  width: max-content;
+  max-width: 250px;
+  padding: 10px 14px;
+  border-radius: 8px;
+
+  /* Animación y Capas */
+  z-index: 900;
+  /* Muy alto para que nada lo tape */
+  pointer-events: none;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+
+  /* Definimos la animación de entrada */
+  animation: tooltip-slide-up 0.2s ease-out forwards;
+}
+
+/* --- LÓGICA DE LA FLECHITA (TRIÁNGULO) --- */
+.tooltip-container[data-tooltip]:hover::before {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+
+  border-width: 6px;
+  border-style: solid;
+  border-color: rgba(15, 23, 42, 0.95) transparent transparent transparent;
+
+  margin-bottom: -11px;
+  /* Ajuste para pegar la flecha al input */
+  z-index: 900;
+
+  animation: tooltip-slide-up-arrow 0.2s ease-out forwards;
+}
+
+/* --- ANIMACIONES --- */
+@keyframes tooltip-slide-up {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(5px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-10px);
+  }
+}
+
+@keyframes tooltip-slide-up-arrow {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(5px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
   }
 }

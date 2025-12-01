@@ -34,111 +34,6 @@ let nuevaImagenArchivo = null;
 let editMode = false;
 let currentProfile = JSON.parse(sessionStorage.getItem("agencia_logeado"));
 
-// =====================================================
-// 2. INYECCIÓN DE ESTILOS (CSS EN JS)
-// =====================================================
-(function injectModalStyles() {
-    if (document.getElementById('app-modal-styles')) return;
-    const s = document.createElement('style');
-    s.id = 'app-modal-styles';
-    s.textContent = `
-    :root {
-        --modal-bg: #ffffff;
-        --modal-overlay: rgba(15, 23, 42, 0.65);
-        --modal-border: #e2e8f0;
-        --modal-radius: 16px;
-        --modal-primary: #2563eb;
-        --modal-text: #1e293b;
-        --modal-text-light: #64748b;
-    }
-
-    .app-modal {
-        position: fixed; inset: 0; z-index: 9999;
-        display: flex; align-items: center; justify-content: center;
-        opacity: 0; visibility: hidden; transition: all 0.25s ease;
-        font-family: 'Inter', system-ui, sans-serif;
-    }
-    .app-modal.active { opacity: 1; visibility: visible; }
-    
-    .app-modal__overlay {
-        position: absolute; inset: 0;
-        background: var(--modal-overlay);
-        backdrop-filter: blur(5px);
-    }
-
-    .app-modal__content {
-        position: relative; background: var(--modal-bg);
-        width: 90%; max-width: 600px; max-height: 85vh;
-        border-radius: var(--modal-radius);
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-        display: flex; flex-direction: column;
-        transform: scale(0.95); transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-        overflow: hidden;
-    }
-    .app-modal.active .app-modal__content { transform: scale(1); }
-
-    .app-modal__header {
-        padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--modal-border);
-        display: flex; justify-content: space-between; align-items: center; background: #fff;
-    }
-    .app-modal__header h2 { margin: 0; font-size: 1.25rem; font-weight: 700; color: var(--modal-text); }
-    
-    .app-modal__close {
-        background: transparent; border: none; font-size: 1.5rem; line-height: 1;
-        color: var(--modal-text-light); cursor: pointer; border-radius: 50%;
-        width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
-        transition: background 0.2s;
-    }
-    .app-modal__close:hover { background: #f1f5f9; color: #ef4444; }
-
-    .app-modal__body { padding: 1.5rem; overflow-y: auto; }
-
-    .modal-search {
-        width: 100%; padding: 0.85rem 1rem; margin-bottom: 1.5rem;
-        border: 1px solid var(--modal-border); border-radius: 10px;
-        font-size: 1rem; background-color: #f8fafc; outline: none;
-        transition: border-color 0.2s, box-shadow 0.2s;
-    }
-    .modal-search:focus { border-color: var(--modal-primary); background: #fff; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
-
-    .selection-grid { display: flex; flex-direction: column; gap: 0.75rem; }
-
-    .selection-card {
-        display: flex; gap: 1rem; padding: 1rem;
-        border: 1px solid var(--modal-border); border-radius: 12px;
-        cursor: pointer; transition: all 0.2s ease; background: #fff;
-        align-items: flex-start;
-    }
-    .selection-card:hover {
-        border-color: var(--modal-primary); background-color: #eff6ff;
-        transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    }
-
-    .selection-card__img {
-        width: 80px; height: 80px; flex-shrink: 0;
-        border-radius: 8px; object-fit: cover;
-        background-color: #f1f5f9; border: 1px solid #e2e8f0;
-    }
-    
-    .selection-card__info { flex: 1; display: flex; flex-direction: column; gap: 0.25rem; }
-    .selection-card__title { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--modal-text); }
-    .selection-card__desc { 
-        margin: 0; font-size: 0.9rem; color: var(--modal-text-light); line-height: 1.4;
-        display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
-    }
-
-    .app-modal__actions {
-        padding: 1rem 1.5rem; border-top: 1px solid var(--modal-border);
-        display: flex; justify-content: flex-end; gap: 0.75rem; background: #fafafa;
-    }
-    .btn-modal { padding: 0.6rem 1.25rem; border-radius: 8px; font-weight: 600; cursor: pointer; border: none; transition: 0.2s; }
-    .btn-modal--primary { background: var(--modal-primary); color: white; }
-    .btn-modal--primary:hover { background: #1d4ed8; }
-    .btn-modal--secondary { background: white; border: 1px solid var(--modal-border); color: var(--modal-text); }
-    .btn-modal--secondary:hover { background: #f1f5f9; }
-    `;
-    document.head.appendChild(s);
-})();
 
 // =====================================================
 // 3. UTILIDADES DE MODALES
@@ -416,14 +311,125 @@ function actualizarEstadoUI() {
 
 btnEdit.addEventListener("click", () => {
     editMode = !editMode;
+    configurarInputsAyuda();
+    configurarOverlayImagen();
     actualizarEstadoUI();
 
     if (!editMode) {
         fileInput.value = '';
+        eliminarTooltips();
+        eliminarOverlayImagen();
         nuevaImagenArchivo = null;
         cargarPaqueteEnUI();
     }
 });
+
+function configurarInputsAyuda() {
+    
+    // Función auxiliar que crea un "wrapper" (envoltorio) alrededor del input
+    const addTooltipWrapper = (element, text) => {
+        if (!element) return;
+        
+        if (element.parentElement.classList.contains('tooltip-container')) {
+            element.parentElement.setAttribute('data-tooltip', text);
+            return;
+        }
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'tooltip-container';
+        wrapper.setAttribute('data-tooltip', text);
+        
+        element.parentNode.insertBefore(wrapper, element);
+        
+        wrapper.appendChild(element);
+        
+        element.removeAttribute("title");
+        element.style.width = "100%"; 
+    };
+
+    // 1. Nombre del Evento
+    nameInput.placeholder = "Ej: Viaje a Mazatlan.";
+    addTooltipWrapper(nameInput, "El nombre debe ser corto y llamativo para atraer atención.");
+    
+    // 2. Descripción
+    descInput.placeholder = "Describe los detalles...";
+    addTooltipWrapper(descInput, "Incluye detalles clave: ubicación, facilidades, etc.");
+    
+    // 3. Precio
+    priceInput.placeholder = "0 - 3000";
+    priceInput.min = "0";
+    priceInput.max = "3000";
+    addTooltipWrapper(priceInput, "Costo en MXN.");
+
+}
+
+// Función para el Overlay de la imagen (Hover)
+function configurarOverlayImagen() {
+    // Verificamos si ya tiene wrapper para no duplicar
+    if (img.parentElement.classList.contains('img-wrapper-event')) return;
+
+    // Crear wrapper
+    const wrapper = document.createElement('div');
+    wrapper.className = 'img-wrapper-event';
+    
+    // Insertar wrapper antes de la imagen y mover imagen adentro
+    img.parentNode.insertBefore(wrapper, img);
+    wrapper.appendChild(img);
+
+    // Crear overlay
+    const overlay = document.createElement('div');
+    overlay.className = 'img-hover-overlay';
+    overlay.innerText = "(De click para seleccionar la imagen)";
+    
+    // Insertar overlay
+    wrapper.appendChild(overlay);
+
+    // Al hacer click en el wrapper, disparar click en la imagen
+    wrapper.addEventListener('click', (e) => {
+        // Evitamos bucle si el click fue directamente en la imagen
+        if(e.target !== img) img.click();
+    });
+}
+
+function eliminarTooltips() {
+    // Buscamos todos los contenedores creados
+    const containers = document.querySelectorAll('.tooltip-container');
+
+    containers.forEach(container => {
+        // Obtenemos el input que está dentro
+        // Usamos firstElementChild porque el input es el único hijo elemento real
+        const input = container.firstElementChild; 
+
+        if (input) {
+            // 1. Revertimos el estilo inline de ancho
+            input.style.width = ''; 
+
+            // 2. Sacamos el input del contenedor y lo ponemos donde estaba el contenedor
+            container.parentNode.insertBefore(input, container);
+        }
+
+        // 3. Eliminamos el contenedor (y el tooltip asociado)
+        container.remove();
+    });
+}
+
+function eliminarOverlayImagen() {
+    // Buscamos el wrapper específico
+    const wrapper = document.querySelector('.img-wrapper-event');
+
+    if (wrapper) {
+        // Buscamos la etiqueta img dentro del wrapper
+        const imagenOriginal = wrapper.querySelector('img');
+
+        if (imagenOriginal) {
+            // 1. Sacamos la imagen y la ponemos antes del wrapper (su lugar original)
+            wrapper.parentNode.insertBefore(imagenOriginal, wrapper);
+        }
+
+        // 2. Eliminamos el wrapper (esto mata también al div .img-hover-overlay)
+        wrapper.remove();
+    }
+}
 
 img.addEventListener('click', () => {
     if (!editMode) return;

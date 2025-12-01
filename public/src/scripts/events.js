@@ -38,113 +38,6 @@ let nuevaImagenArchivo = null;
 let editMode = false;
 let currentProfile = JSON.parse(sessionStorage.getItem("organizador_logeado"));
 
-// =====================================================
-// 2. INYECCIÓN DE ESTILOS (CSS EN JS)
-// =====================================================
-/* Esto asegura que los modales se vean bien sin tocar tu CSS global */
-(function injectModalStyles() {
-    if (document.getElementById('app-modal-styles')) return;
-    const s = document.createElement('style');
-    s.id = 'app-modal-styles';
-    s.textContent = `
-    :root {
-        --modal-bg: #ffffff;
-        --modal-overlay: rgba(15, 23, 42, 0.65);
-        --modal-border: #e2e8f0;
-        --modal-radius: 16px;
-        --modal-primary: #2563eb;
-        --modal-text: #1e293b;
-        --modal-text-light: #64748b;
-    }
-
-    .app-modal {
-        position: fixed; inset: 0; z-index: 9999;
-        display: flex; align-items: center; justify-content: center;
-        opacity: 0; visibility: hidden; transition: all 0.25s ease;
-        font-family: 'Inter', system-ui, sans-serif;
-    }
-    .app-modal.active { opacity: 1; visibility: visible; }
-    
-    .app-modal__overlay {
-        position: absolute; inset: 0;
-        background: var(--modal-overlay);
-        backdrop-filter: blur(5px);
-    }
-
-    .app-modal__content {
-        position: relative; background: var(--modal-bg);
-        width: 90%; max-width: 600px; max-height: 85vh;
-        border-radius: var(--modal-radius);
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-        display: flex; flex-direction: column;
-        transform: scale(0.95); transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-        overflow: hidden;
-    }
-    .app-modal.active .app-modal__content { transform: scale(1); }
-
-    .app-modal__header {
-        padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--modal-border);
-        display: flex; justify-content: space-between; align-items: center; background: #fff;
-    }
-    .app-modal__header h2 { margin: 0; font-size: 1.25rem; font-weight: 700; color: var(--modal-text); }
-    
-    .app-modal__close {
-        background: transparent; border: none; font-size: 1.5rem; line-height: 1;
-        color: var(--modal-text-light); cursor: pointer; border-radius: 50%;
-        width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
-        transition: background 0.2s;
-    }
-    .app-modal__close:hover { background: #f1f5f9; color: #ef4444; }
-
-    .app-modal__body { padding: 1.5rem; overflow-y: auto; }
-
-    /* Inputs y Grid */
-    .modal-search {
-        width: 100%; padding: 0.85rem 1rem; margin-bottom: 1.5rem;
-        border: 1px solid var(--modal-border); border-radius: 10px;
-        font-size: 1rem; background-color: #f8fafc; outline: none;
-        transition: border-color 0.2s, box-shadow 0.2s;
-    }
-    .modal-search:focus { border-color: var(--modal-primary); background: #fff; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
-
-    .selection-grid { display: flex; flex-direction: column; gap: 0.75rem; }
-
-    .selection-card {
-        display: flex; gap: 1rem; padding: 1rem;
-        border: 1px solid var(--modal-border); border-radius: 12px;
-        cursor: pointer; transition: all 0.2s ease; background: #fff;
-        align-items: flex-start;
-    }
-    .selection-card:hover {
-        border-color: var(--modal-primary); background-color: #eff6ff;
-        transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    }
-
-    .selection-card__img {
-        width: 80px; height: 80px; flex-shrink: 0;
-        border-radius: 8px; object-fit: cover;
-        background-color: #f1f5f9; border: 1px solid #e2e8f0;
-    }
-    
-    .selection-card__info { flex: 1; display: flex; flex-direction: column; gap: 0.25rem; }
-    .selection-card__title { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--modal-text); }
-    .selection-card__desc { 
-        margin: 0; font-size: 0.9rem; color: var(--modal-text-light); line-height: 1.4;
-        display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
-    }
-
-    .app-modal__actions {
-        padding: 1rem 1.5rem; border-top: 1px solid var(--modal-border);
-        display: flex; justify-content: flex-end; gap: 0.75rem; background: #fafafa;
-    }
-    .btn-modal { padding: 0.6rem 1.25rem; border-radius: 8px; font-weight: 600; cursor: pointer; border: none; transition: 0.2s; }
-    .btn-modal--primary { background: var(--modal-primary); color: white; }
-    .btn-modal--primary:hover { background: #1d4ed8; }
-    .btn-modal--secondary { background: white; border: 1px solid var(--modal-border); color: var(--modal-text); }
-    .btn-modal--secondary:hover { background: #f1f5f9; }
-    `;
-    document.head.appendChild(s);
-})();
 
 // =====================================================
 // 3. UTILIDADES DE MODALES (Alerta, Confirm, Selección)
@@ -220,13 +113,6 @@ function showConfirm(title = 'Confirmar', message = '') {
     });
 }
 
-/**
- * Modal de Selección Avanzado (Lista con Imágenes y Descripción)
- * @param {string} titulo - Título del modal
- * @param {Array} lista - Array de objetos a listar
- * @param {object} config - Configuración de mapeo { keyNombre, keyDesc, keyImg, pathImg }
- * @param {function} callback - Función a ejecutar al seleccionar
- */
 function mostrarModalSeleccion(titulo, lista, config, callback) {
     ensureModalContainer();
     const container = document.getElementById('app-modals');
@@ -459,14 +345,138 @@ function actualizarEstadoUI() {
 btnEdit.addEventListener("click", () => {
     editMode = !editMode;
     actualizarEstadoUI();
+    configurarInputsAyuda();
+    configurarOverlayImagen();
 
     if (!editMode) {
         // Cancelar: Recargar todo para perder cambios no guardados
         fileInput.value = '';
         nuevaImagenArchivo = null;
+        eliminarOverlayImagen();
+        eliminarTooltips();
         cargarEventoEnUI();
     }
 });
+
+function configurarInputsAyuda() {
+    
+    // Función auxiliar que crea un "wrapper" (envoltorio) alrededor del input
+    const addTooltipWrapper = (element, text) => {
+        if (!element) return;
+        
+        // 1. Evitamos volver a envolver si ya lo hicimos
+        if (element.parentElement.classList.contains('tooltip-container')) {
+            element.parentElement.setAttribute('data-tooltip', text);
+            return;
+        }
+
+        // 2. Creamos el contenedor
+        const wrapper = document.createElement('div');
+        wrapper.className = 'tooltip-container';
+        wrapper.setAttribute('data-tooltip', text);
+        
+        // 3. Insertamos el contenedor antes del input
+        element.parentNode.insertBefore(wrapper, element);
+        
+        // 4. Movemos el input ADENTRO del contenedor
+        wrapper.appendChild(element);
+        
+        // 5. Limpieza visual
+        element.removeAttribute("title");
+        // Aseguramos que el input ocupe el 100% de su nuevo contenedor
+        element.style.width = "100%"; 
+    };
+
+    // --- CONFIGURACIÓN DE LOS MENSAJES ---
+
+    // 1. Nombre del Evento
+    nameInput.placeholder = "Ej: Concierto de Rock en la Plaza";
+    addTooltipWrapper(nameInput, "El nombre debe ser corto y llamativo para atraer atención.");
+    
+    // 2. Descripción
+    descInput.placeholder = "Describe los detalles, artistas invitados...";
+    addTooltipWrapper(descInput, "Incluye detalles clave: Artistas, reglas de acceso, etc.");
+    
+    // 3. Precio
+    priceInput.placeholder = "0 - 3000";
+    priceInput.min = "0";
+    priceInput.max = "3000";
+    addTooltipWrapper(priceInput, "Costo en MXN. Escribe 0 si es entrada libre.");
+
+    
+}
+
+// Función para el Overlay de la imagen (Hover)
+function configurarOverlayImagen() {
+    // Verificamos si ya tiene wrapper para no duplicar
+    if (img.parentElement.classList.contains('img-wrapper-event')) return;
+
+    // Crear wrapper
+    const wrapper = document.createElement('div');
+    wrapper.className = 'img-wrapper-event';
+    
+    // Insertar wrapper antes de la imagen y mover imagen adentro
+    img.parentNode.insertBefore(wrapper, img);
+    wrapper.appendChild(img);
+
+    // Crear overlay
+    const overlay = document.createElement('div');
+    overlay.className = 'img-hover-overlay';
+    overlay.innerText = "(De click para seleccionar la imagen)";
+    
+    // Insertar overlay
+    wrapper.appendChild(overlay);
+
+    // Al hacer click en el wrapper, disparar click en la imagen
+    wrapper.addEventListener('click', (e) => {
+        // Evitamos bucle si el click fue directamente en la imagen
+        if(e.target !== img) img.click();
+    });
+}
+
+function eliminarTooltips() {
+    // 1. Buscamos todos los contenedores de tooltips que creamos
+    const wrappers = document.querySelectorAll('.tooltip-container');
+
+    wrappers.forEach(wrapper => {
+        // 2. Buscamos el input (o textarea/select) que está dentro
+        const input = wrapper.querySelector('input, textarea, select');
+
+        if (input) {
+            // 3. Movemos el input FUERA del wrapper (lo insertamos antes del wrapper)
+            // Esto lo devuelve a su posición original en el DOM
+            wrapper.parentNode.insertBefore(input, wrapper);
+
+            // 4. Limpiamos el estilo inline que añadimos (width: 100%)
+            // para que recupere su tamaño definido por CSS original
+            input.style.width = ''; 
+            
+            // Opcional: Si quieres restaurar el 'title' original (aunque suele ser redundante)
+            // input.title = wrapper.getAttribute('data-tooltip'); 
+        }
+
+        // 5. Eliminamos el wrapper (y con él, el tooltip visual)
+        wrapper.remove();
+    });
+}
+
+function eliminarOverlayImagen() {
+    // 1. Buscamos el wrapper de la imagen
+    const wrapper = document.querySelector('.img-wrapper-event');
+    
+    if (wrapper) {
+        // 2. Buscamos la imagen original dentro
+        const img = wrapper.querySelector('img');
+        
+        if (img) {
+            // 3. Sacamos la imagen del wrapper
+            wrapper.parentNode.insertBefore(img, wrapper);
+        }
+        
+        // 4. Eliminamos el wrapper (esto elimina también el div .img-hover-overlay)
+        wrapper.remove();
+    }
+}
 
 // Click en Imagen
 img.addEventListener('click', () => {
