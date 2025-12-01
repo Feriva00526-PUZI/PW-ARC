@@ -120,17 +120,8 @@ window.addEventListener("load", function () {
 
 
 
-    /*
-    crearCarrusel({
-        containerSelector: "#carrusel-paquetes",
-        dataFile: "paquetes.json",
-        type: "paquete",
-        title: "Paquetes destacados"
-    });
-    */
-
-    // Cargar lugares más populares desde la base de datos
-    fetch("./src/data/Logic/CarruselLogic.php")
+    // Cargar lugares más populares desde la base de datos para la página principal
+    fetch("./src/data/Logic/IndexCarruselLogic.php")
         .then(response => response.json())
         .then(data => {
             if (data.correcto && data.lugares && data.lugares.length > 0) {
