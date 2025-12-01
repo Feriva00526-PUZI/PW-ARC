@@ -140,3 +140,41 @@ window.addEventListener("load", function () {
         window.location.href = "./../../index.html";
     });
 });
+
+function configurarInputsAyuda() {
+    const r_correo = document.getElementById("r_correo");
+    const r_telefono = document.getElementById("r_telefono");
+
+    // Función auxiliar que crea un "wrapper" (envoltorio) alrededor del input
+    const addTooltipWrapper = (element, text) => {
+        if (!element) return;
+        
+        // 1. Evitamos volver a envolver si ya lo hicimos
+        if (element.parentElement.classList.contains('tooltip-container')) {
+            element.parentElement.setAttribute('data-tooltip', text);
+            return;
+        }
+
+        // 2. Creamos el contenedor
+        const wrapper = document.createElement('div');
+        wrapper.className = 'tooltip-container';
+        wrapper.setAttribute('data-tooltip', text);
+        
+        // 3. Insertamos el contenedor antes del input
+        element.parentNode.insertBefore(wrapper, element);
+        
+        // 4. Movemos el input ADENTRO del contenedor
+        wrapper.appendChild(element);
+        
+        // 5. Limpieza visual
+        element.removeAttribute("title");
+        // Aseguramos que el input ocupe el 100% de su nuevo contenedor
+        element.style.width = "100%"; 
+    };
+
+    // --- CONFIGURACIÓN DE LOS MENSAJES ---
+
+    // 1. Nombre del Evento
+    addTooltipWrapper(r_correo, "El correo debe ser de tipo @gmail.com o @hotmail.com.");
+    addTooltipWrapper(r_telefono, "El telefono debe tener 10 digitos.");
+}

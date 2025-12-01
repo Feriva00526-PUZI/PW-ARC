@@ -271,3 +271,103 @@ input:focus {
     margin-right: 5px;
     object-fit: cover;
 }
+
+
+/* =========================================
+   ESTILOS TOOLTIPS CORREGIDOS (Wrapper)
+   ========================================= */
+
+/* El contenedor que JS creó alrededor del input */
+.tooltip-container {
+  position: relative;
+  /* Necesario para posicionar el tooltip */
+  display: block;
+  /* Ocupa el espacio como bloque */
+  width: 100%;
+  /* Asegura que no rompa tu diseño */
+  height: 100%;
+}
+
+/* --- LÓGICA DEL TOOLTIP (CAJA NEGRA) --- */
+.tooltip-container[data-tooltip]:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+
+  /* Ubicación: Arriba del input */
+  bottom: 100%;
+  left: 50%;
+  /* Centrado */
+
+  /* Diseño Visual */
+  background-color: var(--primary-dark);
+  backdrop-filter: blur(4px);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  /* Texto */
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 500;
+  white-space: pre-wrap;
+  line-height: 1.4;
+
+  /* Tamaño */
+  min-width: 180px;
+  width: max-content;
+  max-width: 250px;
+  padding: 10px 14px;
+  border-radius: 8px;
+
+  /* Animación y Capas */
+  z-index: 900;
+  /* Muy alto para que nada lo tape */
+  pointer-events: none;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+
+  /* Definimos la animación de entrada */
+  animation: tooltip-slide-up 0.2s ease-out forwards;
+}
+
+/* --- LÓGICA DE LA FLECHITA (TRIÁNGULO) --- */
+.tooltip-container[data-tooltip]:hover::before {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+
+  border-width: 6px;
+  border-style: solid;
+  border-color: rgba(15, 23, 42, 0.95) transparent transparent transparent;
+
+  margin-bottom: -11px;
+  /* Ajuste para pegar la flecha al input */
+  z-index: 900;
+
+  animation: tooltip-slide-up-arrow 0.2s ease-out forwards;
+}
+
+/* --- ANIMACIONES --- */
+@keyframes tooltip-slide-up {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(5px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-10px);
+  }
+}
+
+@keyframes tooltip-slide-up-arrow {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(5px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
