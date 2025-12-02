@@ -1,6 +1,5 @@
 <?php
 require_once "./../conexion.php";
-require_once "./../util/seguridad.php";
 
 class adminDAO{
 
@@ -22,7 +21,7 @@ class adminDAO{
 
             $admin = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if ($admin && Seguridad::verificarPassword($password, $admin['password'])) {
+            if ($admin && $admin['password'] === $password) {
                 return $admin;
             }
             return null;

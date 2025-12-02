@@ -1,6 +1,5 @@
 <?php
 require_once "./../conexion.php";
-require_once "./../util/seguridad.php";
 
 class agenciaDAO{
 
@@ -22,7 +21,7 @@ class agenciaDAO{
 
             $agencia = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if ($agencia && Seguridad::verificarPassword($password, $agencia['password'])) {
+            if ($agencia && $agencia['password'] === $password) {
                 return $agencia;
             }
             return null;

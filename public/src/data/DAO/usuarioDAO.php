@@ -1,6 +1,5 @@
 <?php
 require_once "./../conexion.php";
-require_once "./../util/seguridad.php";
 
 class usuarioDAO{
 
@@ -22,7 +21,7 @@ class usuarioDAO{
 
             $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if ($usuario && Seguridad::verificarPassword($password, $usuario['password'])) {
+            if ($usuario && $usuario['password'] === $password) {
                 return $usuario;
             }
             return null;
