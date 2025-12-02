@@ -642,7 +642,7 @@ textarea:focus {
   /* Centrado */
 
   /* Diseño Visual */
-  background-color: var(--primary-dark);
+  background-color: var();
   backdrop-filter: blur(4px);
   color: #ffffff;
   border: 1px solid rgba(255, 255, 255, 0.1);
