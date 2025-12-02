@@ -1,5 +1,6 @@
 <?php
 require_once "./../conexion.php";
+require_once "./../util/seguridad.php";
 
 class organizadorDAO{
 
@@ -21,7 +22,7 @@ class organizadorDAO{
 
             $organizador = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if ($organizador && $organizador['password'] === $password) {
+            if ($organizador && Seguridad::verificarPassword($password, $organizador['password'])) {
                 return $organizador;
             }
             return null;
