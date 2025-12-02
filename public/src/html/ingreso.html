@@ -15,15 +15,33 @@
         <div class="contenedor_formulario contenedor_registro">
             <form id="form_registro">
                 <h1>Registrate</h1>
-                <input type="text" placeholder="Nombre / Nombre de la empresa" id="r_nombre" name="nombre">
-                <input type="text" placeholder="Apellido / Descripcion de la empresa" id="r_apellido" name="apellido">
-                <input type="email" placeholder="Correo" id="r_correo" name="correo">
-                <input type="tel" placeholder="Telefono" id="r_telefono" name="telefono">
-                <input type="text" placeholder="Usuario" id="r_usuario" name="usuario">
-                <input type="password" placeholder="Contraseña" id="r_password" name="contra">
+
+                <!-- Nombre 20 caracteres -->
+                <input type="text" placeholder="Nombre / Nombre de la empresa" id="r_nombre" name="nombre"
+                    maxlength="20" pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ ]{1,20}" required>
+
+                <!-- Apellido 20 caracteres -->
+                <input type="text" placeholder="Apellido / Descripcion de la empresa" id="r_apellido" name="apellido"
+                    maxlength="20" pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ ]{1,20}" required>
+
+                <!-- Correo solo hotmail y gmail -->
+                <input type="email" placeholder="Correo" id="r_correo" name="correo"
+                    pattern="[a-zA-Z0-9._%+-]+@(hotmail|gmail)\.com" required>
+
+                <!-- Telefono 10 dígitos -->
+                <input type="tel" placeholder="Telefono" id="r_telefono" name="telefono" pattern="[0-9]{10}"
+                    maxlength="10" required>
+
+                <!-- Usuario max 30 caracteres -->
+                <input type="text" placeholder="Usuario" id="r_usuario" name="usuario" maxlength="30" pattern=".{1,30}"
+                    required>
+
+                <input type="password" placeholder="Contraseña" id="r_password" name="contra" required>
+
                 <button id="boton_registrarse"> Registrarse</button>
             </form>
         </div>
+
 
         <div class="contenedor_formulario contenedor_login">
             <form>
@@ -33,7 +51,7 @@
                 <button id="boton_acceder">Acceder</button>
             </form>
         </div>
-        
+
         <div class="overlay-contenedor">
             <div class="overlay">
                 <div class="overlay-panel overlay_izquierdo">

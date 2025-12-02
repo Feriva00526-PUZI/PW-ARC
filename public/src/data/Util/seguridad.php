@@ -23,8 +23,7 @@ function sanitizarUsuario($usuario) {
 
 function sanitizarPassword($password) {
     $password = trim($password);
-    // No aplicamos htmlspecialchars ni strip_tags a la contraseña
-    // para mantener caracteres especiales que puedan ser válidos
+
     return $password;
 }
 
@@ -52,7 +51,6 @@ function iniciarSesion($usuario, $tipoUsuario, $datosUsuario = null) {
     $_SESSION['tipo_usuario'] = $tipoUsuario;
     $_SESSION['usuario'] = $usuario;
     
-    // Guardar datos adicionales del usuario si se proporcionan
     if ($datosUsuario !== null) {
         switch ($tipoUsuario) {
             case 'administrador':
@@ -85,11 +83,7 @@ function verificarPermisos($accion) {
     $permisos = [
 
         "administrador" => [
-            "crear_evento",
-            "editar_evento",
-            "eliminar_evento",
             "ver_reportes",
-            "gestionar_usuarios",
             "crear_lugar",
             "editar_lugar",
             "eliminar_lugar",
@@ -102,8 +96,6 @@ function verificarPermisos($accion) {
         ],
 
         "agencia" => [
-            "ver_eventos",
-            "registrar_clientes",
             "crear_paquete",
             "editar_paquete",
             "eliminar_paquete",

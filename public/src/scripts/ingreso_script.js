@@ -13,6 +13,7 @@ window.addEventListener("load", function () {
 
     boton_registro.addEventListener("click", function () {
         container.classList.add("panel_derecho_activo");
+        configurarInputsAyuda();
     });
     boton_login.addEventListener("click", function () {
         container.classList.remove("panel_derecho_activo");
@@ -144,11 +145,14 @@ window.addEventListener("load", function () {
 function configurarInputsAyuda() {
     const r_correo = document.getElementById("r_correo");
     const r_telefono = document.getElementById("r_telefono");
+    const r_apellido = document.getElementById("r_apellido");
+    const r_nombre = document.getElementById("r_nombre");
+    const r_usuario = document.getElementById("r_usuario");
 
     // Función auxiliar que crea un "wrapper" (envoltorio) alrededor del input
     const addTooltipWrapper = (element, text) => {
         if (!element) return;
-        
+
         // 1. Evitamos volver a envolver si ya lo hicimos
         if (element.parentElement.classList.contains('tooltip-container')) {
             element.parentElement.setAttribute('data-tooltip', text);
@@ -159,22 +163,26 @@ function configurarInputsAyuda() {
         const wrapper = document.createElement('div');
         wrapper.className = 'tooltip-container';
         wrapper.setAttribute('data-tooltip', text);
-        
+
         // 3. Insertamos el contenedor antes del input
         element.parentNode.insertBefore(wrapper, element);
-        
+
         // 4. Movemos el input ADENTRO del contenedor
         wrapper.appendChild(element);
-        
+
         // 5. Limpieza visual
         element.removeAttribute("title");
         // Aseguramos que el input ocupe el 100% de su nuevo contenedor
-        element.style.width = "100%"; 
+        element.style.width = "100%";
     };
 
     // --- CONFIGURACIÓN DE LOS MENSAJES ---
 
     // 1. Nombre del Evento
-    addTooltipWrapper(r_correo, "El correo debe ser de tipo @gmail.com o @hotmail.com.");
-    addTooltipWrapper(r_telefono, "El telefono debe tener 10 digitos.");
+    addTooltipWrapper(r_correo, "Debe terminar en @hotmail.com o @gmail.com.");
+    addTooltipWrapper(r_telefono, "Debe contener exactamente 10 dígitos.");
+    addTooltipWrapper(r_nombre, "Máximo 20 caracteres. Solo letras y espacios.");
+    addTooltipWrapper(r_usuario, "Máximo 30 caracteres.");
+    addTooltipWrapper(r_apellido, "Máximo 20 caracteres. Solo letras y espacios.");
+
 }
