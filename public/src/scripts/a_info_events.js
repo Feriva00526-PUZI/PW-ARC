@@ -317,7 +317,7 @@ window.addEventListener("load", function () {
         /*fin del manejo de errores */
         if (query === 'query1' || query === 'query2') {
             overlay3.innerHTML = `<div class="minicard">Cargando lugares...</div>`;
-            fetch(`./../../data/logic/infoEventosLogic.php?query=${query}`)
+            fetch(`./../../data/Logic/infoEventosLogic.php?query=${query}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.correcto && data.lugares) {
@@ -371,7 +371,7 @@ window.addEventListener("load", function () {
                 });
         } else if (query === 'query3' || query === 'query4') {
             overlay3.innerHTML = `<div class="minicard">Cargando eventos...</div>`;
-            fetch(`./../../data/logic/infoEventosLogic.php?query=${query}`)
+            fetch(`./../../data/Logic/infoEventosLogic.php?query=${query}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.correcto && data.lugares) {
@@ -427,7 +427,7 @@ window.addEventListener("load", function () {
                 });
         } else if (query === 'query9' || query === 'query10' || query === 'query11' || query === 'query12') {
             overlay3.innerHTML = `<div class="minicard">Cargando viajes...</div>`;
-            fetch(`./../../data/logic/infoEventosLogic.php?query=${query}`)
+            fetch(`./../../data/Logic/infoEventosLogic.php?query=${query}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.correcto && data.viajes) {
@@ -481,7 +481,7 @@ window.addEventListener("load", function () {
                 });
         } else if (query === 'query17' || query === 'query18') {
 
-            fetch(`./../../data/logic/infoEventosLogic.php?query=${query}`)
+            fetch(`./../../data/Logic/infoEventosLogic.php?query=${query}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.correcto && data.lugares) {
@@ -561,7 +561,7 @@ window.addEventListener("load", function () {
 
         } else if (query === 'query13' || query === 'query14') {
             overlay3.innerHTML = `<div class="minicard">Cargando agencias...</div>`;
-            fetch(`./../../data/logic/infoEventosLogic.php?query=${query}`)
+            fetch(`./../../data/Logic/infoEventosLogic.php?query=${query}`)
                 .then(response => response.json())
                 .then(data => {
                     console.log(data);
@@ -616,7 +616,7 @@ window.addEventListener("load", function () {
                 });
         } else if (query === 'query15' || query === 'query16') {
             overlay3.innerHTML = `<div class="minicard">Cargando organizadoras...</div>`;
-            fetch(`./../../data/logic/infoEventosLogic.php?query=${query}`)
+            fetch(`./../../data/Logic/infoEventosLogic.php?query=${query}`)
                 .then(response => response.json())
                 .then(data => {
                     console.log(data);
@@ -666,7 +666,7 @@ window.addEventListener("load", function () {
                 });
         } else if (query === 'query5' || query === 'query6' || query === 'query7' || query === 'query8') {
             overlay4.innerHTML = `<div class="maxicard">Cargando detalle de asistencia...</div>`;
-            fetch(`./../../data/logic/infoEventosLogic.php?query=${query}`)
+            fetch(`./../../data/Logic/infoEventosLogic.php?query=${query}`)
                 .then(handleResponse)
                 .then(parseJSON)
                 .then(data => {
@@ -715,7 +715,7 @@ const mostrarDetalleOrganizadora = (id_organizadora) => {
     const overlay4 = document.getElementById('overlay4');
     overlay4.innerHTML = `<h4>Cargando detalle de la organizadora ${id_organizadora}...</h4>`;
 
-    fetch(`./../../data/logic/infoEventosLogic.php?query=queryX5&id_organizadora=${id_organizadora}`)
+    fetch(`./../../data/Logic/infoEventosLogic.php?query=queryX5&id_organizadora=${id_organizadora}`)
         .then(response => response.json())
         .then(data => {
             if (data.correcto && data.organizadora) {
@@ -758,10 +758,10 @@ const inicializarFiltrosQuery9 = () => {
     const selectOrganizadora = document.getElementById('select-organizadora');
 
     const cargarOrganizadoras = (filtroOrganizadoraId = '') => {
-        let url = `./../../data/logic/infoEventosLogic.php?query=query15`;
+        let url = `./../../data/Logic/infoEventosLogic.php?query=query15`;
 
         if (filtroOrganizadoraId) {
-            url = `./../../data/logic/infoEventosLogic.php?query=queryX4&id_organizadora=${filtroOrganizadoraId}`;
+            url = `./../../data/Logic/infoEventosLogic.php?query=queryX4&id_organizadora=${filtroOrganizadoraId}`;
         }
 
         overlay3.innerHTML = `<div class="minicard">Cargando organizadoras...</div>`;
@@ -808,7 +808,7 @@ const inicializarFiltrosQuery9 = () => {
             });
     };
 
-    fetch(`./../../data/logic/infoEventosLogic.php?query=queryX1`)
+    fetch(`./../../data/Logic/infoEventosLogic.php?query=queryX1`)
         .then(response => response.json())
         .then(data => {
             if (data.correcto && data.lugares) {
@@ -831,7 +831,7 @@ const inicializarFiltrosQuery9 = () => {
         selectOrganizadora.disabled = true;
 
         if (idLugar) {
-            fetch(`./../../data/logic/infoEventosLogic.php?query=queryX2&id_lugar=${idLugar}`)
+            fetch(`./../../data/Logic/infoEventosLogic.php?query=queryX2&id_lugar=${idLugar}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.correcto && data.eventos) {
@@ -855,7 +855,7 @@ const inicializarFiltrosQuery9 = () => {
         selectOrganizadora.disabled = true;
 
         if (idEvento) {
-            fetch(`./../../data/logic/infoEventosLogic.php?query=queryX3&id_evento=${idEvento}`)
+            fetch(`./../../data/Logic/infoEventosLogic.php?query=queryX3&id_evento=${idEvento}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.correcto && data.organizadora) {

@@ -1,17 +1,18 @@
 <?php
-require_once "./../dao/CarruselDAO.php";
+require_once "./../dao/IndexCarruselDAO.php";
 header('Content-Type: application/json');
 
-$carruselDAO = new CarruselDAO();
-$RUTA_IMG_ESTANDAR = "./../../media/images/lugares/";
+$indexCarruselDAO = new IndexCarruselDAO();
+// Ruta relativa desde index.html (./src/data/Logic/)
+$RUTA_IMG_ESTANDAR = "./src/media/images/lugares/";
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     try {
         // Obtener los 30 lugares más populares
-        $lugares = $carruselDAO->getLugaresMasPopulares(30);
+        $lugares = $indexCarruselDAO->getLugaresMasPopulares(30);
         
         if ($lugares != null && !empty($lugares)) {
-            // Formatear las URLs de las imágenes
+            // Formatear las URLs de las imágenes (ruta relativa desde index.html)
             foreach ($lugares as &$lugar) {
                 if (!empty($lugar['imagen_url']) && $lugar['imagen_url'] !== 'nourl') {
                     $lugar['imagen_url'] = $RUTA_IMG_ESTANDAR . $lugar['imagen_url'];

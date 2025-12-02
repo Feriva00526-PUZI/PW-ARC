@@ -1,7 +1,7 @@
 <?php
 require_once "./../conexion.php";
 
-class CarruselDAO
+class IndexCarruselDAO
 {
     private $conexion;
 
@@ -32,7 +32,7 @@ class CarruselDAO
 
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            throw new Exception("Error al obtener los lugares más populares para el carrusel: " . $e->getMessage());
+            throw new Exception("Error al obtener los lugares más populares para el carrusel de la página principal: " . $e->getMessage());
         }
     }
 }

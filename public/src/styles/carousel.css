@@ -37,7 +37,6 @@
   position: relative;
   border-radius: 15px;
   overflow: hidden;
-  cursor: pointer;
   height: 350px;
   background: #fff;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
@@ -196,4 +195,8 @@
     height: 40px;
     font-size: 1.2em;
   }
+}
+
+.card:hover {
+  cursor: default;
 }

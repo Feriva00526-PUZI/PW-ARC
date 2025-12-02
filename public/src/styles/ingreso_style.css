@@ -270,8 +270,6 @@ input:focus {
     padding: 2px;
     margin-right: 5px;
     object-fit: cover;
-<<<<<<< Updated upstream
-=======
 }
 
 
@@ -301,7 +299,7 @@ input:focus {
   /* Centrado */
 
   /* Diseño Visual */
-  background-color: #1e3a8a;
+  background-color: var(--primary-dark);
   backdrop-filter: blur(4px);
   color: #ffffff;
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -372,5 +370,4 @@ input:focus {
     opacity: 1;
     transform: translateX(-50%) translateY(0);
   }
->>>>>>> Stashed changes
 }
