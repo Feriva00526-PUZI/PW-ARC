@@ -15,19 +15,12 @@
         <div class="contenedor_formulario contenedor_registro">
             <form id="form_registro">
                 <h1>Registrate</h1>
-                <input type="text" placeholder="Nombre / Nombre de la empresa" id="r_nombre" name="nombre" pattern="^[a-zA-Z\s]{1,20}$" title="El nombre debe contener solo letras y ser menor de 20 caracteres" required>
-                <input type="text" placeholder="Apellido / Descripcion de la empresa" id="r_apellido" name="apellido" pattern="^[a-zA-Z\s]{1,20}$" title="El apellido debe contener solo letras y ser menor de 20 caracteres" required>
-                
-                <!-- Correo con dominios gmail y hotmail -->
-                <input type="email" placeholder="Correo" id="r_correo" name="correo" pattern="^[a-zA-Z0-9._%+-]+@(gmail\.com|hotmail\.com)$" title="El correo debe ser de dominio gmail.com o hotmail.com" required>
-                
-                <!-- Telefono con 10 dígitos -->
-                <input type="tel" placeholder="Telefono" id="r_telefono" name="telefono" pattern="^\d{10}$" title="El teléfono debe tener 10 dígitos" required>
-                
-                <input type="text" placeholder="Usuario" id="r_usuario" name="usuario" pattern="^[a-zA-Z0-9]{1,20}$" title="El usuario debe contener solo letras y números, y ser menor de 20 caracteres" required>
-                
-                <input type="password" placeholder="Contraseña" id="r_password" name="contra" required>
-                
+                <input type="text" placeholder="Nombre / Nombre de la empresa" id="r_nombre" name="nombre">
+                <input type="text" placeholder="Apellido / Descripcion de la empresa" id="r_apellido" name="apellido">
+                <input type="email" placeholder="Correo" id="r_correo" name="correo">
+                <input type="tel" placeholder="Telefono" id="r_telefono" name="telefono">
+                <input type="text" placeholder="Usuario" id="r_usuario" name="usuario">
+                <input type="password" placeholder="Contraseña" id="r_password" name="contra">
                 <button id="boton_registrarse"> Registrarse</button>
             </form>
         </div>
