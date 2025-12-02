@@ -1,6 +1,8 @@
 <?php
 require_once '.\..\conexion.php';
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 /* =====================================================
    Sanitización
@@ -14,54 +16,60 @@ function sanitizar(&$DATOS) {
     }
 }
 
-
 /* =====================================================
-   Validar Usuario según tipo
+   Sanitización específica para usuario
    ===================================================== */
-function validarUsuarios($user, $password, $userType) {
-    require_once '../DAO/adminDAO.php';
-    require_once '../DAO/organizadoraDAO.php';
-    require_once '../DAO/agenciaDAO.php';
-    require_once '../DAO/usuarioDAO.php';
-
-    $resultado = false;
-
-    switch ($userType) {
-
-        case "administrador":
-            $dao = new AdminDAO();
-            $resultado = $dao->login($user, $password);
-            break;
-
-        case "organizadora":
-            $dao = new OrganizadoraDAO();
-            $resultado = $dao->login($user, $password);
-            break;
-
-        case "agencia":
-            $dao = new AgenciaDAO();
-            $resultado = $dao->login($user, $password);
-            break;
-
-        case "usuario":
-            $dao = new UsuarioDAO();
-            $resultado = $dao->login($user, $password);
-            break;
-
-        default:
-            return false; // Tipo inválido
-    }
-
-    // Si se encontró el usuario, guardar tipo en sesión GLOBAL
-    if ($resultado) {
-        $_SESSION['tipo_usuario'] = $userType;
-        $_SESSION['usuario'] = $user;
-        return true;
-    }
-
-    return false;
+function sanitizarUsuario($usuario) {
+    $usuario = strip_tags($usuario);
+    $usuario = trim($usuario);
+    $usuario = htmlspecialchars($usuario, ENT_QUOTES, 'UTF-8');
+    $usuario = stripslashes($usuario);
+    return $usuario;
 }
 
+/* =====================================================
+   Sanitización específica para contraseña
+   ===================================================== */
+function sanitizarPassword($password) {
+    $password = trim($password);
+    // No aplicamos htmlspecialchars ni strip_tags a la contraseña
+    // para mantener caracteres especiales que puedan ser válidos
+    return $password;
+}
+
+/* =====================================================
+   Iniciar sesión con tipo de usuario
+   ===================================================== */
+function iniciarSesion($usuario, $tipoUsuario, $datosUsuario = null) {
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    
+    $_SESSION['tipo_usuario'] = $tipoUsuario;
+    $_SESSION['usuario'] = $usuario;
+    
+    // Guardar datos adicionales del usuario si se proporcionan
+    if ($datosUsuario !== null) {
+        switch ($tipoUsuario) {
+            case 'administrador':
+                $_SESSION['id_admin'] = $datosUsuario['id_admin'] ?? null;
+                $_SESSION['nombre'] = $datosUsuario['nombre'] ?? null;
+                break;
+            case 'organizadora':
+                $_SESSION['id_organizadora'] = $datosUsuario['id_organizadora'] ?? null;
+                break;
+            case 'agencia':
+                $_SESSION['id_agencia'] = $datosUsuario['id_agencia'] ?? null;
+                break;
+            case 'usuario':
+                $_SESSION['id_cliente'] = $datosUsuario['id_cliente'] ?? null;
+                $_SESSION['nombre'] = $datosUsuario['nombre'] ?? null;
+                break;
+        }
+    }
+    
+    return true;
+}
 
 /* =====================================================
    Verificación de permisos

@@ -1,15 +1,19 @@
 <?php
     require_once "./../dao/organizadorDAO.php";
+    require_once "./../util/seguridad.php";
     header('Content-Type: application/json');
     $organizadorDAO = new organizadorDAO();
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if($_SERVER['CONTENT_TYPE'] == 'application/json'){
             $data = json_decode(file_get_contents("php://input"), true);
-            $user = $data['user'];
-            $password = $data['password'];
+            // Sanitizar usuario y contraseña
+            $user = sanitizarUsuario($data['user']);
+            $password = sanitizarPassword($data['password']);
             try{
                 $organizador = $organizadorDAO->validarOrganizador($user, $password);
                 if($organizador != null){
+                    // Iniciar sesión con tipo de usuario
+                    iniciarSesion($user, 'organizadora', $organizador);
                     $respuesta = ['correcto' => true, 'organizador' => $organizador];
                 } else {
                     $respuesta = ['correcto' => false];
