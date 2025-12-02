@@ -1,6 +1,7 @@
 <?php
 header("Content-Type: application/json");
 
+require_once "./../util/seguridad.php";
 require_once "./../dao/paqueteDAO.php";
 require_once "./../dao/agenciaDAO.php";
 require_once "./../dao/lugarDAO.php";
@@ -62,7 +63,12 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
 } else if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($_POST["accion"] === "eliminar") {
-        $id_paquete = $_POST["idPaquete"];
+        // Validar permisos
+        if (!verificarPermisos("eliminar_paquete")) {
+            redirigirAlIndex();
+        }
+        
+        $id_paquete = sanitizarEntero($_POST["idPaquete"]);
         if (!$id_paquete) {
             echo json_encode(["correcto" => false, "mensaje" => "Datos incompletos"]);
             exit;
@@ -77,11 +83,16 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
         exit;
 
     } else if ($_POST["accion"] === "actualizar") {
-        $id_paquete = $_POST["idPaquete"];
-        $nombre = $_POST["nombre_paquete"];
-        $descripcion = $_POST["descripcion_paquete"];
-        $precio = $_POST["precio"];
-        $id_lugar = $_POST["id_lugar"];
+        // Validar permisos
+        if (!verificarPermisos("editar_paquete")) {
+            redirigirAlIndex();
+        }
+        
+        $id_paquete = sanitizarEntero($_POST["idPaquete"]);
+        $nombre = sanitizarTexto($_POST["nombre_paquete"]);
+        $descripcion = sanitizarTexto($_POST["descripcion_paquete"]);
+        $precio = sanitizarDecimal($_POST["precio"]);
+        $id_lugar = sanitizarEntero($_POST["id_lugar"] ?? null);
 
         if (!$id_paquete || !$nombre || !$descripcion || !$precio) {
             echo json_encode(["correcto" => false, "mensaje" => "Datos incompletos"]);
@@ -134,12 +145,17 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
         exit;
 
     } else if ($_POST["accion"] === "crear") {
+        // Validar permisos
+        if (!verificarPermisos("crear_paquete")) {
+            redirigirAlIndex();
+        }
+        
         // Recibir datos
-        $nombre = $_POST["nombre_paquete"] ?? null;
-        $descripcion = $_POST["descripcion_paquete"] ?? null;
-        $precio = $_POST["precio"] ?? null; 
-        $id_lugar = $_POST["id_lugar"] ?? null;
-        $id_agencia = $_POST["id_agencia"] ?? null; 
+        $nombre = sanitizarTexto($_POST["nombre_paquete"] ?? null);
+        $descripcion = sanitizarTexto($_POST["descripcion_paquete"] ?? null);
+        $precio = sanitizarDecimal($_POST["precio"] ?? null); 
+        $id_lugar = sanitizarEntero($_POST["id_lugar"] ?? null);
+        $id_agencia = sanitizarEntero($_POST["id_agencia"] ?? null); 
 
         // 1. VALIDACIÓN: Datos incompletos
         if (!$nombre || !$descripcion || !$precio || !$id_lugar || !$id_agencia) {

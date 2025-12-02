@@ -1,4 +1,5 @@
 <?php
+require_once "./../util/seguridad.php";
 require_once "./../dao/lugarDAO.php";
 header('Content-Type: application/json');
 $lugarDAO = new lugarDAO();
@@ -6,6 +7,11 @@ $RUTA_IMG_ESTANDAR = "./../../media/images/lugares/";
 $RUTA_FISICA_GUARDADO = __DIR__ . "/../../media/images/lugares/";
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
+    // Validar permisos para ver lugares (administradores pueden ver)
+    if (!verificarPermisos("editar_lugar") && !verificarPermisos("crear_lugar")) {
+        redirigirAlIndex();
+    }
+    
     try {
         $lugares = $lugarDAO->getLugares();
         if ($lugares != null) {
@@ -25,16 +31,28 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $respuesta = ['correcto' => false];
     if (!empty($_POST) || !empty($_FILES)) {
 
-        $id_lugar_update = $_POST["id_lugar_update"] ?? null;
+        $id_lugar_update = sanitizarEntero($_POST["id_lugar_update"] ?? null);
         $imagen = $_FILES["imagen"] ?? null;
 
+        // Validar permisos según la acción
+        if ($id_lugar_update) {
+            // Es una actualización
+            if (!verificarPermisos("editar_lugar")) {
+                redirigirAlIndex();
+            }
+        } else {
+            // Es una creación
+            if (!verificarPermisos("crear_lugar")) {
+                redirigirAlIndex();
+            }
+        }
 
-        $nombre = $_POST["nombre"];
-        $descripcion = $_POST["descripcion"];
-        $direccion = $_POST["direccion"];
-        $ciudad = $_POST["ciudad"];
-        $zona = $_POST["zona"];
-        $id_admin = $_POST["id_admin"];
+        $nombre = sanitizarTexto($_POST["nombre"]);
+        $descripcion = sanitizarTexto($_POST["descripcion"]);
+        $direccion = sanitizarTexto($_POST["direccion"]);
+        $ciudad = sanitizarTexto($_POST["ciudad"]);
+        $zona = sanitizarTexto($_POST["zona"]);
+        $id_admin = sanitizarEntero($_POST["id_admin"]);
         $imagen = $_FILES["imagen"] ?? null;
 
         if (empty($nombre) || empty($descripcion) || empty($direccion) || empty($ciudad) || empty($zona) || empty($id_admin)) {
@@ -137,12 +155,17 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         }
     }
 } else if ($_SERVER["REQUEST_METHOD"] == "DELETE") {
+    // Validar permisos para eliminar
+    if (!verificarPermisos("eliminar_lugar")) {
+        redirigirAlIndex();
+    }
+    
     try {
         // Leer el body de la solicitud DELETE
         $json_data = file_get_contents("php://input");
         $data = json_decode($json_data, true);
 
-        $id_lugar = $data['id_lugar'] ?? null;
+        $id_lugar = sanitizarEntero($data['id_lugar'] ?? null);
 
         if ($id_lugar === null || !is_numeric($id_lugar)) {
             $respuesta = ['correcto' => false, 'mensaje' => 'ID de lugar no válido.'];

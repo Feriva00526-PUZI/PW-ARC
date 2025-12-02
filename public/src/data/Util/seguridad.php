@@ -4,9 +4,6 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-/* =====================================================
-   Sanitización
-   ===================================================== */
 function sanitizar(&$DATOS) {
     foreach ($DATOS as $llave => &$valor) {
         $valor = strip_tags($valor);
@@ -16,9 +13,6 @@ function sanitizar(&$DATOS) {
     }
 }
 
-/* =====================================================
-   Sanitización específica para usuario
-   ===================================================== */
 function sanitizarUsuario($usuario) {
     $usuario = strip_tags($usuario);
     $usuario = trim($usuario);
@@ -27,9 +21,6 @@ function sanitizarUsuario($usuario) {
     return $usuario;
 }
 
-/* =====================================================
-   Sanitización específica para contraseña
-   ===================================================== */
 function sanitizarPassword($password) {
     $password = trim($password);
     // No aplicamos htmlspecialchars ni strip_tags a la contraseña
@@ -37,9 +28,22 @@ function sanitizarPassword($password) {
     return $password;
 }
 
-/* =====================================================
-   Iniciar sesión con tipo de usuario
-   ===================================================== */
+function sanitizarTexto($texto) {
+    $texto = strip_tags($texto);
+    $texto = trim($texto);
+    $texto = htmlspecialchars($texto, ENT_QUOTES, 'UTF-8');
+    $texto = stripslashes($texto);
+    return $texto;
+}
+
+function sanitizarEntero($numero) {
+    return filter_var($numero, FILTER_SANITIZE_NUMBER_INT);
+}
+
+function sanitizarDecimal($numero) {
+    return filter_var($numero, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+}
+
 function iniciarSesion($usuario, $tipoUsuario, $datosUsuario = null) {
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
@@ -71,9 +75,6 @@ function iniciarSesion($usuario, $tipoUsuario, $datosUsuario = null) {
     return true;
 }
 
-/* =====================================================
-   Verificación de permisos
-   ===================================================== */
 function verificarPermisos($accion) {
     if (!isset($_SESSION['tipo_usuario'])) {
         return false; // No logueado
@@ -81,7 +82,6 @@ function verificarPermisos($accion) {
 
     $tipo = $_SESSION['tipo_usuario'];
 
-    /* Acciones disponibles segun el rol */
     $permisos = [
 
         "administrador" => [
@@ -90,6 +90,9 @@ function verificarPermisos($accion) {
             "eliminar_evento",
             "ver_reportes",
             "gestionar_usuarios",
+            "crear_lugar",
+            "editar_lugar",
+            "eliminar_lugar",
         ],
 
         "organizadora" => [
@@ -101,6 +104,9 @@ function verificarPermisos($accion) {
         "agencia" => [
             "ver_eventos",
             "registrar_clientes",
+            "crear_paquete",
+            "editar_paquete",
+            "eliminar_paquete",
         ],
 
         "usuario" => [
@@ -109,11 +115,15 @@ function verificarPermisos($accion) {
         ]
     ];
 
-    // Validar que exista el tipo
     if (!isset($permisos[$tipo])) {
         return false;
     }
 
-    // Validar que la acción solicitada está permitida
     return in_array($accion, $permisos[$tipo]);
+}
+
+
+function redirigirAlIndex() {
+    header("Location: ./../../../index.html");
+    exit;
 }

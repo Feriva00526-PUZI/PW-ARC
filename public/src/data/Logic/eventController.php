@@ -1,6 +1,7 @@
 <?php
 header("Content-Type: application/json");
 
+require_once "./../util/seguridad.php";
 require_once "./../dao/eventosDAO.php";
 require_once "./../dao/organizadorDAO.php";
 require_once "./../dao/lugarDAO.php";
@@ -75,7 +76,12 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
 } else if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($_POST["accion"] === "eliminar") {
-        $id_evento = $_POST["idEvento"];
+        // Validar permisos
+        if (!verificarPermisos("eliminar_evento")) {
+            redirigirAlIndex();
+        }
+        
+        $id_evento = sanitizarEntero($_POST["idEvento"]);
         if (!$id_evento) {
             echo json_encode(["correcto" => false, "mensaje" => "Datos incompletos"]);
             exit;
@@ -90,14 +96,19 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
         exit;
 
     } else if ($_POST["accion"] === "actualizar") {
+        // Validar permisos
+        if (!verificarPermisos("editar_evento")) {
+            redirigirAlIndex();
+        }
+        
         //$id_evento, $nombre, $descripcion, $hora_evento, $precio_boleto, $id_lugar, $id_tipo_actividad
-        $id_evento = $_POST["idEvento"];
-        $nombre = $_POST["nombre_evento"];
-        $descripcion = $_POST["descripcion"];
-        $hora_evento = $_POST["hora_evento"];
-        $precio_boleto = $_POST["precio_boleto"];
-        $id_lugar = $_POST["id_lugar"];
-        $id_tipo_actividad = $_POST["id_tipo_actividad"];
+        $id_evento = sanitizarEntero($_POST["idEvento"]);
+        $nombre = sanitizarTexto($_POST["nombre_evento"]);
+        $descripcion = sanitizarTexto($_POST["descripcion"]);
+        $hora_evento = sanitizarTexto($_POST["hora_evento"]);
+        $precio_boleto = sanitizarDecimal($_POST["precio_boleto"]);
+        $id_lugar = sanitizarEntero($_POST["id_lugar"] ?? null);
+        $id_tipo_actividad = sanitizarEntero($_POST["id_tipo_actividad"] ?? null);
 
         if (!$id_evento || !$nombre || !$descripcion || !$hora_evento || !$precio_boleto) {
             echo json_encode(["correcto" => false, "mensaje" => "Datos incompletos"]);
@@ -152,15 +163,20 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
         exit;
 
     } else if ($_POST["accion"] === "crear") {
+        // Validar permisos
+        if (!verificarPermisos("crear_evento")) {
+            redirigirAlIndex();
+        }
+        
         // Recibir datos, no recibeo idevento porque es AI
-        $nombre = $_POST["nombre_evento"] ?? null;
-        $descripcion = $_POST["descripcion"] ?? null;
-        $hora_evento = $_POST["hora_evento"] ?? null;
-        $precio_boleto = $_POST["precio_boleto"] ?? null; 
-        $fecha_evento = $_POST["fecha_evento"] ?? null; // Necesario para la validación
-        $id_lugar = $_POST["id_lugar"] ?? null;
-        $id_tipo_actividad = $_POST["id_tipo_actividad"] ?? null;
-        $id_organizador = $_POST["id_organizador"] ?? null; 
+        $nombre = sanitizarTexto($_POST["nombre_evento"] ?? null);
+        $descripcion = sanitizarTexto($_POST["descripcion"] ?? null);
+        $hora_evento = sanitizarTexto($_POST["hora_evento"] ?? null);
+        $precio_boleto = sanitizarDecimal($_POST["precio_boleto"] ?? null); 
+        $fecha_evento = sanitizarTexto($_POST["fecha_evento"] ?? null); // Necesario para la validación
+        $id_lugar = sanitizarEntero($_POST["id_lugar"] ?? null);
+        $id_tipo_actividad = sanitizarEntero($_POST["id_tipo_actividad"] ?? null);
+        $id_organizador = sanitizarEntero($_POST["id_organizador"] ?? null); 
 
         // 1. VALIDACIÓN: Datos incompletos
         if (!$nombre || !$descripcion || !$hora_evento || !$precio_boleto || !$fecha_evento || !$id_lugar || !$id_tipo_actividad) {
