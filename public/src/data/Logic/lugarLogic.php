@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (!verificarPermisos("editar_lugar") && !verificarPermisos("crear_lugar")) {
         redirigirAlIndex();
     }
-    
+
     try {
         $lugares = $lugarDAO->getLugares();
         if ($lugares != null) {
@@ -62,7 +62,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             exit;
         }
 
-
+        if (strlen($nombre) < 3 || strlen($descripcion) < 3 || strlen($direccion) < 3 || strlen($ciudad) < 3 || strlen($zona) < 3) {
+            echo json_encode(["correcto" => false, "mensaje" => "Cada campo debe tener al menos 3 caracteres."]);
+            exit;
+        }
 
         $id_lugar = 0;
 
@@ -159,7 +162,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (!verificarPermisos("eliminar_lugar")) {
         redirigirAlIndex();
     }
-    
+
     try {
         // Leer el body de la solicitud DELETE
         $json_data = file_get_contents("php://input");
