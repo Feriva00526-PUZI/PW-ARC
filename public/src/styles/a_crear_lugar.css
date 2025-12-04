@@ -101,22 +101,6 @@
     justify-self: end;
 }
 
-/* ---- Responsividad ---- 
-@media (max-width: 768px) {
-    .organizers-box {
-        grid-template-columns: 1fr;
-    }
-
-    .event-box {
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
-
-    .event-box h1 {
-        grid-column: 1;
-    }
-}
-    */
 
 .file_new_img {
     width: 0.1px;

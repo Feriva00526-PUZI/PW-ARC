@@ -1,6 +1,4 @@
 .cards {
-    /*height: 200px;
-    max-height: 200px;*/
     background-color: #caccd4;
     border-left: 5px solid #03045E;
     border-radius: 8px;
@@ -15,13 +13,11 @@
         transform 0.25s ease,
         border-left-color 0.3s ease;
     align-items: stretch;
-    /*height: 100%;*/
     min-height: 200px;
     margin-bottom: 10px;
 }
 
 .div-info-card {
-    /*height: 170px;*/
     grid-area: info-card;
     display: grid;
     grid-template-columns: 1fr;
@@ -30,7 +26,6 @@
         "info-card-ciudad"
         "info-card-direccion"
         "info-card-btn";
-    /*overflow: hidden;*/
 }
 
 .cards .div-info-card h2 {

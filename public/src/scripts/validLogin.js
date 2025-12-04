@@ -34,17 +34,7 @@ export function buscarAdmins(usuario, contra) {
         }
         return false;
 
-        /*
-        admins = data;
-        let validacion = false;
-        admins.forEach((admin) => {
-            if (admin.user === usuario && admin.password === contra) {
-                console.log("validado");
-                validacion = true;
-            }
-        });
-        return validacion;
-        */
+
     });
 };
 export function buscarOrganizadores(usuario, contra) {

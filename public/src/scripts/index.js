@@ -125,14 +125,12 @@ window.addEventListener("load", function () {
         .then(response => response.json())
         .then(data => {
             if (data.correcto && data.lugares && data.lugares.length > 0) {
-                // Convertir los lugares al formato que espera el carrusel
                 const lugaresFormateados = data.lugares.map(lugar => ({
                     nombre_paquete: lugar.nombre_lugar,
                     descripcion_paquete: lugar.descripcion || "Lugar destacado",
                     imagen_url: lugar.imagen_url
                 }));
 
-                // Crear el carrusel con los datos de la base de datos
                 crearCarrusel({
                     containerSelector: "#carrusel-paquetes",
                     dataArray: lugaresFormateados,
@@ -141,7 +139,6 @@ window.addEventListener("load", function () {
                 });
             } else {
                 console.error("Error al cargar lugares populares:", data.mensaje || "No se encontraron lugares");
-                // Fallback: mostrar mensaje o carrusel vacío
                 document.getElementById("carrusel-paquetes").innerHTML =
                     "<p style='text-align: center; padding: 20px;'>No hay lugares populares disponibles en este momento.</p>";
             }

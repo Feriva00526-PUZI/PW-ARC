@@ -8,7 +8,7 @@ require_once "./../dao/eventosDAO.php";
 // INSTANCIAS DE CADA DAO
 $organizadoraDAO = new organizadorDAO();
 $lugarDAO = new lugarDAO();
-$eventosDAO = new eventosDAO(); 
+$eventosDAO = new eventosDAO();
 
 
 
@@ -50,24 +50,8 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
                 echo json_encode(["correcto" => true, "total" => $total]);
                 break;
 
-            // Obtener todos los tipos de actividad
-            /*
-            case "tiposActividad":
-                $data = $dao->getTodosTiposActividad();
-                echo json_encode(["correcto" => true, "data" => $data]);
-                break;
-                
-                // Obtener un tipo de actividad por ID
-            case "tipoActividad":
-                $id = $_GET["id_tipo"] ?? null;
-                if (!$id) throw new Exception("Falta id_tipo");
 
-                $data = $dao->getTipoActividadPorID($id);
-                echo json_encode(["correcto" => true, "data" => $data]);
-                break;
-            
-            */
-                
+
             // Obtener un evento por ID
             case "eventoPorID":
                 $id = $_GET["id_evento"] ?? null;
@@ -77,21 +61,6 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
                 echo json_encode(["correcto" => true, "data" => $data]);
                 break;
 
-            // Filtro por lugar
-            /*
-            case "filtrarLugar":
-                $id = $_GET["id_organizadora"] ?? null;
-                $lugar = $_GET["lugar"] ?? "";
-
-                if (!$id) throw new Exception("Falta id_organizadora");
-
-                $data = $dao->filtrarEventosPorLugar($id, $lugar);
-                echo json_encode(["correcto" => true, "data" => $data]);
-                break;
-            */
-
-
-            
             // Filtro evento por rango de fechas
             case "filtrarFecha":
                 $id = $_GET["id_organizadora"] ?? null;

@@ -32,21 +32,14 @@ window.addEventListener("load", function () {
                     console.log(id_lugar);
 
                     fetch(`./../../data/logic/PaquetesLogic.php?id_lugar=${id_lugar}`).then(response => response.json()).then(data => {
-                        //if (data.correcto && data.paquete) {
                         const paquetes = data.paquetes;
                         contenedorPaquete.innerHTML = "";
                         paquetes.forEach(data => {
                             tit.innerText = data1.nombre_lugar;
                             desc.innerText = data1.descripcion;
                             console.log(tit.innerText);
-                            let div = document.createElement("div"); /*
-                            let divTxt = document.createTextNode(data.nombre_paquete);
-                            let divTxt2 = document.createTextNode(" Precio: " + data.precio);
-                            div.appendChild(divTxt);
-                            div.appendChild(divTxt2);
-                            div.setAttribute("id", "paq" + paqcont);*/
+                            let div = document.createElement("div");
                             paqcont++;
-                            //div.setAttribute("class", "minicard");
                             div.innerHTML = `<div class="minicard"> <p style="font-size: 20px">${data.nombre_paquete}</p>
                             <br> <p style="font-style: italic">Precio: $${data.precio}</p> </div>`;
                             contenedorPaquete.appendChild(div);
@@ -95,11 +88,6 @@ window.addEventListener("load", function () {
                         if (contenedorPaquete.innerHTML == "") {
                             alert("No tiene paquetes disponibles");
                         }
-                        //} else {    
-                        //          console.log(data.correcto);
-                        //        console.log(data.paquete);
-                        //      console.log("Hubo error en el if de correcto y paquetes");
-                        //} 
                     });
                 })
                 ol.appendChild(li);

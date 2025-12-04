@@ -64,18 +64,6 @@ window.addEventListener("load", function () {
 
         e.preventDefault();
 
-
-        /*
-        if (i_usuario.value == "admin" && i_password.value == "admin") {
-            sessionStorage.setItem("admin_logeado", i_usuario.value);
-            window.location.href = "./admin/a_gestion_view.html";
-            //window.location.replace("./admin/a_gestion_view.html");
-        } else {
-            i_usuario.value = "";
-            i_password.value = "";
-            datos_incorrectos.showModal();
-        }
-        */
     });
     const close_datos_incorrectos = document.getElementById("close_datos_incorrectos");
     close_datos_incorrectos.addEventListener("click", function () {
@@ -94,20 +82,7 @@ window.addEventListener("load", function () {
     const registro_duplicado = document.getElementById("registro_duplicado");
     const close_registro_duplicado = document.getElementById("close_registro_duplicado");
     boton_registrarse.addEventListener("click", (e) => {
-        /*
-        const r_nombre = document.getElementById("r_nombre");
-        const r_apellido = document.getElementById("r_apellido");
-        const r_correo = document.getElementById("r_correo");
-        const r_telefono = document.getElementById("r_telefono");
-        const r_usuario = document.getElementById("r_usuario");
-        const r_password = document.getElementById("r_password");
-        const nombre = r_nombre.value;
-        const apellido = r_apellido.value;
-        const correo = r_correo.value;
-        const telefono = r_telefono.value;
-        const usuario = r_usuario.value;
-        const contra = r_password.value;
-        */
+
         e.preventDefault();
         const form_registro = document.getElementById("form_registro");
         const formData = new FormData(form_registro);
@@ -149,36 +124,26 @@ function configurarInputsAyuda() {
     const r_nombre = document.getElementById("r_nombre");
     const r_usuario = document.getElementById("r_usuario");
 
-    // Función auxiliar que crea un "wrapper" (envoltorio) alrededor del input
     const addTooltipWrapper = (element, text) => {
         if (!element) return;
 
-        // 1. Evitamos volver a envolver si ya lo hicimos
         if (element.parentElement.classList.contains('tooltip-container')) {
             element.parentElement.setAttribute('data-tooltip', text);
             return;
         }
 
-        // 2. Creamos el contenedor
         const wrapper = document.createElement('div');
         wrapper.className = 'tooltip-container';
         wrapper.setAttribute('data-tooltip', text);
 
-        // 3. Insertamos el contenedor antes del input
         element.parentNode.insertBefore(wrapper, element);
 
-        // 4. Movemos el input ADENTRO del contenedor
         wrapper.appendChild(element);
 
-        // 5. Limpieza visual
         element.removeAttribute("title");
-        // Aseguramos que el input ocupe el 100% de su nuevo contenedor
         element.style.width = "100%";
     };
 
-    // --- CONFIGURACIÓN DE LOS MENSAJES ---
-
-    // 1. Nombre del Evento
     addTooltipWrapper(r_correo, "Debe terminar en @hotmail.com o @gmail.com.");
     addTooltipWrapper(r_telefono, "Debe contener exactamente 10 dígitos.");
     addTooltipWrapper(r_nombre, "Máximo 20 caracteres. Solo letras y espacios.");

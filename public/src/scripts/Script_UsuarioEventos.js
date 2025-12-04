@@ -32,19 +32,12 @@ window.addEventListener("load", function () {
                 li.addEventListener("click", function () {
                     tit.innerText = data.nombre_evento;
                     desc.innerText = data.descripcion;
-                    //let id_evento = data.id_evento;
-                    //console.log(id_lugar);
-                    //fetch(`./../../data/logic/PaquetesLogic.php?id_lugar=${id_lugar}`).then(response => response.json()).then(data => {
-                    //if (data.correcto && data.paquete) {
-                    //const paquetes = data.paquetes;
+
                     contenedorPaquete.innerHTML = "";
-                    //paquetes.forEach(data => {
+
                     let div = document.createElement("div");
-                    //let divTxt = document.createTextNode("Reservar,"  + " Precio: " + data.precio_boleto);
-                    //div.appendChild(divTxt);
-                    //div.setAttribute("id", "paq" + paqcont);
+
                     paqcont++;
-                    //div.setAttribute("class", "minicard");
                     div.innerHTML = `<div class="minicard"> <p style="font-size: 20px">Reservar</p>
                             <br> <p style="font-style: italic">Precio: $${data.precio_boleto}</p> </div>`;
                     contenedorPaquete.appendChild(div);
@@ -80,20 +73,12 @@ window.addEventListener("load", function () {
                                 con++;
                                 modal.close();
                             }
-                            //});
-
-                            //});
                         }
 
                         )
                         if (contenedorPaquete.innerHTML == "") {
                             alert("No tiene paquetes disponibles");
                         }
-                        //} else {    
-                        //          console.log(data.correcto);
-                        //        console.log(data.paquete);
-                        //      console.log("Hubo error en el if de correcto y paquetes");
-                        //} 
                     });
                 })
                 ol.appendChild(li);

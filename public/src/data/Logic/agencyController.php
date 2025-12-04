@@ -5,10 +5,10 @@ require_once "./../dao/agenciaDAO.php";
 require_once "./../dao/lugarDAO.php";
 require_once "./../dao/paqueteDAO.php";
 
-// INSTANCIAS DE CADA DAO
+
 $agenciaDAO = new agenciaDAO();
 $lugarDAO = new lugarDAO();
-$paqueteDAO = new paqueteDAO(); 
+$paqueteDAO = new paqueteDAO();
 
 
 
@@ -32,7 +32,6 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
                 echo json_encode(["correcto" => true, "data" => $data]);
                 break;
 
-            // Obtener todos los paquetes de una agencia
             case "paquetes":
                 $id = $_GET["id_agencia"] ?? null;
                 if (!$id) throw new Exception("Falta id_agencia");
@@ -41,7 +40,6 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
                 echo json_encode(["correcto" => true, "data" => $data]);
                 break;
 
-            // Obtener cantidad de paquetes
             case "numeroPaquetes":
                 $id = $_GET["id_agencia"] ?? null;
                 if (!$id) throw new Exception("Falta id_agencia");
@@ -49,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
                 $total = $paqueteDAO->getNumeroPaquetesEsteMes($id);
                 echo json_encode(["correcto" => true, "total" => $total]);
                 break;
-                
+
             // Obtener un paquete por ID
             case "paquetePorID":
                 $id = $_GET["id_paquete"] ?? null;

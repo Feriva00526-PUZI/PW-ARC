@@ -10,12 +10,10 @@ window.addEventListener("load", function () {
     .then(html => {
       document.body.insertAdjacentHTML("afterbegin", html);
 
-      // Cargar script del header
       const scriptHeader = document.createElement("script");
       scriptHeader.src = "./../../scripts/header_script.js";
       document.body.appendChild(scriptHeader);
 
-      // Ajustes visuales del header
       const s_header = document.getElementById("s_header");
       if (s_header)
         s_header.style.backgroundImage = "url(./../../media/images/layout/background-img-historial.jpeg)";
@@ -26,7 +24,6 @@ window.addEventListener("load", function () {
       const s_icon = document.getElementById("s_icon");
       if (s_icon) s_icon.src = "./../../media/images/icons/icon_arc.png";
 
-      // Configurar navegacion del header
       const nav = document.getElementById("underline_nav");
       if (nav) {
         const crearNavItem = (id, img, texto, redirect) => {
@@ -86,31 +83,7 @@ window.addEventListener("load", function () {
         btnUsuario.appendChild(aUser);
         nav.appendChild(btnUsuario);
       }
-// Cargar script del combo box de lugares (comentado porque el combo box está deshabilitado en el HTML)
-      // const scriptComboBox = document.createElement("script");
-      // scriptComboBox.src = "./../../scripts/comboBoxHistorial.js";
-      
-      // scriptComboBox.onload = () => {
-      //   // Esperar a que el DOM esté completamente listo antes de inicializar
-      //   if (document.readyState === 'loading') {
-      //     document.addEventListener('DOMContentLoaded', () => {
-      //       if (typeof window.initComboBoxLugares === "function") {
-      //         window.initComboBoxLugares();
-      //       }
-      //     });
-      //   } else {
-      //     // DOM ya está listo
-      //     setTimeout(() => {
-      //       if (typeof window.initComboBoxLugares === "function") {
-      //         window.initComboBoxLugares();
-      //       }
-      //     }, 100);
-      //   }
-      // };
-      
-      // document.body.appendChild(scriptComboBox);
 
-// cargar historial de viajes
       fetch("../../data/logic/HistorialLogic.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -123,17 +96,6 @@ window.addEventListener("load", function () {
             return;
           }
 
-          // Guardar datos de viajes para el filtrado (comentado porque el combo box está deshabilitado)
-          // if (typeof window.setDatosViajes === "function") {
-          //   window.setDatosViajes(data.viajes);
-          // }
-
-          // Si el combo box aún no se ha inicializado, inicializarlo ahora con los datos
-          // if (typeof window.initComboBoxLugares === "function") {
-          //   window.initComboBoxLugares();
-          // }
-
-          // Cargar tabla de historial de viajes 
           const scriptTabla = document.createElement("script");
           scriptTabla.src = "./../../scripts/historial_table.js";
 
@@ -152,34 +114,29 @@ window.addEventListener("load", function () {
           console.error("Error cargando historial:", err);
         });
 
-      
-// cargar historial de reservaciones
-fetch("../../data/logic/ReservacionLogic.php", {
- method: "POST",
+      fetch("../../data/logic/ReservacionLogic.php", {
+        method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id_cliente: usuario.id_cliente })
       })
         .then(r => r.json())
         .then(data => {
-          console.log("Respuesta de reservaciones:", data); // Debug
+          console.log("Respuesta de reservaciones:", data);
           if (!data.correcto) {
             console.error("Error:", data.mensaje);
             return;
           }
 
-          // Validar que existan reservaciones
           if (!data.reservaciones || !Array.isArray(data.reservaciones)) {
             console.warn("No se recibieron reservaciones o el formato es incorrecto");
             return;
           }
 
-          // Cargar tabla de historial de reservaciones
           const scriptReservaciones = document.createElement("script");
-          scriptReservaciones.src = "./../../scripts/reservations_table.js"; 
+          scriptReservaciones.src = "./../../scripts/reservations_table.js";
 
           scriptReservaciones.onload = () => {
-            console.log("Script reservations_table.js cargado"); // Debug
-            // Esperar un momento para asegurar que la función esté disponible
+            console.log("Script reservations_table.js cargado");
             setTimeout(() => {
               if (typeof window.initReservacionesTable === "function") {
                 console.log("Inicializando tabla con", data.reservaciones.length, "reservaciones"); // Debug
@@ -207,9 +164,6 @@ fetch("../../data/logic/ReservacionLogic.php", {
     .catch(err => {
       console.error("Error cargando header.html:", err);
     });
-
-
-  // Cargar dinamicamente el footer
   fetch("./../../components/footer.html")
     .then(r => r.text())
     .then(html => {

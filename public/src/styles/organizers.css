@@ -1,11 +1,7 @@
-/* === :root - Variables Específicas del Componente === */
 :root {
-  /* Colores primarios heredados de style_generico.css */
   --color-primario: #023E8A;
   --color-secundario: #0077b6;
-  /* Para botón "Modificar" */
   --color-peligro: #d62828;
-  /* Para botón "Cancelar" */
 
   --color-texto: #333;
   --color-blanco: #fff;
@@ -13,13 +9,11 @@
   --color-borde-input: #ccc;
 
   --radio-borde: 8px;
-  /* Radio estándar para elementos internos */
   --espaciado-medio: 15px;
   --espaciado-grande: 20px;
   --transicion-rapida: all 0.2s ease-in-out;
 }
 
-/* === Estilo del banner === */
 .banner {
   position: relative;
   background-image: url('../media/images/background-events-organizers.jpg');
@@ -76,30 +70,25 @@
   animation: fadeInSlogan 1.5s 0.5s ease-out forwards;
 }
 
-/* === Layout principal === */
 .organizers-box {
   display: grid;
   grid-template-columns: 1fr 2.5fr;
-  /* Damos más espacio a la tabla */
   gap: 30px;
   align-items: start;
 }
 
-/* === Columna izquierda (Info) === */
 .organizers-info {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   position: sticky;
-  /* Se fija al hacer scroll */
   top: 200px;
 }
 
 .organizers-info img {
   width: 100%;
   max-width: 400px;
-  /* Evita que la imagen sea gigante */
   max-height: 400px;
   height: auto;
   border-radius: 50%;
@@ -113,7 +102,6 @@
   color: var(--color-texto);
 }
 
-/* === Columna derecha (Eventos) === */
 .organizers-events-box {
   margin-top: 20px;
   box-sizing: border-box;
@@ -126,10 +114,8 @@
   padding-bottom: 10px;
   margin-bottom: var(--espaciado-grande);
   font-size: 2rem;
-  /* Tamaño de fuente base */
 }
 
-/* === Filtros === */
 .filters {
   display: flex;
   flex-wrap: wrap;
@@ -145,7 +131,6 @@
   margin-bottom: 0;
 }
 
-/* El botón de filtros ("Ordenar") usa el estilo genérico 'button', pero le damos un aspecto secundario (no azul). */
 .filters button {
   background-color: var(--color-primario);
   color: var(--color-blanco);
@@ -160,11 +145,9 @@
   margin-top: 15px;
 }
 
-/* === SOLUCIÓN TABLA RESPONSIVA === */
 .table-wrapper {
   width: 100%;
   overflow-x: auto;
-  /* Activa el scroll horizontal */
   margin-bottom: var(--espaciado-grande);
   border: 1px solid var(--color-borde);
   border-radius: var(--radio-borde);
@@ -236,9 +219,6 @@
 }
 
 
-/* ============================================ */
-/* A PARTIR DE AQUÍ: TABLA FORMATO TARJETAS */
-/* ============================================ */
 @media (max-width: 900px) {
   .tabla-eventos thead {
     display: none;
@@ -291,9 +271,6 @@
   }
 }
 
-/* ===================================================== */
-/* ⭐ MEJORA VISUAL DE FILTROS PARA PANTALLAS PEQUEÑAS */
-/* ===================================================== */
 @media (max-width: 768px) {
   .organizers-info {
     position: static;
@@ -364,7 +341,6 @@
 
   .organizers-box {
     grid-template-columns: 1fr;
-    /* Una sola columna */
     gap: var(--espaciado-grande);
   }
 }
