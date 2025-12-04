@@ -4,7 +4,8 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-function sanitizar(&$DATOS) {
+function sanitizar(&$DATOS)
+{
     foreach ($DATOS as $llave => &$valor) {
         $valor = strip_tags($valor);
         $valor = trim($valor);
@@ -13,7 +14,8 @@ function sanitizar(&$DATOS) {
     }
 }
 
-function sanitizarUsuario($usuario) {
+function sanitizarUsuario($usuario)
+{
     $usuario = strip_tags($usuario);
     $usuario = trim($usuario);
     $usuario = htmlspecialchars($usuario, ENT_QUOTES, 'UTF-8');
@@ -21,13 +23,15 @@ function sanitizarUsuario($usuario) {
     return $usuario;
 }
 
-function sanitizarPassword($password) {
+function sanitizarPassword($password)
+{
     $password = trim($password);
 
     return $password;
 }
 
-function sanitizarTexto($texto) {
+function sanitizarTexto($texto)
+{
     $texto = strip_tags($texto);
     $texto = trim($texto);
     $texto = htmlspecialchars($texto, ENT_QUOTES, 'UTF-8');
@@ -35,22 +39,25 @@ function sanitizarTexto($texto) {
     return $texto;
 }
 
-function sanitizarEntero($numero) {
+function sanitizarEntero($numero)
+{
     return filter_var($numero, FILTER_SANITIZE_NUMBER_INT);
 }
 
-function sanitizarDecimal($numero) {
+function sanitizarDecimal($numero)
+{
     return filter_var($numero, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 }
 
-function iniciarSesion($usuario, $tipoUsuario, $datosUsuario = null) {
+function iniciarSesion($usuario, $tipoUsuario, $datosUsuario = null)
+{
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }
-    
+
     $_SESSION['tipo_usuario'] = $tipoUsuario;
     $_SESSION['usuario'] = $usuario;
-    
+
     if ($datosUsuario !== null) {
         switch ($tipoUsuario) {
             case 'administrador':
@@ -69,11 +76,12 @@ function iniciarSesion($usuario, $tipoUsuario, $datosUsuario = null) {
                 break;
         }
     }
-    
+
     return true;
 }
 
-function verificarPermisos($accion) {
+function verificarPermisos($accion)
+{
     if (!isset($_SESSION['tipo_usuario'])) {
         return false; // No logueado
     }
@@ -103,6 +111,8 @@ function verificarPermisos($accion) {
 
         "usuario" => [
             "ver_eventos",
+            "crear_lugar",
+            "editar_lugar",
             "registrarse_evento",
         ]
     ];
@@ -115,7 +125,8 @@ function verificarPermisos($accion) {
 }
 
 
-function redirigirAlIndex() {
+function redirigirAlIndex()
+{
     header("Location: ./../../../index.html");
     exit;
 }
