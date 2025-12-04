@@ -8,17 +8,10 @@ class ReservacionesDAO
 
     public function __construct()
     {
-        // Se asume que 'Conexion' y 'getConexion()' están correctamente definidos.
         $conn = new Conexion();
         $this->conexion = $conn->getConexion();
     }
 
-    /**
-     * Obtiene el historial detallado de reservaciones de eventos para un cliente.
-     * Realiza INNER JOIN con 'eventos', 'lugares', 'tipoactividad' y 'organizadoras'
-     * para obtener todos los detalles solicitados.
-     * Se corrigió 't.tipo' a 't.nombre_tipo_actividad'.
-     */
     public function obtenerHistorialDetallado($id_cliente)
     {
         try {
@@ -49,25 +42,20 @@ class ReservacionesDAO
 
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            // Se lanza una excepción para que ReservacionLogic.php la maneje.
             throw new Exception("Error al consultar historial de reservaciones: " . $e->getMessage());
         }
     }
-    
-    /**
-     * Actualiza el estado de una reservación a 'cancelado'.
-     */
+
     public function cancelarReservacion($id_reservacion)
     {
         try {
             $sql = "UPDATE reservaciones SET estado = 'cancelado' WHERE id_reservacion = :id_reservacion AND estado <> 'cancelado'";
             $stmt = $this->conexion->prepare($sql);
             $stmt->bindParam(':id_reservacion', $id_reservacion, PDO::PARAM_INT);
-            
+
             return $stmt->execute();
         } catch (PDOException $e) {
             throw new Exception("Error al cancelar reservación: " . $e->getMessage());
         }
     }
 }
-?>
